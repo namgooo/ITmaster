@@ -22,7 +22,7 @@ public class DepartmentService {
 	// 부서 등록
 	public void createDeaprtment (DepartmentDTO dto) {
 		Department department = new Department();
-		department.setDepartment(dto.getDepartmnet());
+		department.setDepartment(dto.getDepartment());
 		department.setCreateDate(LocalDateTime.now());
 		this.departmentRepository.save(department);
 	}
@@ -42,7 +42,7 @@ public class DepartmentService {
 	public void updateDepartmentById(DepartmentDTO dto) {
 		Integer departmentId = dto.getId();
 		Department department = this.departmentRepository.findById(departmentId).orElse(null);
-		department.setDepartment(dto.getDepartmnet());
+		department.setDepartment(dto.getDepartment());
 		department.setCreateDate(LocalDateTime.now());
 		this.departmentRepository.save(department);
 	}

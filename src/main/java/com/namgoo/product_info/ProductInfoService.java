@@ -47,6 +47,14 @@ public class ProductInfoService {
 		Department department = this.departmentRepository.findByDepartment(dto.getDepartment()).orElse(null);
 		Employee employee = this.employeeRepository.findByEmployee(dto.getEmployee()).orElse(null);
 		
+		// 두 자리 문자열로 변환
+		int categoryId = category.getId();
+		int makerId = maker.getId();
+		int productId = product.getId();
+		String categoryNum = String.format("%02d", categoryId);
+		String makerNum = String.format("%02d", makerId);
+		String productNum = String.format("%02d", productId);
+		
 		ProductInfo productInfo = new ProductInfo();
 		productInfo.setSimpleName(dto.getSimpleName());
 		productInfo.setUseStatus(dto.getUseStatus());
@@ -55,7 +63,7 @@ public class ProductInfoService {
 		productInfo.setPrice(dto.getPrice());
 		productInfo.setBuyYear(dto.getBuyYear());
 		productInfo.setProductComment(dto.getProductComment());
-		productInfo.setUniqueCode(dto.getUniqueCode());
+		productInfo.setUniqueCode(categoryNum + makerNum + productNum + "-" + dto.getUniqueCode());
 		productInfo.setCreateDate(LocalDateTime.now());
 		
 		productInfo.setCategory(category);
@@ -78,13 +86,21 @@ public class ProductInfoService {
 	}
 	
 	// 제품 정보 수정
-	public ProductInfo updateProductInfo(ProductInfoDTO dto) {
+	public void updateProductInfo(ProductInfoDTO dto) {
 		ProductInfo productInfo = this.productInfoRepository.findById(dto.getId()).orElse(null);
 		Category category = this.categoryRepository.findByCategory(dto.getCategory()).get();
 		Maker maker = this.makerRepository.findByMaker(dto.getMaker()).get();
 		Product product = this.productRepository.findByProduct(dto.getProduct()).get();
 		Department department = this.departmentRepository.findByDepartment(dto.getDepartment()).get();
 		Employee employee = this.employeeRepository.findByEmployee(dto.getEmployee()).get();
+		
+		// 두 자리 문자열로 변환
+		int categoryId = category.getId();
+		int makerId = maker.getId();
+		int productId = product.getId();
+		String categoryNum = String.format("%02d", categoryId);
+		String makerNum = String.format("%02d", makerId);
+		String productNum = String.format("%02d", productId);
 		
 		productInfo.setSimpleName(dto.getSimpleName());
 		productInfo.setUseStatus(dto.getUseStatus());
@@ -93,7 +109,7 @@ public class ProductInfoService {
 		productInfo.setPrice(dto.getPrice());
 		productInfo.setBuyYear(dto.getBuyYear());
 		productInfo.setProductComment(dto.getProductComment());
-		productInfo.setUniqueCode(dto.getUniqueCode());
+		productInfo.setUniqueCode(categoryNum + makerNum + productNum + "-" + dto.getUniqueCode());
 		productInfo.setCreateDate(LocalDateTime.now());
 		
 		productInfo.setCategory(category);
@@ -102,7 +118,6 @@ public class ProductInfoService {
 		productInfo.setDepartment(department);
 		productInfo.setEmployee(employee);
 		this.productInfoRepository.save(productInfo);
-		return productInfo;
 	}
 
 }

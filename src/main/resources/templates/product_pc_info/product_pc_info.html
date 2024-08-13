@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>product-info</title>
+
+    <!-- <script>
+        function fetchEmployees() {
+            var department = document.getElementById("department").value;
+            if (department !== "") {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/product-info/getEmployeesByDepartment?department=" + department, true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var employees = JSON.parse(xhr.responseText);
+                        var employeeSelect = document.getElementById("employee");
+                        console.log("Ready state: " + xhr.readyState + ", Status: " + xhr.status);
+                        employeeSelect.innerHTML = "<option value=''>선택하기</option>"; // 기존 옵션 초기화 
+                        employees.forEach(function(employee) {
+                            var option = document.createElement("option");
+                            option.value = employee;
+                            option.text = employee;
+                            employeeSelect.appendChild(option);
+                        });
+                    }
+                };
+                xhr.send();
+            }
+        }
+    </script> -->
+
+    <!-- 부서 선택 시 해당 부서원 조회 -->
+    <script>
+        function fetchEmployees() {
+            let department = document.getElementById("department").value;
+            if(department !== "") {
+                fetch("/product-info/getEmployeesByDepartment?department=" + encodeURIComponent(department))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(employees) {
+                    let employeeSelect = document.getElementById("employee");
+                    employeeSelect.innerHTML = "<option value=''>선택하기</option>";
+                    employees.forEach(function(employee){
+                        let option = document.createElement("option");
+                        option.value = employee;
+                        option.text = employee;
+                        employeeSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                });
+            }
+        }
+    </script>
+
+    <!-- 카테고리 선택 시 해당 제품 조회 -->
+    <script>
+        function CategoryfetchProducts() {
+            let category = document.getElementById("category").value;
+            if(category !== "") {
+                fetch("/product-info/getProductsByCategory?category=" + encodeURIComponent(category))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(products) {
+                    let productSelect = document.getElementById("product");
+                    productSelect.innerHTML = "<option value=''>선택하기</option>";
+                    products.forEach(function(product){
+                        let option = document.createElement("option");
+                        option.value = product;
+                        option.text = product;
+                        productSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                });
+            }
+        }
+    </script>
+
+    <!-- 제조사 선택 시 해당 제품 조회 -->
+    <script>
+        function MakerfetchProducts() {
+            let maker = document.getElementById("maker").value;
+            if(maker !== "") {
+                fetch("/product-info/getProductsByMaker?maker=" + encodeURIComponent(maker))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(products) {
+                    let productSelect = document.getElementById("product");
+                    productSelect.innerHTML = "<option value=''>선택하기</option>";
+                    products.forEach(function(product){
+                        let option = document.createElement("option");
+                        option.value = product;
+                        option.text = product;
+                        productSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                });
+            }
+        }
+    </script>
+
+
+</head>
+<body>
+    <span><a th:href="@{/product-info/product-info-list}">제품 정보 - 일반 제품</a></span> / <span><a th:href="@{/product-pc-info/product-pc-info-list}">제품 정보 - PC 제품</a></span>
+
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>카테고리</th>
+                    <th>제조사</th>
+                    <th>제품</th>
+                    <th>제품명</th>
+                    <th>사용상태</th>
+                    <th>제품상태</th>
+                    <th>현위치</th>
+                    <th>구매가격</th>
+                    <th>구매년도</th>
+                    <th>고유식별번호</th>
+                    <th>부서</th>
+                    <th>부서원</th>
+                    <th>등록일자</th>
+                    <th>삭제</th>
+                    <th>수정</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="productInfo, loop : ${productInfoList}">
+                    <td th:text="${loop.count}"></td>
+                    <td th:text="${productInfo.category.category}"></td>
+                    <td th:text="${productInfo.maker.maker}"></td>
+                    <td th:text="${productInfo.product.product}"></td>
+                    <td th:text="${productInfo.simpleName}"></td>
+                    <td th:text="${productInfo.useStatus}"></td>
+                    <td th:text="${productInfo.itemStatus}"></td>
+                    <td th:text="${productInfo.location}"></td>
+                    <td th:text="${productInfo.price}"></td>
+                    <td th:text="${productInfo.buyYear}"></td>
+                    <td th:text="${productInfo.uniqueCode}"></td>
+                    <td th:text="${productInfo.department.department}"></td>
+                    <td th:text="${productInfo.employee.employee}"></td>
+                    <td th:text="${productInfo.createDate}"></td>
+                    <td><a th:href="@{|/product-info/product-info-delete/${productInfo.id}|}">삭제</a></td>
+                    <td><a th:href="@{|/product-info/product-info-detail/${productInfo.id}|}">수정</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr>
+	<div>
+        <div>일반</div>
+        <form th:action="@{/product-info/product-info-create}" method="post">
+        	<label for="category">카테고리</label>
+            <select id="category" name="category" onchange="CategoryfetchProducts()">
+                <option value="">선택하기</option>
+                <option th:each="category, loop : ${categoryList}" th:text="${category.category}" th:value="${category.category}"></option>
+            </select>
+            <label for="maker">제조사</label>
+            <select id="maker" name="maker" onchange="MakerfetchProducts()">
+                <option value="">선택하기</option>
+                <option th:each="maker, loop : ${makerList}" th:text="${maker.maker}" th:value="${maker.maker}"></option>
+            </select>
+            <label for="product">제품</label>
+            <select id="product" name="product">
+                <option value="">선택하기</option>
+                <option th:each="product, loop : ${productList}" th:text="${product.product}" th:value="${product.product}"></option>
+            </select>
+        	
+            <label for="simpleName">이름</label>
+            <input type="text" id="simpleName" name="simpleName">
+            <br>
+            <label for="department">부서</label>
+            <select id="department" name="department" onchange="fetchEmployees()">
+                <option value="">선택하기</option>
+                <option th:each="department, loop : ${departmentList}" th:text="${department.department}" th:value="${department.department}"></option>
+            </select>
+            <label for="employee">부서원</label>
+            <select id="employee" name="employee">
+                <option value="">선택하기</option>
+                <option th:each="employee, loop : ${employeeList}" th:text="${employee.employee}" th:value="${employee.employee}"></option>
+            </select>
+            <br>
+            <label for="useStatus">사용상태</label>
+            <select id="useStatus" name="useStatus">
+                <option value="">선택하기</option>
+                <option value="새상품">새상품</option>
+                <option value="중고">중고</option>
+            </select>
+            <br>
+            <label for="itemStatus">제품상태</label>
+            <select id="itemStatus" name="itemStatus">
+                <option value="">선택하기</option>
+                <option value="정상">정상</option>
+                <option value="결함">결함</option>
+                <option value="고장">고장</option>
+            </select>
+            <br>
+            <label for="location">현위치</label>
+            <input type="text" id="location" name="location">
+            <br>
+            <label for="price">구매가격</label>
+            <input type="text" id="price" name="price">
+            <br>
+            <label for="buyYear">구매년도</label>
+            <input type="text" id="buyYear" name="buyYear">
+            <br>
+            <label for="productComment">비고</label>
+            <input type="text" id="productComment" name="productComment">
+            <br>
+            <label for="uniqueCode">고유식별번호</label>
+            <input type="text" id="uniqueCode" name="uniqueCode">
+            <br>
+            <input type="submit" value="등록하기">
+        </form>
+    </div>
+
+</body>
+</html>

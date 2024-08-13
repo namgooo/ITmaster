@@ -28,6 +28,9 @@ public class DepartmentController {
 	// 부서 등록
 	@PostMapping("/department-create")
 	public String createDepartment(DepartmentDTO dto) {
+		System.out.println("_________________________________");
+		System.out.println("진입확인 : " + dto.getDepartment());
+		System.out.println("_________________________________");
 		this.departmentService.createDeaprtment(dto);
 		return "redirect:/department/department-list";
 	}

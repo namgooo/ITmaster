@@ -36,7 +36,7 @@ public class Desktop {
 	
 	// ManyToOne
 	@ManyToOne
-	private Category cateogry;
+	private Category category;
 	@ManyToOne
 	private Employee employee;
 
