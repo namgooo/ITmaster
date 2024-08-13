@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>category</title>
+</head>
+<body>
+    <h2>카테고리</h2>
+    
+    <div>
+        <table>
+		    <thead>
+		        <tr>
+		            <th>번호</th>
+		            <th>카테고리명</th>
+		            <th>등록일시</th>
+		            <th>삭제</th>
+		            <th>수정</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr th:each="category, loop : ${categoryList}">
+		            <td th:text="${loop.count}"></td>
+		            <td th:text="${category.category}"></td>
+		            <td th:text="${category.createDate}"></td>
+		            <td><a th:href="@{|/category/category-delete/${category.id}|}">삭제하기</a></td>
+		            <td><a th:href="@{|/category/category-detail/${category.id}|}">수정하기</a></td>
+		        </tr>
+		    </tbody>
+		</table>
+    </div>
+    <hr>
+    <div>
+        <form th:action="@{/category/category-create}" method="post">
+            <label for="category">카테고리명</label>
+            <input type="text" id="category" name="category">
+            <input type="submit" value="등록하기">
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>desktop-detail</title>
+</head>
+<body>
+    <h2>데스크탑 상세</h2>
+
+    <div>
+    	<div th:text="${desktop.desktop}"></div>
+        <!-- <span>Mainboard</span><br>
+        <span></span><br>
+        <span>CPU</span><br>
+        <span>GPU</span><br>
+        <span>Memory1</span><br>
+        <span>Memory2</span><br>
+        <span>Power</span><br> -->
+        <ul th:each="productInfo, loop : ${productInfoList}">
+            <li th:text="${productInfo.simpleName}"></li>
+        </ul>
+
+        <div th:if="${desktop.employee != null}">
+        	<span th:text="${desktop.employee.employee}"></span>
+	    </div><br>
+	    <div th:unless="${desktop.employee != null}">
+	        <span>보관중</span>
+	    </div><br>
+        
+    </div>
+
+    <div>
+        <form th:action="@{/desktop/desktop-update}" method="post">
+            <input type="hidden" id="id" name="id" th:value="${desktop.id}">
+            <label for="desktop">데스크탑명</label>
+            <input type="text" id="desktop" name="desktop">
+            <label for="employee">사용자</label>
+            <input type="text" id="employee" name="employee"><br>
+            <label for="Category">카테고리명</label>
+            <select id="category" name="category">
+                <option value="">선택하기</option>
+                <option th:each="category, loop : ${categoryList}" th:text="${category.category}" th:value="${category.category}"></option>
+            </select>
+            <label for="product">제품명</label>
+            <select id="product" name="product">
+                <option value="">선택하기</option>
+                <option th:each="product, loop : ${productList}" th:text="${product.product}" th:value="${product.product}"></option>
+            </select>
+            <label for="">제품 정보</label>
+            <select id="" name="">
+                <option value="">선택하기</option>
+                <option th:each="productInfo, loop : ${productInfoList}" th:text="${productInfo.simpleName}" th:value="${productInfo.simpleName}"></option>
+            </select>
+            <input type="submit" value="수정하기">
+        </form>
+    </div>
+
+</body>
+</html>

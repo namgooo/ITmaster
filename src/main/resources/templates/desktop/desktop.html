@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>desktop-list</title>
+</head>
+<body>
+    <h2>데스크탑</h2>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>데스크탑명</th>
+                    <th>사용자</th>
+                    <th>등록일시</th>
+                    <th>삭제</th>
+                    <th>수정</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="desktop, loop : ${desktopList}">
+                    <td th:text="${loop.count}"></td>
+                    <td th:text="${desktop.desktop}"></td>
+                    <td th:if="${desktop.employee != null}">
+                    	<span th:text="${desktop.employee.employee}"></span>
+                    </td>
+                    <td th:unless="${desktop.employee != null}">
+                    	<span>보관중</span>
+                    </td>
+                    <td th:text="${desktop.createDate}"></td>
+                    <td><a th:href="@{|/desktop/desktop-delete/${desktop.id}|}">삭제하기</a></td>
+                    <td><a th:href="@{|/desktop/desktop-detail/${desktop.id}|}">수정하기</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div>
+        <form th:action="@{/desktop/desktop-create}" method="post">
+            <label for="desktop">데스크탑명</label>
+            <input type="text" id="desktop" name="desktop">
+            <input type="submit" value="등록하기">
+        </form>
+    </div>
+
+</body>
+</html>

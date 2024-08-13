@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>employee-detail</title>
+</head>
+<body>
+    <h2>부서원 상세</h2>
+
+    <div th:text="${employee.employee}"></div>
+
+    <div>
+        <form th:action="@{/employee/employee-update}" method="post"> 
+            <input type="hidden" id="id" name="id" th:value="${employee.id}">
+            <label for="employee">부서원명</label>
+            <input type="text" id="employee" name="employee">
+            <input type="submit" value="수정하기">
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>maker_detail</title>
+</head>
+<body>
+    <h2>제조사 상세</h2>
+    
+    <div th:text="${maker.maker}"></div>
+		
+    <div>
+		<form th:action="@{/maker/maker-update}" method="post">
+            <input type="hidden" id="id" name="id" th:value="${maker.id}">
+            <label for="maker">제조사명</label>
+            <input type="text" id="maker" name="maker">
+            <input type="submit" value="수정하기">
+        </form>
+    </div>
+    
+</body>
+</html>

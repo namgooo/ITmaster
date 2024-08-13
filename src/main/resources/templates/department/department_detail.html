@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>department-detail</title>
+</head>
+<body>
+    <h2>부서 상세</h2>
+
+    <div th:text="${department.department}"></div>
+
+    <div>
+        <form th:action="@{/department/department-update}" method="post">
+            <label for="department">부서명</label>
+            <input type="hidden" id="id" name="id" th:value="${department.id}">
+            <input type="text" id="department" name="department">
+            <input type="submit" value="수정하기">
+        </form>
+    </div>
+</body>
+</html>

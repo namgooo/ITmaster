@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>product</title>
+</head>
+<body>
+    <h2>제품</h2>
+
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>카테고리</th>
+                    <th>제조사</th>
+		            <th>제품명</th>
+		            <th>등록일시</th>
+		            <th>삭제</th>
+		            <th>수정</th>
+                </tr>
+            </thead>
+            <tbody>
+            	<tr th:each="product, loop : ${productList}">
+                	<td th:text="${loop.count}"></td>
+                    <td th:text="${product.category.category}"></td>
+                    <td th:text="${product.maker.maker}"></td>
+                    <td th:text="${product.product}"></td>
+                    <td th:text="${product.createDate}"></td>
+                    <td><a th:href="@{|/product/product-delete/${product.id}|}">삭제하기</a></td>
+                	<td><a th:href="@{|/product/product-detail/${product.id}|}">수정하기</a></td>
+            	</tr>
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    
+    
+    <div>
+        <form th:action="@{/product/product-create}" method="post">
+            <label for="category">카테고리명</label>
+            <select id="category" name="category">
+                <Option value="">선택하기</Option>
+                <Option th:each="category, loop : ${categoryList}" th:text="${category.category}" th:value="${category.category}"></Option>
+            </select>
+            <label for="maker">제조사명</label>
+            <select id="maker" name="maker">
+                <Option value="">선택하기</Option>
+                <option th:each="maker, loo : ${makerList}" th:text="${maker.maker}" th:value="${maker.maker}"></option>
+            </select>
+            <label for="procudt">제품명</label>
+            <input type="text" id="product" name="product">
+            <input type="submit" value="등록하기">
+        </form>
+    </div>
+
+</body>
+</html>

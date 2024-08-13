@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>product-detail</title>
+</head>
+<body>
+    <h2>제품 상세</h2>
+
+    <div th:text="${product.category.category}"></div>
+    <div th:text="${product.maker.maker}"></div>
+    <div th:text="${product.product}"></div>
+
+    <div>
+        <form th:action="@{/product/product-update}" method="post">
+            <label for="category">카테고리명</label>
+            <select id="category" name="category">
+                <option value="">선택하기</option>
+                <option th:each="category, loop : ${categoryList}" th:text="${category.category}" th:value="${category.category}"></option>
+            </select>
+            <label for="maker">제조사명</label>
+            <select id="maker" name="maker">
+                <option value="">선택하기</option>
+                <option th:each="maker, loop : ${makerList}" th:text="${maker.maker}" th:value="${maker.maker}"></option>
+            </select>
+            <input type="hidden" id="id" name="id" th:value="${product.id}">
+            <label for="product">제품명</label>
+            <input type="text" id="product" name="product">
+            <input type="submit" value="수정하기">
+        </form>
+    </div>
+
+</body>
+</html>

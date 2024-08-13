@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>category_detail</title>
+</head>
+<body>
+    <h2>카테고리 상세</h2>
+
+    <div th:text="${category.category}"></div>
+
+    <div>
+        <form th:action="@{/category/category-update}" method="post">
+            <label for="category">카테고리명</label>
+            <input type="hidden" id="id" name="id" th:value="${category.id}">
+            <input type="text" id="category" name="category">
+            <input type="submit" value="수정하기">
+        </form>
+    </div>
+</body>
+</html>
+

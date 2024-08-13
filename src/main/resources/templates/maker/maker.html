@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>maker_list</title>
+</head>
+<body>
+    <h2>제조사</h2>
+
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>카테고리</th>
+                    <th>제조사명</th>
+                    <th>등록일시</th>
+                    <th>삭제</th>
+                    <th>수정</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="maker, loop : ${makerList}">
+                    <td th:text="${loop.count}"></td>
+                    <td th:text="${maker.maker}"></td>
+                    <td th:text="${maker.createDate}"></td>
+                    <td><a th:href="@{|/maker/maker-delete/${maker.id}|}">삭제하기</a></td>
+                    <td><a th:href="@{|/maker/maker-detail/${maker.id}|}">수정하기</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div>
+        <form th:action="@{/maker/maker-create}" method="post">
+            <label for="maker">제조사명</label>
+            <input type="text" id="maker" name="maker">
+            <input type="submit" value="등록하기">
+        </form>
+    </div>
+</body>
+</html>

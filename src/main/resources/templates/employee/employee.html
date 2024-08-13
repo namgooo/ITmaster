@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>employee-list</title>
+</head>
+<body>
+    <h2>부서원</h2>
+    
+    <ul th:each="department, loop : ${departmentList}">
+        <li><a th:text="${department.department}" th:href="@{|/employee/employee-list/${department.id}|}"></a></li>
+    </ul>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>부서원</th>
+                    <th>등록일시</th>
+                    <th>삭제</th>
+                    <th>수정</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="employee, loop : ${employeeList}">
+                    <td th:text="${loop.count}"></td>
+                    <td th:text="${employee.employee}"></td>
+                    <td th:text="${employee.createDate}"></td>
+                    <td><a th:href="@{|/employee/employee-delete/${employee.id}}|">삭제하기</a></td>
+                    <td><a th:href="@{|/employee/employee-detail/${employee.id}|}">수정하기</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div>
+        <form th:action="@{/employee/employee-create}" method="post">
+        	<label for="department">부서</label>
+            <select id="department" name="department">
+                <option th:each="department, loop : ${departmentList}" th:text="${department.department}" th:value="${department.department}"></option>
+            </select>
+            <label for="employee">부서원명</label>
+            <input type="text" id="employee" name="employee">
+            <input type="submit" value="등록하기">
+        </form>
+    </div>
+
+</body>
+</html>
