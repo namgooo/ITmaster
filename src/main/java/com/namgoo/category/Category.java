@@ -30,14 +30,12 @@ public class Category {
 	private String category;
 	private LocalDateTime createDate;
 	
-	// OneToOne
+	// OneToMany
 	@OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
 	private List<ProductInfo> productInfoList;
 	@OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
 	private List<ProductPcInfo> productPcInfoList;
 	@OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
 	private List<Product> ProductList;
-	@OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
-	private List<Desktop> desktopList;
 	
 }

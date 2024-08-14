@@ -9,9 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.namgoo.category.Category;
 import com.namgoo.category.CategoryService;
+import com.namgoo.department.Department;
+import com.namgoo.department.DepartmentService;
+import com.namgoo.employee.Employee;
 import com.namgoo.employee.EmployeeService;
 import com.namgoo.maker.Maker;
 import com.namgoo.maker.MakerService;
@@ -25,31 +30,40 @@ import com.namgoo.product_info.ProductInfoService;
 public class DesktopController {
 	
 	@Autowired
-	private CategoryService categoryService;
-	@Autowired
-	private MakerService makerService;
-	@Autowired
-	private ProductService productService;
-	@Autowired
 	private DesktopService desktopService;
 	@Autowired
-	private EmployeeService employeeService;
+	private DepartmentService departmentService;
 	@Autowired
-	private ProductInfoService productInfoService;
+	private EmployeeService employeeService;
 	
 	// 데스크탑 목록
 	@GetMapping("/desktop-list")
 	public String findDesktopList(Model model) {
 		List<Desktop> desktopList = this.desktopService.finddesktopList();
 		model.addAttribute("desktopList", desktopList);
-		List<Category> categoryList = this.categoryService.findCategoryList();
-		model.addAttribute("categoryList", categoryList);
+		List<Department> departmentList = this.departmentService.findDepartmentList();
+		model.addAttribute("departmentList", departmentList);
+		List<Employee> employeeList = this.employeeService.findEmployeeList();
+		model.addAttribute("employeeList", employeeList);
 		return "desktop/desktop";
 	}
 	
 	// 데스크탑 등록
 	@PostMapping("/desktop-create")
 	public String createDesktop(DesktopDTO dto) {
+		System.out.println("진입확인 : " + dto.getDesktop());
+		System.out.println("진입확인 : " + dto.getDepartment());
+		System.out.println("진입확인 : " + dto.getEmployee());
+		System.out.println("진입확인 : " + dto.getMainboard());
+		System.out.println("진입확인 : " + dto.getCpu());
+		System.out.println("진입확인 : " + dto.getGpu());
+		System.out.println("진입확인 : " + dto.getSsd());
+		System.out.println("진입확인 : " + dto.getPower());
+		System.out.println("진입확인 : " + dto.getMemory1());
+		System.out.println("진입확인 : " + dto.getMemory2());
+		System.out.println("진입확인 : " + dto.getMemory3());
+		System.out.println("진입확인 : " + dto.getMemory4());
+
 		this.desktopService.createDesktop(dto);
 		return "redirect:/desktop/desktop-list";
 	}
@@ -64,17 +78,13 @@ public class DesktopController {
 	// 데스크탑 상세
 	@GetMapping("/desktop-detail/{id}")
 	public String getDesktopDetail(@PathVariable("id") Integer id, Model model) {
-		List<Category> categoryList = this.categoryService.findCategoryList();
-		model.addAttribute("categoryList", categoryList);
-		List<Maker> makerList = this.makerService.findMakerList();
-		model.addAttribute("makerList", makerList);
-		List<Product> productList = this.productService.findProductList();
-		model.addAttribute("productList", productList);
-		List<ProductInfo> productInfoList = this.productInfoService.findProductInfoList();
-		model.addAttribute("productInfoList", productInfoList);
 		Desktop desktop = this.desktopService.getDesktopDetail(id);
 		model.addAttribute("desktop", desktop);
-		return "desktop/desktop-detail";
+		List<Department> departmentList = this.departmentService.findDepartmentList();
+		model.addAttribute("departmentList", departmentList);
+		List<Employee> employeeList = this.employeeService.findEmployeeList();
+		model.addAttribute("employeeList", employeeList);
+		return "desktop/desktop_detail";
 	}
 	
 	// 데스크탑 수정
@@ -82,6 +92,13 @@ public class DesktopController {
 	public String updateDesktop(DesktopDTO dto) {
 		this.desktopService.updateDesktop(dto);
 		return "redirect:/desktop/desktop-list";
+	}
+	
+	// 부서 선택 시 해당 부서원 조회
+	@GetMapping("/getEmployeesByDepartment")
+	@ResponseBody
+	public List<String> getEmployeesByDepartment(@RequestParam("department") String department) {
+		return this.employeeService.findEmployeesByDepartment(department);
 	}
 	
 	

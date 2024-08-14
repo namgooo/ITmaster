@@ -45,8 +45,6 @@ public class ProductPcInfo {
 	@ManyToOne
 	private Department department;
 	@ManyToOne
-	private Desktop desktop;
-	@ManyToOne
 	private Employee employee;
 	@ManyToOne
 	private Maker maker;

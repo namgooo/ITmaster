@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.namgoo.category.Category;
 import com.namgoo.category.CategoryService;
@@ -48,7 +50,7 @@ public class ProductPcInfoController {
 		List<Product> productList = this.productService.findProductList();
 		model.addAttribute("productList", productList);
 		List<Department> departmentList = this.departmentService.findDepartmentList();
-		model.addAttribute("depatmentList", departmentList);
+		model.addAttribute("departmentList", departmentList);
 		List<Employee> employeeList = this.employeeService.findEmployeeList();
 		model.addAttribute("employeeList", employeeList);
 		List<ProductPcInfo> productPcInfoList = this.productPcInfoService.findProductPcInfoList();
@@ -87,6 +89,29 @@ public class ProductPcInfoController {
 		model.addAttribute("employeeList", employeeList);
 		return "product_pc_info/product_pc_info_detail";
 	}
+	
+	// 부서 선택 시 해당 부서원 조회
+	@GetMapping("/getEmployeesByDepartment")
+	@ResponseBody
+	public List<String> getEmployeesByDepartment(@RequestParam("department") String department) {
+		return this.employeeService.findEmployeesByDepartment(department);
+	}
+	
+	// 카테고리 선택 시 해당 제품 조회
+	@GetMapping("/getProductsByCategory")
+	@ResponseBody
+	public List<String> getProductsByCategory(@RequestParam("category") String category) {
+		return this.productService.findProductsByCategory(category);
+	}
+	
+	// 제조사 선택 시 해당 제품 조회
+	@GetMapping("getProductsByMaker")
+	@ResponseBody
+	public List<String> getProductsByMaker(@RequestParam("maker") String maker) {
+		return this.productService.findProductsByMaker(maker);
+	}
+	
+	
 	
 	
 	

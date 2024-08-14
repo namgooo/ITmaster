@@ -5,6 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>desktop-list</title>
 </head>
+
+<script>
+    // 부서 선택 시 해당 부서원 조회
+    function fetchEmployees() {
+        let department = document.getElementById("department").value;
+        if(department !== "") {
+            fetch("/desktop/getEmployeesByDepartment?department=" + encodeURIComponent(department))
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(employees) {
+                let employeeSelect = document.getElementById("employee");
+                employeeSelect.innerHTML = "<option value=''>선택하기</option>";
+                employees.forEach(function(employee) {
+                    let option = document.createElement("option");
+                    option.value = employee;
+                    option.text = employee;
+                    employeeSelect.appendChild(option);
+                });
+            })
+            .catch(function(error) {
+            });
+        }
+    }
+</script>
+
 <body>
     <h2>데스크탑</h2>
     <div>
@@ -13,7 +39,8 @@
                 <tr>
                     <th>번호</th>
                     <th>데스크탑명</th>
-                    <th>사용자</th>
+                    <th>부서</th>
+                    <th>부서원</th>
                     <th>등록일시</th>
                     <th>삭제</th>
                     <th>수정</th>
@@ -23,12 +50,8 @@
                 <tr th:each="desktop, loop : ${desktopList}">
                     <td th:text="${loop.count}"></td>
                     <td th:text="${desktop.desktop}"></td>
-                    <td th:if="${desktop.employee != null}">
-                    	<span th:text="${desktop.employee.employee}"></span>
-                    </td>
-                    <td th:unless="${desktop.employee != null}">
-                    	<span>보관중</span>
-                    </td>
+                    <td th:text="${desktop.department.department}"></td>
+                    <td th:text="${desktop.employee.employee}"></td>
                     <td th:text="${desktop.createDate}"></td>
                     <td><a th:href="@{|/desktop/desktop-delete/${desktop.id}|}">삭제하기</a></td>
                     <td><a th:href="@{|/desktop/desktop-detail/${desktop.id}|}">수정하기</a></td>
@@ -40,7 +63,87 @@
     <div>
         <form th:action="@{/desktop/desktop-create}" method="post">
             <label for="desktop">데스크탑명</label>
-            <input type="text" id="desktop" name="desktop">
+            <input type="text" id="desktop" name="desktop"><br>
+            <label for="department">부서</label>
+            <select id="department" name="department" onchange="fetchEmployees()">
+                <option value="">선택하기</option>
+                <option th:each="department, loop : ${departmentList}" th:text="${department.department}" th:value="${department.department}"></option>
+            </select>
+            <label for="employee">부서원</label>
+            <select id="employee" name="employee">
+                <option value="">선택하기</option>
+                <option th:each="employee, loop : ${employeeList}" th:text="${employee.employee}" th:value="${employee.employee}"></option>
+            </select><br>
+            <label for="mainboard">메인보드</label>
+            <input type="text" id="mainboard" name="mainboard"><br>
+            <label for="cpu">CPU</label>
+            <input type="text" id="cpu" name="cpu"><br>
+            <label for="gpu">GPU</label>
+            <input type="text" id="gpu" name="gpu"><br>
+            <label for="ssd">SSD</label>
+            <input type="text" id="ssd" name="ssd"><br>
+            <label for="power">Power</label>
+            <input type="text" id="power" name="power"><br>
+            <label for="memory1">Memory 1</label>
+            <select id="memory1" name="memory1">
+                <option value="">선택하기</option>
+                <option value="없음">없음</option>
+                <option value="DDR3 2GB">DDR3 2GB</option>
+                <option value="DDR3 4GB">DDR3 4GB</option>
+                <option value="DDR3 8GB">DDR3 8GB</option>
+                <option value="DDR3 16GB">DDR3 16GB</option>
+                <option value="DDR3 32GB">DDR3 32GB</option>
+                <option value="DDR4 2GB">DDR4 2GB</option>
+                <option value="DDR4 4GB">DDR4 4GB</option>
+                <option value="DDR4 8GB">DDR4 8GB</option>
+                <option value="DDR4 16GB">DDR4 16GB</option>
+                <option value="DDR4 32GB">DDR4 32GB</option>
+            </select>
+            <label for="memory2">Memory 2</label>
+            <select id="memory2" name="memory2">
+                <option value="">선택하기</option>
+                <option value="없음">없음</option>
+                <option value="DDR3 2GB">DDR3 2GB</option>
+                <option value="DDR3 4GB">DDR3 4GB</option>
+                <option value="DDR3 8GB">DDR3 8GB</option>
+                <option value="DDR3 16GB">DDR3 16GB</option>
+                <option value="DDR3 32GB">DDR3 32GB</option>
+                <option value="DDR4 2GB">DDR4 2GB</option>
+                <option value="DDR4 4GB">DDR4 4GB</option>
+                <option value="DDR4 8GB">DDR4 8GB</option>
+                <option value="DDR4 16GB">DDR4 16GB</option>
+                <option value="DDR4 32GB">DDR4 32GB</option>
+            </select>
+            <label for="memory3">Memory 3</label>
+            <select id="memory3" name="memory3">
+                <option value="">선택하기</option>
+                <option value="없음">없음</option>
+                <option value="DDR3 2GB">DDR3 2GB</option>
+                <option value="DDR3 4GB">DDR3 4GB</option>
+                <option value="DDR3 8GB">DDR3 8GB</option>
+                <option value="DDR3 16GB">DDR3 16GB</option>
+                <option value="DDR3 32GB">DDR3 32GB</option>
+                <option value="DDR4 2GB">DDR4 2GB</option>
+                <option value="DDR4 4GB">DDR4 4GB</option>
+                <option value="DDR4 8GB">DDR4 8GB</option>
+                <option value="DDR4 16GB">DDR4 16GB</option>
+                <option value="DDR4 32GB">DDR4 32GB</option>
+            </select>
+            <label for="memory4">Memory 4</label>
+            <select id="memory4" name="memory4">
+                <option value="">선택하기</option>
+                <option value="없음">없음</option>
+                <option value="DDR3 2GB">DDR3 2GB</option>
+                <option value="DDR3 4GB">DDR3 4GB</option>
+                <option value="DDR3 8GB">DDR3 8GB</option>
+                <option value="DDR3 16GB">DDR3 16GB</option>
+                <option value="DDR3 32GB">DDR3 32GB</option>
+                <option value="DDR4 2GB">DDR4 2GB</option>
+                <option value="DDR4 4GB">DDR4 4GB</option>
+                <option value="DDR4 8GB">DDR4 8GB</option>
+                <option value="DDR4 16GB">DDR4 16GB</option>
+                <option value="DDR4 32GB">DDR4 32GB</option>
+            </select><br>
             <input type="submit" value="등록하기">
         </form>
     </div>

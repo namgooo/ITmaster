@@ -3,6 +3,7 @@ package com.namgoo.department;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.namgoo.desktop.Desktop;
 import com.namgoo.employee.Employee;
 import com.namgoo.product_info.ProductInfo;
 import com.namgoo.product_pc_info.ProductPcInfo;
@@ -29,11 +30,13 @@ public class Department {
 	private String department;
 	private LocalDateTime createDate;
 	
-	// OneToOne
+	// OneToMany
 	@OneToMany(mappedBy = "department", cascade = CascadeType.REMOVE)
 	private List<ProductInfo> productInfoList;
 	@OneToMany(mappedBy = "department", cascade = CascadeType.REMOVE)
 	private List<ProductPcInfo> productPcInfoList;
+	@OneToMany(mappedBy = "department", cascade = CascadeType.REMOVE)
+	private List<Desktop> desktopList;
 	@OneToMany(mappedBy = "department", cascade = CascadeType.REMOVE)
 	private List<Employee> employeeList;
 

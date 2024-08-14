@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.namgoo.category.Category;
+import com.namgoo.department.Department;
 import com.namgoo.employee.Employee;
 import com.namgoo.product_pc_info.ProductPcInfo;
 
@@ -28,15 +29,20 @@ public class Desktop {
     private Integer id;
 	@Column(nullable = false, unique = true)
 	private String desktop;
+	private String mainboard;
+	private String cpu;
+	private String gpu;
+	private String ssd;
+	private String power;
+	private String memory1;
+	private String memory2;
+	private String memory3;
+	private String memory4;
 	private LocalDateTime createDate;
-	
-	// OneToOne
-	@OneToMany(mappedBy = "desktop", cascade = CascadeType.REMOVE)
-	private List<ProductPcInfo> productPcInfoList;
 	
 	// ManyToOne
 	@ManyToOne
-	private Category category;
+	private Department department;
 	@ManyToOne
 	private Employee employee;
 

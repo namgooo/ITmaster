@@ -35,7 +35,7 @@
         function fetchEmployees() {
             let department = document.getElementById("department").value;
             if(department !== "") {
-                fetch("/product-info/getEmployeesByDepartment?department=" + encodeURIComponent(department))
+                fetch("/product-pc-info/getEmployeesByDepartment?department=" + encodeURIComponent(department))
                 .then(function(response) {
                     return response.json();
                 })
