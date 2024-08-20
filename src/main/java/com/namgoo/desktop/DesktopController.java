@@ -51,19 +51,6 @@ public class DesktopController {
 	// 데스크탑 등록
 	@PostMapping("/desktop-create")
 	public String createDesktop(DesktopDTO dto) {
-		System.out.println("진입확인 : " + dto.getDesktop());
-		System.out.println("진입확인 : " + dto.getDepartment());
-		System.out.println("진입확인 : " + dto.getEmployee());
-		System.out.println("진입확인 : " + dto.getMainboard());
-		System.out.println("진입확인 : " + dto.getCpu());
-		System.out.println("진입확인 : " + dto.getGpu());
-		System.out.println("진입확인 : " + dto.getSsd());
-		System.out.println("진입확인 : " + dto.getPower());
-		System.out.println("진입확인 : " + dto.getMemory1());
-		System.out.println("진입확인 : " + dto.getMemory2());
-		System.out.println("진입확인 : " + dto.getMemory3());
-		System.out.println("진입확인 : " + dto.getMemory4());
-
 		this.desktopService.createDesktop(dto);
 		return "redirect:/desktop/desktop-list";
 	}
