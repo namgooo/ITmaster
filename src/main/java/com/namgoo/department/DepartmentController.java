@@ -22,7 +22,7 @@ public class DepartmentController {
 	public String department(Model model) {
 		List<Department> departmentList = this.departmentService.findDepartmentList();
 		model.addAttribute("departmentList", departmentList);
-		return "department/department";
+		return "department/department_list";
 	}
 	
 	// 부서 등록

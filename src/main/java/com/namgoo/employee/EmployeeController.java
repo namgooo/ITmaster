@@ -27,7 +27,7 @@ public class EmployeeController {
 	public String findEmployeeList(Model model) {
 		List<Department> departmentList = this.departmentService.findDepartmentList();
 		model.addAttribute("departmentList", departmentList);
-		return "employee/employee";
+		return "employee/employee_list";
 	}
 	
 	// 부서별 부서원 목록
@@ -38,7 +38,7 @@ public class EmployeeController {
 		model.addAttribute("departmentList", departmentList);
 		List<Employee> employeeList = this.employeeService.findEmployeeList();
 		model.addAttribute("employeeList", employeeList);
-		return "employee/employee";
+		return "employee/employee_list";
 	}
 	
 	// 부서원 등록

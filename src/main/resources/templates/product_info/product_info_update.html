@@ -3,32 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>product-info</title>
-
-    <!-- <script>
-        function fetchEmployees() {
-            var department = document.getElementById("department").value;
-            if (department !== "") {
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", "/product-info/getEmployeesByDepartment?department=" + department, true);
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        var employees = JSON.parse(xhr.responseText);
-                        var employeeSelect = document.getElementById("employee");
-                        console.log("Ready state: " + xhr.readyState + ", Status: " + xhr.status);
-                        employeeSelect.innerHTML = "<option value=''>선택하기</option>"; // 기존 옵션 초기화 
-                        employees.forEach(function(employee) {
-                            var option = document.createElement("option");
-                            option.value = employee;
-                            option.text = employee;
-                            employeeSelect.appendChild(option);
-                        });
-                    }
-                };
-                xhr.send();
-            }
-        }
-    </script> -->
+    <title>product-info-update</title>
 
     <!-- 부서 선택 시 해당 부서원 조회 -->
     <script>
@@ -57,7 +32,7 @@
 
     <!-- 카테고리 선택 시 해당 제품 조회 -->
     <script>
-        function CategoryfetchProducts() {
+        function fetchProducts() {
             let category = document.getElementById("category").value;
             if(category !== "") {
                 fetch("/product-info/getProductsByCategory?category=" + encodeURIComponent(category))
@@ -104,57 +79,59 @@
             }
         }
     </script>
+    
 
 </head>
 <body>
+    <h2>제품정보 상세</h2>
+
     <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>카테고리</th>
-                    <th>제조사</th>
-                    <th>제품</th>
-                    <th>제품명</th>
-                    <th>사용상태</th>
-                    <th>제품상태</th>
-                    <th>현위치</th>
-                    <th>구매가격</th>
-                    <th>구매년도</th>
-                    <th>고유식별번호</th>
-                    <th>부서</th>
-                    <th>부서원</th>
-                    <th>등록일자</th>
-                    <th>삭제</th>
-                    <th>수정</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="productInfo, loop : ${productInfoList}">
-                    <td th:text="${loop.count}"></td>
-                    <td th:text="${productInfo.category.category}"></td>
-                    <td th:text="${productInfo.maker.maker}"></td>
-                    <td th:text="${productInfo.product.product}"></td>
-                    <td th:text="${productInfo.simpleName}"></td>
-                    <td th:text="${productInfo.useStatus}"></td>
-                    <td th:text="${productInfo.itemStatus}"></td>
-                    <td th:text="${productInfo.location}"></td>
-                    <td th:text="${productInfo.price}"></td>
-                    <td th:text="${productInfo.buyYear}"></td>
-                    <td th:text="${productInfo.uniqueCode}"></td>
-                    <td th:text="${productInfo.department.department}"></td>
-                    <td th:text="${productInfo.employee.employee}"></td>
-                    <td th:text="${productInfo.createDate}"></td>
-                    <td><a th:href="@{|/product-info/product-info-delete/${productInfo.id}|}">삭제</a></td>
-                    <td><a th:href="@{|/product-info/product-info-detail/${productInfo.id}|}">수정</a></td>
-                </tr>
-            </tbody>
-        </table>
+        <span>카테고리 : </span>
+        <span th:text="${productInfo.category.category}"></span>
+        <br>
+        <span>제조사 : </span>
+        <span th:text="${productInfo.maker.maker}"></span>
+        <br>
+        <span>제품 : </span>
+        <span th:text="${productInfo.maker.maker}"></span>
+        <br>
+        <span>제품명 :</span>
+        <span th:text="${productInfo.simpleName}"></span>
+        <br>
+        <span>사용상태 :</span>
+        <span th:text="${productInfo.useStatus}"></span>
+        <br>
+        <span>제품상태 :</span>
+        <span th:text="${productInfo.itemStatus}"></span>
+        <br>
+        <span>현위치 :</span>
+        <span th:text="${productInfo.location}"></span>
+        <br>
+        <span>구매가격 :</span>
+        <span th:text="${productInfo.price}"></span>
+        <br>
+        <span>구매년도 :</span>
+        <span th:text="${productInfo.buyYear}"></span>
+        <br>
+        <span>비고 :</span>
+        <span th:text="${productInfo.productComment}"></span>
+        <br>
+        <span>고유식별번호 :</span>
+        <span th:text="${productInfo.uniqueCode}"></span>
+        <br>
+        <span>부서</span>
+        <span th:text="${productInfo.department.department}"></span>
+        <br>
+        <span>부서원</span>
+        <span th:text="${productInfo.employee.employee}"></span>
+        <br>
+        <span>등록일자 :</span>
+        <span th:text="${productInfo.createDate}"></span>
     </div>
     <hr>
-	<div>
-        <div>일반</div>
-        <form th:action="@{/product-info/product-info-create}" method="post">
+    <div>
+        <form th:action="@{/product-info/product-info-update}" method="post">
+            <input type="hidden" id="id" name="id" th:value="${productInfo.id}">
         	<label for="category">카테고리</label>
             <select id="category" name="category" onchange="CategoryfetchProducts()">
                 <option value="">선택하기</option>
@@ -215,9 +192,8 @@
             <label for="uniqueCode">고유식별번호</label>
             <input type="text" id="uniqueCode" name="uniqueCode">
             <br>
-            <input type="submit" value="등록하기">
+            <input type="submit" value="수정하기">
         </form>
     </div>
-
 </body>
 </html>

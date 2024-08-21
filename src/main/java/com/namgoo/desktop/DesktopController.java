@@ -45,7 +45,7 @@ public class DesktopController {
 		model.addAttribute("departmentList", departmentList);
 		List<Employee> employeeList = this.employeeService.findEmployeeList();
 		model.addAttribute("employeeList", employeeList);
-		return "desktop/desktop";
+		return "desktop/desktop_list";
 	}
 	
 	// 데스크탑 등록

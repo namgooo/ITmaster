@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>product-info-create</title>
 
     <!-- 부서 선택 시 해당 부서원 조회 -->
     <script>
@@ -29,10 +29,10 @@
             }
         }
     </script>
-
+    
     <!-- 카테고리 선택 시 해당 제품 조회 -->
     <script>
-        function fetchProducts() {
+        function CategoryfetchProducts() {
             let category = document.getElementById("category").value;
             if(category !== "") {
                 fetch("/product-info/getProductsByCategory?category=" + encodeURIComponent(category))
@@ -54,7 +54,7 @@
             }
         }
     </script>
-
+    
     <!-- 제조사 선택 시 해당 제품 조회 -->
     <script>
         function MakerfetchProducts() {
@@ -79,59 +79,11 @@
             }
         }
     </script>
-    
 
 </head>
 <body>
-    <h2>제품정보 상세</h2>
-
     <div>
-        <span>카테고리 : </span>
-        <span th:text="${productInfo.category.category}"></span>
-        <br>
-        <span>제조사 : </span>
-        <span th:text="${productInfo.maker.maker}"></span>
-        <br>
-        <span>제품 : </span>
-        <span th:text="${productInfo.maker.maker}"></span>
-        <br>
-        <span>제품명 :</span>
-        <span th:text="${productInfo.simpleName}"></span>
-        <br>
-        <span>사용상태 :</span>
-        <span th:text="${productInfo.useStatus}"></span>
-        <br>
-        <span>제품상태 :</span>
-        <span th:text="${productInfo.itemStatus}"></span>
-        <br>
-        <span>현위치 :</span>
-        <span th:text="${productInfo.location}"></span>
-        <br>
-        <span>구매가격 :</span>
-        <span th:text="${productInfo.price}"></span>
-        <br>
-        <span>구매년도 :</span>
-        <span th:text="${productInfo.buyYear}"></span>
-        <br>
-        <span>비고 :</span>
-        <span th:text="${productInfo.productComment}"></span>
-        <br>
-        <span>고유식별번호 :</span>
-        <span th:text="${productInfo.uniqueCode}"></span>
-        <br>
-        <span>부서</span>
-        <span th:text="${productInfo.department.department}"></span>
-        <br>
-        <span>부서원</span>
-        <span th:text="${productInfo.employee.employee}"></span>
-        <br>
-        <span>등록일자 :</span>
-        <span th:text="${productInfo.createDate}"></span>
-    </div>
-    <hr>
-    <div>
-        <form th:action="@{/product-info/product-info-update}" method="post">
-            <input type="hidden" id="id" name="id" th:value="${productInfo.id}">
+        <form th:action="@{/product-info/product-info-create}" method="post">
         	<label for="category">카테고리</label>
             <select id="category" name="category" onchange="CategoryfetchProducts()">
                 <option value="">선택하기</option>
@@ -192,7 +144,7 @@
             <label for="uniqueCode">고유식별번호</label>
             <input type="text" id="uniqueCode" name="uniqueCode">
             <br>
-            <input type="submit" value="수정하기">
+            <input type="submit" value="등록하기">
         </form>
     </div>
 </body>

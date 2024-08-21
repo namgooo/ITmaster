@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.namgoo.category.Category;
@@ -34,8 +37,8 @@ public class ProductInfoService {
 	private EmployeeRepository employeeRepository;
 	
 	// 제품 정보 목록
-	public List<ProductInfo> findProductInfoList() {
-		List<ProductInfo> productInfoList = this.productInfoRepository.findAll();
+	public Page<ProductInfo> findProductInfoList(Pageable pageable) {
+		Page<ProductInfo> productInfoList = this.productInfoRepository.findAll(pageable);
 		return productInfoList;
 	}
 	
@@ -79,7 +82,7 @@ public class ProductInfoService {
 		this.productInfoRepository.deleteById(id);
 	}
 	
-	// 제품 정보 상세
+	// 제품 정보 수정
 	public ProductInfo getProductInfoDetail(Integer id) {
 		ProductInfo productInfo = this.productInfoRepository.findById(id).orElse(null);
 		return productInfo;

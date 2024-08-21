@@ -35,7 +35,7 @@ public class ProductController {
 		model.addAttribute("categoryList", categoryList);
 		List<Maker> makerList = this.makerService.findMakerList();
 		model.addAttribute("makerList", makerList);
-		return "product/product";
+		return "product/product_list";
 	}
 	
 	// 제품 등록

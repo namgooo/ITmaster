@@ -22,7 +22,7 @@ public class CategoryController {
 	public String findCategoryList(Model model) {
 		List<Category> categoryList = this.categoryService.findCategoryList();
 		model.addAttribute("categoryList", categoryList);
-		return "category/category";
+		return "category/category_list";
 	}
 	
 	// 카테고리 등록

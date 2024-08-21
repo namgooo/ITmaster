@@ -3,6 +3,9 @@ package com.namgoo.product_info;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +26,8 @@ import com.namgoo.maker.MakerService;
 import com.namgoo.product.Product;
 import com.namgoo.product.ProductService;
 
+import net.bytebuddy.matcher.MethodSortMatcher.Sort;
+
 @Controller
 @RequestMapping("/product-info")
 public class ProductInfoController {
@@ -42,7 +47,8 @@ public class ProductInfoController {
 	
 	// 제품 정보 목록
 	@GetMapping("/product-info-list")
-	public String findProductInfoList(Model model) {
+	public String findProductInfoList(@PageableDefault(size = 5) Pageable pageable,  Model model) {
+		// @RequestParam(value="page", defaultValue="0") int page
 		List<Category> categoryList = this.categoryService.findCategoryList();
 		model.addAttribute("categoryList", categoryList);
 		List<Maker> makerList = this.makerService.findMakerList();
@@ -53,9 +59,32 @@ public class ProductInfoController {
 		model.addAttribute("departmentList", departmentList);
 		List<Employee> employeeList = this.employeeService.findEmployeeList();
 		model.addAttribute("employeeList", employeeList);
-		List<ProductInfo> productInfoList = this.productInfoService.findProductInfoList();
+		
+		// 페이징
+		Page<ProductInfo> productInfoList = this.productInfoService.findProductInfoList(pageable);
 		model.addAttribute("productInfoList", productInfoList);
-		return "product_info/product_info";
+		model.addAttribute("previous", pageable.previousOrFirst().getPageNumber());
+		model.addAttribute("next", pageable.next().getPageNumber());
+		model.addAttribute("hasPrevious", productInfoList.hasPrevious());
+		model.addAttribute("hasNext", productInfoList.hasNext());
+		
+		return "product_info/product_info_list";
+	}
+	
+	// 제품 정보 등록
+	@GetMapping("/product-info-create")
+	public String createProductInfo(Model model) {
+		List<Category> categoryList = this.categoryService.findCategoryList();
+		model.addAttribute("categoryList", categoryList);
+		List<Maker> makerList = this.makerService.findMakerList();
+		model.addAttribute("makerList", makerList);
+		List<Product> productList = this.productService.findProductList();
+		model.addAttribute("productList", productList);
+		List<Department> departmentList = this.departmentService.findDepartmentList();
+		model.addAttribute("departmentList", departmentList);
+		List<Employee> employeeList = this.employeeService.findEmployeeList();
+		model.addAttribute("employeeList", employeeList);
+		return "product_info/product_info_create";
 	}
 	
 	// 제품 정보 등록
@@ -72,7 +101,7 @@ public class ProductInfoController {
 		return "redirect:/product-info/product-info-list";
 	}
 	
-	// 제품 정보 상세
+	// 제품 정보 수정
 	@GetMapping("/product-info-detail/{id}")
 	public String getProductInfoDetail(@PathVariable("id") Integer id, Model model) {
 		ProductInfo productInfo = this.productInfoService.getProductInfoDetail(id);
@@ -87,7 +116,7 @@ public class ProductInfoController {
 		model.addAttribute("departmentList", departmentList);
 		List<Employee> employeeList = this.employeeService.findEmployeeList();
 		model.addAttribute("employeeList", employeeList);
-		return "product_info/product_info_detail";
+		return "product_info/product_info_update";
 	}
 	
 	// 제품 정보 수정

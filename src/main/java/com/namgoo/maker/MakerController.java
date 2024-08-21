@@ -26,7 +26,7 @@ public class MakerController {
 	public String findMakerList(Model model) {
 		List<Maker> makerList = this.makerService.findMakerList();
 		model.addAttribute("makerList", makerList);
-		return "maker/maker";
+		return "maker/maker_list";
 	}
 	
 	// 제조사 등록
