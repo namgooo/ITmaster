@@ -29,8 +29,23 @@
             }
         }
     </script> -->
+    <style>
+    	.current-page {
+    		font-weight: bold;
+    		color: red;
+		}
+    </style>
+    
 </head>
 <body>
+
+	<div>
+		<form th:action="@{/product-info/product-info-list}" method="get">
+			<input id="keyword" name="keyword" type="text" placeholder="검색어를 입력하세요.">
+			<input type="submit" value="검색하기">
+		</form>
+	</div>
+	
     <div>
         <table>
             <thead>
@@ -78,11 +93,17 @@
     
     <!-- 페이징 -->
     <div>
-		<a th:href="@{|?page=${previous}|}" th:if="${hasPrevious}" role="button">앞</a>
-		<span th:if="${!hasPrevious}">앞</span>
-		<a th:href="@{|?page=${next}|}" th:if="${hasNext}" role="button">뒤</a>
-		<span th:if="${!hasNext}">뒤</span>
+		<a th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button">이전</a>
+		<span th:if="${!hasPrevious}">이전</span>
+		
+		<span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+			<a th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
+		</span>
+		
+		<a th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button">다음</a>
+		<span th:if="${!hasNext}">다음</span>
     </div>
+    <!-- 페이징 -->
     
     <hr>
     <div>

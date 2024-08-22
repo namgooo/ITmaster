@@ -42,6 +42,12 @@ public class ProductInfoService {
 		return productInfoList;
 	}
 	
+	// 검색
+	public Page<ProductInfo> findSearchProductInfoList(Pageable pageable, String keyword) {
+		Page<ProductInfo> productInfoList = this.productInfoRepository.findBySimpleNameContaining(pageable, keyword);
+		return productInfoList;
+	}
+	
 	// 제품 정보 등록
 	public void createProductInfo(ProductInfoDTO dto) {
 		Category category = this.categoryRepository.findByCategory(dto.getCategory()).orElse(null);
