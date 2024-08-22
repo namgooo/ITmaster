@@ -44,7 +44,7 @@ public class ProductInfoService {
 	
 	// 검색
 	public Page<ProductInfo> findSearchProductInfoList(Pageable pageable, String keyword) {
-		Page<ProductInfo> productInfoList = this.productInfoRepository.findBySimpleNameContaining(pageable, keyword);
+		Page<ProductInfo> productInfoList = this.productInfoRepository.findAllByKeyword(pageable, keyword);
 		return productInfoList;
 	}
 	
