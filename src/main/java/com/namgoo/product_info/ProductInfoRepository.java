@@ -11,6 +11,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.namgoo.category.Category;
+import com.namgoo.maker.Maker;
+
 @Repository
 public interface ProductInfoRepository extends JpaRepository<ProductInfo, Integer>{
 	
@@ -56,28 +59,10 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, Intege
 	// 제품 정보 단일 조회
 	public Optional<ProductInfo> findById(Integer id);
 	
-    @Query(
-            "select pi " +
-            "from ProductInfo pi " +
-            "inner join pi.category c " + 
-            "inner join pi.maker m " + 
-            "inner join pi.product p " + 
-            "inner join pi.department d " + 
-            "inner join pi.employee e " + 
-            "where " +
-            "pi.simpleName like %:keyword% " +
-            "or pi.useStatus like %:keyword% " +
-            "or pi.itemStatus like %:keyword% " +
-            "or pi.location like %:keyword% " +
-            "or pi.price like %:keyword% " +
-            "or pi.buyYear like %:keyword% " +
-            "or pi.uniqueCode like %:keyword% " +
-            "or c.category like %:keyword% " +
-            "or m.maker like %:keyword% " +
-            "or p.product like %:keyword% " +
-            "or d.department like %:keyword% " +
-            "or e.employee like %:keyword% "
-        )
-	public Page<ProductInfo> findAllByKeyword(Pageable pageable, @Param("keyword") String keyword);
+	// 제품 정보 검색 목록 - 카테고리
+	public Page<ProductInfo> findByCategoryCategoryContaining(Pageable pageable, @Param("keyword") String keyword);
 	
+	// 제품 정보 필터링 - 카테고리
+	public Page<ProductInfo> findByCategoryCategory(Pageable pageable, String category);
+		
 }

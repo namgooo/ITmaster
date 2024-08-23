@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.namgoo.category.Category;
@@ -42,9 +43,9 @@ public class ProductInfoService {
 		return productInfoList;
 	}
 	
-	// 검색
+	// 제품 정보 검색 목록
 	public Page<ProductInfo> findSearchProductInfoList(Pageable pageable, String keyword) {
-		Page<ProductInfo> productInfoList = this.productInfoRepository.findAllByKeyword(pageable, keyword);
+		Page<ProductInfo> productInfoList = this.productInfoRepository.findByCategoryCategoryContaining(pageable, keyword);
 		return productInfoList;
 	}
 	
@@ -127,6 +128,12 @@ public class ProductInfoService {
 		productInfo.setDepartment(department);
 		productInfo.setEmployee(employee);
 		this.productInfoRepository.save(productInfo);
+	}
+	
+	// 제품 정보 필터링 - 카테고리
+	public Page<ProductInfo> getCategory(Pageable pageable, String category) {
+		Page<ProductInfo> getCategory = this.productInfoRepository.findByCategoryCategory(pageable, category);
+		return getCategory;
 	}
 
 }
