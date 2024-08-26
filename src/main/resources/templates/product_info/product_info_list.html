@@ -38,14 +38,6 @@
     
 </head>
 <body>
-	<!-- 검색창 -->
-	<div>
-		<form th:action="@{/product-info/product-info-list}" method="get">
-			<input id="keyword" name="keyword" type="text" placeholder="검색어를 입력하세요.">
-			<input type="submit" value="검색하기">
-		</form>
-	</div>
-	
     <div>
         <table>
             <thead>
@@ -105,25 +97,10 @@
     </div>
     <!-- 페이징 -->
    	<hr>
-   	<spna>필터링</spna><br>
-   	<select id="categorySelect" onchange="filterByCategory()">
-   		<option>선택하기</option>
-   		<option th:each="category : ${categoryList}" th:text="${category.category}" th:value="${category.category}"></option>
-   	</select>
-   	
-    <hr>
+
     <div>
         <a th:href="@{/product-info/product-info-create}"><button>등록하기</button></a>
-    </div>
-   
-	<script>
-		function filterByCategory() {
-			let selectedCategory = document.getElementById("categorySelect").value;
-			// 서버로 선택된 카테고리를 전송
-			window.location.href = '/product-info/product-info-list?category=' + selectedCategory;
-		}
-	</script>
-        
+    </div>        
     
 </body>
 </html>

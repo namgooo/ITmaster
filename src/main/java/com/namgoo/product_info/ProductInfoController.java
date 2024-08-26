@@ -47,54 +47,28 @@ public class ProductInfoController {
 	
 	// 제품 정보 목록
 	@GetMapping("/product-info-list")
-	public String findProductInfoList(@PageableDefault(size = 5) Pageable pageable,  @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model, 
-			@RequestParam(value = "category", required = false) String category) {
-		
-		if(category == null || category.isEmpty()) {
-			List<Category> categoryList = this.categoryService.findCategoryList();
-			model.addAttribute("categoryList", categoryList);
-			List<Maker> makerList = this.makerService.findMakerList();
-			model.addAttribute("makerList", makerList);
-			List<Product> productList = this.productService.findProductList();
-			model.addAttribute("productList", productList);
-			List<Department> departmentList = this.departmentService.findDepartmentList();
-			model.addAttribute("departmentList", departmentList);
-			List<Employee> employeeList = this.employeeService.findEmployeeList();
-			model.addAttribute("employeeList", employeeList);
-			// 페이징
-			Page<ProductInfo> productInfoList = this.productInfoService.findSearchProductInfoList(pageable, keyword);
-			model.addAttribute("productInfoList", productInfoList);
-			model.addAttribute("previous", pageable.previousOrFirst().getPageNumber()); // 이전 페이지 번호
-			model.addAttribute("next", pageable.next().getPageNumber()); // 다음 페이지 번호
-			model.addAttribute("hasPrevious", productInfoList.hasPrevious()); // 이전 페이지가 있는지 여부 확인 (boolean)
-			model.addAttribute("hasNext", productInfoList.hasNext()); // 다음 페이지가 있는지 여부 확인 (boolean)
-			model.addAttribute("currentPage", productInfoList.getNumber()); // 현재 페이지 번호 (0부터 시작)
-			model.addAttribute("totalPages", productInfoList.getTotalPages()); // 총 페이지 수
-			model.addAttribute("keyword", keyword);
-			return "product_info/product_info_list";
-		} else {
-			List<Category> categoryList = this.categoryService.findCategoryList();
-			model.addAttribute("categoryList", categoryList);
-			List<Maker> makerList = this.makerService.findMakerList();
-			model.addAttribute("makerList", makerList);
-			List<Product> productList = this.productService.findProductList();
-			model.addAttribute("productList", productList);
-			List<Department> departmentList = this.departmentService.findDepartmentList();
-			model.addAttribute("departmentList", departmentList);
-			List<Employee> employeeList = this.employeeService.findEmployeeList();
-			model.addAttribute("employeeList", employeeList);
-			// 페이징
-			Page<ProductInfo> productInfoList = this.productInfoService.getCategory(pageable, category);
-			model.addAttribute("productInfoList", productInfoList);
-			model.addAttribute("previous", pageable.previousOrFirst().getPageNumber()); // 이전 페이지 번호
-			model.addAttribute("next", pageable.next().getPageNumber()); // 다음 페이지 번호
-			model.addAttribute("hasPrevious", productInfoList.hasPrevious()); // 이전 페이지가 있는지 여부 확인 (boolean)
-			model.addAttribute("hasNext", productInfoList.hasNext()); // 다음 페이지가 있는지 여부 확인 (boolean)
-			model.addAttribute("currentPage", productInfoList.getNumber()); // 현재 페이지 번호 (0부터 시작)
-			model.addAttribute("totalPages", productInfoList.getTotalPages()); // 총 페이지 수
-			model.addAttribute("keyword", keyword);
-			return "product_info/product_info_list";
-		}
+	public String findProductInfoList(@PageableDefault(size = 5) Pageable pageable, Model model) {
+	
+		List<Category> categoryList = this.categoryService.findCategoryList();
+		model.addAttribute("categoryList", categoryList);
+		List<Maker> makerList = this.makerService.findMakerList();
+		model.addAttribute("makerList", makerList);
+		List<Product> productList = this.productService.findProductList();
+		model.addAttribute("productList", productList);
+		List<Department> departmentList = this.departmentService.findDepartmentList();
+		model.addAttribute("departmentList", departmentList);
+		List<Employee> employeeList = this.employeeService.findEmployeeList();
+		model.addAttribute("employeeList", employeeList);
+		// 페이징
+		Page<ProductInfo> productInfoList = this.productInfoService.findProductInfoList(pageable);
+		model.addAttribute("productInfoList", productInfoList);
+		model.addAttribute("previous", pageable.previousOrFirst().getPageNumber()); // 이전 페이지 번호
+		model.addAttribute("next", pageable.next().getPageNumber()); // 다음 페이지 번호
+		model.addAttribute("hasPrevious", productInfoList.hasPrevious()); // 이전 페이지가 있는지 여부 확인 (boolean)
+		model.addAttribute("hasNext", productInfoList.hasNext()); // 다음 페이지가 있는지 여부 확인 (boolean)
+		model.addAttribute("currentPage", productInfoList.getNumber()); // 현재 페이지 번호 (0부터 시작)
+		model.addAttribute("totalPages", productInfoList.getTotalPages()); // 총 페이지 수
+		return "product_info/product_info_list";
 	}
 	
 	// 제품 정보 등록
