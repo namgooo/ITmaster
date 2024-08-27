@@ -38,6 +38,13 @@
     
 </head>
 <body>
+	<div>
+		<form th:action="@{/product-info/product-info-list}" method="get">
+			<input type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="검색어를 입력하세요.">
+			<input type="submit" value="검색하기">
+		</form>
+	</div>
+	<hr>
     <div>
         <table>
             <thead>
@@ -82,7 +89,6 @@
             </tbody>
         </table>
     </div>
-    
     <!-- 페이징 -->
     <div>
 		<a th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button">이전</a>

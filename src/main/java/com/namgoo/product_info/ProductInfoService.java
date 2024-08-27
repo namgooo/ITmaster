@@ -21,6 +21,13 @@ import com.namgoo.maker.MakerRepository;
 import com.namgoo.product.Product;
 import com.namgoo.product.ProductRepository;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+
 @Service
 public class ProductInfoService {
 	
@@ -37,12 +44,44 @@ public class ProductInfoService {
 	@Autowired
 	private EmployeeRepository employeeRepository;
 	
-	// 제품 정보 목록
-	public Page<ProductInfo> findProductInfoList(Pageable pageable) {
-		Page<ProductInfo> productInfoList = this.productInfoRepository.findAll(pageable);
-		return productInfoList;
+	// 제품 정보 검색
+	private Specification<ProductInfo> search(String keyword) {
+		return new Specification<>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Predicate toPredicate(Root<ProductInfo> pi, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				query.distinct(true);
+				Join<Category, ProductInfo> cp = pi.join("category", JoinType.LEFT);
+				Join<Maker, ProductInfo> mp = pi.join("maker", JoinType.LEFT);
+				Join<Product, ProductInfo> pp = pi.join("product", JoinType.LEFT);
+				Join<Department, ProductInfo> dp = pi.join("department", JoinType.LEFT);
+				Join<Employee, ProductInfo> ep = pi.join("employee", JoinType.LEFT);
+				return cb.or(
+						cb.like(pi.get("simpleName"), "%" + keyword + "%"),
+						cb.like(pi.get("useStatus"), "%" + keyword + "%"),
+						cb.like(pi.get("itemStatus"), "%" + keyword + "%"),
+						cb.like(pi.get("location"), "%" + keyword + "%"),
+						cb.like(pi.get("price"), "%" + keyword + "%"),
+						cb.like(pi.get("buyYear"), "%" + keyword + "%"),
+						cb.like(pi.get("productComment"), "%" + keyword + "%"),
+						cb.like(pi.get("uniqueCode"), "%" + keyword + "%"),
+						cb.like(cp.get("category"), "%" + keyword + "%"),
+						cb.like(mp.get("maker"), "%" + keyword + "%"),
+						cb.like(pp.get("product"), "%" + keyword + "%"),
+						cb.like(dp.get("department"), "%" + keyword + "%"),
+						cb.like(ep.get("employee"), "%" + keyword + "%")
+						);
+			}
+		};
 	}
 	
+	// 제품 정보 목록
+	public Page<ProductInfo> findProductInfoList(Pageable pageable, String keyword) {
+		Specification<ProductInfo> spec = search(keyword);
+		Page<ProductInfo> productInfoList = this.productInfoRepository.findAll(spec, pageable);
+		return productInfoList;
+	}
+		
 	// 제품 정보 등록
 	public void createProductInfo(ProductInfoDTO dto) {
 		Category category = this.categoryRepository.findByCategory(dto.getCategory()).orElse(null);
@@ -124,10 +163,4 @@ public class ProductInfoService {
 		this.productInfoRepository.save(productInfo);
 	}
 	
-	// 제품 정보 필터링 - 카테고리
-	public Page<ProductInfo> getCategory(Pageable pageable, String category) {
-		Page<ProductInfo> getCategory = this.productInfoRepository.findByCategoryCategory(pageable, category);
-		return getCategory;
-	}
-
 }
