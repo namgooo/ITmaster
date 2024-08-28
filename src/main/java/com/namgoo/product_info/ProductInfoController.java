@@ -46,11 +46,12 @@ public class ProductInfoController {
 	@Autowired
 	private EmployeeService employeeService;
 	
-	// 2024-08-27 검색 기능
+	// 2024-08-28 퇴근
+	
 	// 제품 정보 목록
 	@GetMapping("/product-info-list")
 	public String findProductInfoList(@PageableDefault(size = 5) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
-		Page<ProductInfo> productInfoList = this.productInfoService.findProductInfoList(pageable, keyword);
+		Page<ProductInfo> productInfoList = this.productInfoService.findProductInfoList(keyword, pageable);
 		model.addAttribute("productInfoList", productInfoList);
 		// 페이징
 		model.addAttribute("previous", pageable.previousOrFirst().getPageNumber()); // 이전 페이지 번호

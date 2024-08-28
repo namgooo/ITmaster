@@ -50,13 +50,13 @@ public class ProductInfoService {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Predicate toPredicate(Root<ProductInfo> pi, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				query.distinct(true);
 				Join<Category, ProductInfo> cp = pi.join("category", JoinType.LEFT);
 				Join<Maker, ProductInfo> mp = pi.join("maker", JoinType.LEFT);
 				Join<Product, ProductInfo> pp = pi.join("product", JoinType.LEFT);
 				Join<Department, ProductInfo> dp = pi.join("department", JoinType.LEFT);
 				Join<Employee, ProductInfo> ep = pi.join("employee", JoinType.LEFT);
-				return cb.or(
+				
+				Predicate filterPredicate = cb.or(
 						cb.like(pi.get("simpleName"), "%" + keyword + "%"),
 						cb.like(pi.get("useStatus"), "%" + keyword + "%"),
 						cb.like(pi.get("itemStatus"), "%" + keyword + "%"),
@@ -69,16 +69,19 @@ public class ProductInfoService {
 						cb.like(mp.get("maker"), "%" + keyword + "%"),
 						cb.like(pp.get("product"), "%" + keyword + "%"),
 						cb.like(dp.get("department"), "%" + keyword + "%"),
-						cb.like(ep.get("employee"), "%" + keyword + "%")
-						);
+						cb.like(ep.get("employee"), "%" + keyword + "%")	
+				);
+				query.distinct(true);
+				query.orderBy(cb.desc(pi.get("createDate")));
+				return filterPredicate;
 			}
 		};
 	}
 	
 	// 제품 정보 목록
-	public Page<ProductInfo> findProductInfoList(Pageable pageable, String keyword) {
-		Specification<ProductInfo> spec = search(keyword);
-		Page<ProductInfo> productInfoList = this.productInfoRepository.findAll(spec, pageable);
+	public Page<ProductInfo> findProductInfoList(String keyword, Pageable pageable) {
+		Specification<ProductInfo> specification = search(keyword);
+		Page<ProductInfo> productInfoList = this.productInfoRepository.findAll(specification, pageable);
 		return productInfoList;
 	}
 		

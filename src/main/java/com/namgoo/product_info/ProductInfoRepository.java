@@ -17,7 +17,7 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, Intege
 	public Page<ProductInfo> findAll(Pageable pageable);
 	
 	// 제품 정보 검색 목록
-	public Page<ProductInfo> findAll(Specification<ProductInfo> spec, Pageable pageable);
+	public Page<ProductInfo> findAll(Specification<ProductInfo> specification, Pageable pageable);
 	 
 	// 제품 정보 단일 조회
 	public Optional<ProductInfo> findById(Integer id);

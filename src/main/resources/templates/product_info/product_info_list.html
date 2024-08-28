@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>product-info</title>
-
+	<link rel="stylesheet" type="text/css" th:href="@{/style.css}">
     <!-- <script>
         function fetchEmployees() {
             var department = document.getElementById("department").value;
@@ -38,7 +38,7 @@
     
 </head>
 <body>
-	<div>
+	<div class="search">
 		<form th:action="@{/product-info/product-info-list}" method="get">
 			<input type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="검색어를 입력하세요.">
 			<input type="submit" value="검색하기">
@@ -69,7 +69,7 @@
             </thead>
             <tbody>
                 <tr th:each="productInfo, loop : ${productInfoList}">
-                    <td th:text="${loop.count}"></td>
+                    <td th:text="${productInfoList.getTotalElements - (productInfoList.number * productInfoList.size) - loop.index}"></td>
                     <td th:text="${productInfo.category.category}"></td>
                     <td th:text="${productInfo.maker.maker}"></td>
                     <td th:text="${productInfo.product.product}"></td>
@@ -83,7 +83,7 @@
                     <td th:text="${productInfo.department.department}"></td>
                     <td th:text="${productInfo.employee.employee}"></td>
                     <td th:text="${productInfo.createDate}"></td>
-                    <td><a th:href="@{|/product-info/product-info-delete/${productInfo.id}|}">삭제</a></td>
+                    <td><a th:href="@{|/product-info/product-info-delete/${productInfo.id}|}" onclick="return confirmDelete();">삭제</a></td>
                     <td><a th:href="@{|/product-info/product-info-detail/${productInfo.id}|}">수정</a></td>
                 </tr>
             </tbody>
@@ -106,7 +106,13 @@
 
     <div>
         <a th:href="@{/product-info/product-info-create}"><button>등록하기</button></a>
-    </div>        
+    </div>
+    
+	<script type="text/javascript">
+	    function confirmDelete() {
+	        return confirm("정말 삭제를 하시겠습니까?");
+	    }
+	</script>
     
 </body>
 </html>
