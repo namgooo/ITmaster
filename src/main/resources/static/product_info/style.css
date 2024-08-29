@@ -1,0 +1,159 @@
+@charset "UTF-8";
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+html, body {
+	width: 100%;
+    height: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+.current-page {
+    font-weight: bold;
+    color: red;
+}
+
+.wrap {
+    background-color: #F5F5F5;
+    width: 100%;
+    height: 100%
+}
+
+.container {
+    background-color: #5858FA;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1600px;
+    height: 700px;
+    border-radius: 10px;
+}
+
+.side {
+    background-color: #2F5D62;
+    width: 180px;
+    height: 100%;
+}
+
+.section {
+    background-color: #2EFEF7;
+    width: 100%;
+    height: 100%;
+}
+
+.section .header {
+    background-color: #5E8B7E;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 80px;
+}
+
+.section .header .title {
+    width: 150px;
+    height: 50px;
+    margin-top: 25px;
+    margin-left: 10px;
+    text-align: center;
+}
+
+.section .header .search {
+    margin-top: 10px;
+    margin-right: 30px;
+    width: 300px;
+    height: 60px;
+}
+
+.section .header .search .searchbox {
+    margin-left: 5px;
+    margin-top: 9px;
+    width: 300px;
+    height: 40px;
+    border-radius: 5px;
+}
+
+.section .header .search .searchbutton {
+    display: none;
+}
+
+.section .content {
+    background-color: #DFEEEA;
+    width: 100%;
+    height: 550px;
+}
+
+/* 테이블 */
+.section .content table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.section .content table th {
+    background-color: #A7C4BC;
+}
+
+.section .content table tr {
+    border-bottom: 5px solid #DFEEEA;
+    background-color: #FFFFFF;
+    height: 50px;
+}
+
+.section .content table tr:nth-child(even) {
+    background-color: #F2F2F2;
+}
+
+.section .content table tr:hover {
+	background-color: #D8D8D8;
+}
+
+/* 테이블 */
+
+.section .footer {
+    background-color: #DFEEEA;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+}
+
+.section .footer .paging {
+    position: relative;
+    top: 20px;
+}
+
+.section .footer .create_button {
+    position: relative;
+    left: 40%;
+    top: 14px;
+    width: 120px;
+    height: 40px;
+    border: none;
+    text-align: center;
+}
+
+.section .footer .create_button button {
+    background-color: #EADFB4;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    border: none;
+}
+
+.section .footer .create_button button:hover {
+    background-color: #F7D358;
+}
+
+.section .footer .create_button a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}

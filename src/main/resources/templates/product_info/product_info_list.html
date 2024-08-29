@@ -4,108 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>product-info</title>
-	<link rel="stylesheet" type="text/css" th:href="@{/style.css}">
-    <!-- <script>
-        function fetchEmployees() {
-            var department = document.getElementById("department").value;
-            if (department !== "") {
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", "/product-info/getEmployeesByDepartment?department=" + department, true);
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        var employees = JSON.parse(xhr.responseText);
-                        var employeeSelect = document.getElementById("employee");
-                        console.log("Ready state: " + xhr.readyState + ", Status: " + xhr.status);
-                        employeeSelect.innerHTML = "<option value=''>선택하기</option>"; // 기존 옵션 초기화 
-                        employees.forEach(function(employee) {
-                            var option = document.createElement("option");
-                            option.value = employee;
-                            option.text = employee;
-                            employeeSelect.appendChild(option);
-                        });
-                    }
-                };
-                xhr.send();
-            }
-        }
-    </script> -->
-    <style>
-    	.current-page {
-    		font-weight: bold;
-    		color: red;
-		}
-    </style>
-    
+	<link rel="stylesheet" type="text/css" href="/product_info/style.css">
 </head>
 <body>
-	<div class="search">
-		<form th:action="@{/product-info/product-info-list}" method="get">
-			<input type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="검색어를 입력하세요.">
-			<input type="submit" value="검색하기">
-		</form>
-	</div>
-	<hr>
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>카테고리</th>
-                    <th>제조사</th>
-                    <th>제품</th>
-                    <th>제품명</th>
-                    <th>사용상태</th>
-                    <th>제품상태</th>
-                    <th>현위치</th>
-                    <th>구매가격</th>
-                    <th>구매년도</th>
-                    <th>고유식별번호</th>
-                    <th>부서</th>
-                    <th>부서원</th>
-                    <th>등록일자</th>
-                    <th>삭제</th>
-                    <th>수정</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="productInfo, loop : ${productInfoList}">
-                    <td th:text="${productInfoList.getTotalElements - (productInfoList.number * productInfoList.size) - loop.index}"></td>
-                    <td th:text="${productInfo.category.category}"></td>
-                    <td th:text="${productInfo.maker.maker}"></td>
-                    <td th:text="${productInfo.product.product}"></td>
-                    <td th:text="${productInfo.simpleName}"></td>
-                    <td th:text="${productInfo.useStatus}"></td>
-                    <td th:text="${productInfo.itemStatus}"></td>
-                    <td th:text="${productInfo.location}"></td>
-                    <td th:text="${productInfo.price}"></td>
-                    <td th:text="${productInfo.buyYear}"></td>
-                    <td th:text="${productInfo.uniqueCode}"></td>
-                    <td th:text="${productInfo.department.department}"></td>
-                    <td th:text="${productInfo.employee.employee}"></td>
-                    <td th:text="${productInfo.createDate}"></td>
-                    <td><a th:href="@{|/product-info/product-info-delete/${productInfo.id}|}" onclick="return confirmDelete();">삭제</a></td>
-                    <td><a th:href="@{|/product-info/product-info-detail/${productInfo.id}|}">수정</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <!-- 페이징 -->
-    <div>
-		<a th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button">이전</a>
-		<span th:if="${!hasPrevious}">이전</span>
-		
-		<span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
-			<a th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
-		</span>
-		
-		<a th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button">다음</a>
-		<span th:if="${!hasNext}">다음</span>
-    </div>
-    <!-- 페이징 -->
-   	<hr>
 
-    <div>
-        <a th:href="@{/product-info/product-info-create}"><button>등록하기</button></a>
+    <div class="wrap">
+
+        <!-- container -->
+        <div class="container">
+            <!-- side -->
+            <div class="side">
+                <h3>HOME</h3>
+            </div>
+            <!-- side -->
+
+            <!-- section -->
+            <div class="section">
+
+                <!-- header -->
+                <div class="header">
+
+                    <div class="title">
+                        <h2>제품 정보</h2>
+                    </div>
+
+                    <div class="search">
+                        <form th:action="@{/product-info/product-info-list}" method="get">
+                            <input class="searchbox" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder=" 검색어를 입력하세요.">
+                            <input class="searchbutton" type="submit" value="검색하기">
+                        </form>
+                    </div>
+                </div>
+                <!-- header -->
+
+                <div class="content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>카테고리</th>
+                                <th>제조사</th>
+                                <th>제품</th>
+                                <th>제품명</th>
+                                <th>사용상태</th>
+                                <th>제품상태</th>
+                                <th>현위치</th>
+                                <th>구매가격</th>
+                                <th>구매년도</th>
+                                <th>고유식별번호</th>
+                                <th>부서</th>
+                                <th>부서원</th>
+                                <th>등록일자</th>
+                                <th>삭제</th>
+                                <th>수정</th>
+                            </tr>
+                        </thead>                            
+                        <tbody>
+                            <tr th:each="productInfo, loop : ${productInfoList}">
+                                <td th:text="${productInfoList.getTotalElements - (productInfoList.number * productInfoList.size) - loop.index}"></td>
+                                <td th:text="${productInfo.category.category}"></td>
+                                <td th:text="${productInfo.maker.maker}"></td>
+                                <td th:text="${productInfo.product.product}"></td>
+                                <td th:text="${productInfo.simpleName}"></td>
+                                <td th:text="${productInfo.useStatus}"></td>
+                                <td th:text="${productInfo.itemStatus}"></td>
+                                <td th:text="${productInfo.location}"></td>
+                                <td th:text="${productInfo.price}"></td>
+                                <td th:text="${productInfo.buyYear}"></td>
+                                <td th:text="${productInfo.uniqueCode}"></td>
+                                <td th:text="${productInfo.department.department}"></td>
+                                <td th:text="${productInfo.employee.employee}"></td>
+                                <td th:text="${productInfo.createDate}"></td>
+                                <td><a th:href="@{|/product-info/product-info-delete/${productInfo.id}|}" onclick="return confirmDelete();">삭제</a></td>
+                                <td><a th:href="@{|/product-info/product-info-detail/${productInfo.id}|}">수정</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- footer -->
+                <div class="footer">
+                    <!-- 페이징 -->
+                    <div class="paging">
+                        <a th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button">이전</a>
+                        <span th:if="${!hasPrevious}">이전</span>
+                        
+                        <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                            <a th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
+                        </span>
+                        
+                        <a th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button">다음</a>
+                        <span th:if="${!hasNext}">다음</span>
+                    </div>
+                    <!-- 페이징 -->
+
+                    <div class="create_button">
+                        <a th:href="@{/product-info/product-info-create}"><button>등록하기</button></a>
+                    </div>
+                </div>
+                <!-- footer -->
+            </div>
+            <!-- section -->
+        </div>
+        <!-- container -->
+
     </div>
     
 	<script type="text/javascript">
