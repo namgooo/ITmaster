@@ -4,16 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>product-info</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/product_info/style.css">
 </head>
 <body>
 
     <div class="wrap">
 
+        <div class="sun">
+            <i class="sun fa-solid fa-sun"></i>
+        </div>
+
         <!-- container -->
         <div class="container">
             <!-- side -->
             <div class="side">
+                <i class="home fa-solid fa-house"></i>
                 <h3>HOME</h3>
             </div>
             <!-- side -->
@@ -30,7 +40,8 @@
 
                     <div class="search">
                         <form th:action="@{/product-info/product-info-list}" method="get">
-                            <input class="searchbox" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder=" 검색어를 입력하세요.">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input class="searchbox" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="   검색어를 입력하세요.">
                             <input class="searchbutton" type="submit" value="검색하기">
                         </form>
                     </div>
@@ -60,7 +71,7 @@
                             </tr>
                         </thead>                            
                         <tbody>
-                            <tr th:each="productInfo, loop : ${productInfoList}">
+                            <tr class="list" th:each="productInfo, loop : ${productInfoList}">
                                 <td th:text="${productInfoList.getTotalElements - (productInfoList.number * productInfoList.size) - loop.index}"></td>
                                 <td th:text="${productInfo.category.category}"></td>
                                 <td th:text="${productInfo.maker.maker}"></td>
@@ -75,8 +86,8 @@
                                 <td th:text="${productInfo.department.department}"></td>
                                 <td th:text="${productInfo.employee.employee}"></td>
                                 <td th:text="${productInfo.createDate}"></td>
-                                <td><a th:href="@{|/product-info/product-info-delete/${productInfo.id}|}" onclick="return confirmDelete();">삭제</a></td>
-                                <td><a th:href="@{|/product-info/product-info-detail/${productInfo.id}|}">수정</a></td>
+                                <td><a class="delete_button" th:href="@{|/product-info/product-info-delete/${productInfo.id}|}" onclick="return confirmDelete();">삭제</a></td>
+                                <td><a class="update_button" th:href="@{|/product-info/product-info-detail/${productInfo.id}|}">수정</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -86,15 +97,15 @@
                 <div class="footer">
                     <!-- 페이징 -->
                     <div class="paging">
-                        <a th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button">이전</a>
-                        <span th:if="${!hasPrevious}">이전</span>
+                        <a class="previous" th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button"></a>
+                        <span class="previous" th:if="${!hasPrevious}"></span>
                         
-                        <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
-                            <a th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
+                        <span class="paging_number" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                            <a class="paging_number" th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
                         </span>
                         
-                        <a th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button">다음</a>
-                        <span th:if="${!hasNext}">다음</span>
+                        <a class="next" th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button"></a>
+                        <span class="next" th:if="${!hasNext}"></span>
                     </div>
                     <!-- 페이징 -->
 
@@ -115,6 +126,8 @@
 	        return confirm("정말 삭제를 하시겠습니까?");
 	    }
 	</script>
+
+    <!-- <a href="">작업 확인</a> -->
     
 </body>
 </html>

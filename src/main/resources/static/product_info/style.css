@@ -3,6 +3,9 @@
 * {
 	margin: 0px;
 	padding: 0px;
+    font-family: "Jua", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 html, body {
@@ -14,15 +17,24 @@ a {
     text-decoration: none;
 }
 
-.current-page {
-    font-weight: bold;
-    color: red;
+@keyframes rotate{
+    0%{transform: rotate(0deg);}
+    100%{transform: rotate(360deg);}
 }
 
 .wrap {
     background-color: #F5F5F5;
     width: 100%;
     height: 100%
+}
+
+.sun i{
+    position: absolute;
+    top: 35px;
+    left: 35px;
+    color: #F7D358;
+    font-size: 500px;
+    animation: rotate 10s linear infinite;
 }
 
 .container {
@@ -36,18 +48,34 @@ a {
     width: 1600px;
     height: 700px;
     border-radius: 10px;
+    border-radius: 20px;
 }
 
 .side {
     background-color: #2F5D62;
+    display: flex;
+    justify-content: center;
     width: 180px;
     height: 100%;
+    border-radius: 15px 0px 0px 15px;
+}
+
+.side .home {
+    font-size: 30px;
+    margin-top: 30px;
+}
+
+.side h3 {
+    font-size: 25px;
+    margin-top: 37px;
+    margin-left: 5px;
 }
 
 .section {
     background-color: #2EFEF7;
     width: 100%;
     height: 100%;
+    border-radius: 20px;
 }
 
 .section .header {
@@ -56,6 +84,7 @@ a {
     justify-content: space-between;
     width: 100%;
     height: 80px;
+    border-radius: 0px 15px 0px 0px;
 }
 
 .section .header .title {
@@ -67,16 +96,30 @@ a {
 }
 
 .section .header .search {
-    margin-top: 10px;
-    margin-right: 30px;
+    background-color: #ffffff;
+    margin-top: 20px;
+    margin-right: 25px;
     width: 300px;
-    height: 60px;
+    height: 40px;
+    border-radius: 5px;
+}
+
+.section .header .search input {
+border: none;
+outline: none;
+}
+
+.section .header .search i {
+    position: absolute;
+    top: 30px;
+    right: 290px;
+    font-size: 20px;
 }
 
 .section .header .search .searchbox {
-    margin-left: 5px;
-    margin-top: 9px;
-    width: 300px;
+    margin-left: 45px;
+    margin-top: 0px;
+    width: 250px;
     height: 40px;
     border-radius: 5px;
 }
@@ -111,10 +154,26 @@ a {
     background-color: #F2F2F2;
 }
 
-.section .content table tr:hover {
-	background-color: #D8D8D8;
+.section .content table .list:hover {
+	background-color: #BDBDBD;
+    color: #ffffff;
 }
 
+.section .content table .delete_button {
+    color: #FE2E9A;
+}
+
+.section .content table .delete_button:hover {
+    color: #ffffff;
+}
+
+.section .content table .update_button {
+    color: #0000FF;
+}
+
+.section .content table .update_button:hover {
+    color: #ffffff;
+}
 /* 테이블 */
 
 .section .footer {
@@ -123,6 +182,7 @@ a {
     height: 70px;
     display: flex;
     justify-content: center;
+    border-radius: 0px 0px 15px 0px;
 }
 
 .section .footer .paging {
@@ -132,7 +192,7 @@ a {
 
 .section .footer .create_button {
     position: relative;
-    left: 40%;
+    left: 39%;
     top: 14px;
     width: 120px;
     height: 40px;
@@ -144,16 +204,51 @@ a {
     background-color: #EADFB4;
     width: 100%;
     height: 100%;
+    font-size: 20px;
     border-radius: 10px;
     border: none;
 }
 
 .section .footer .create_button button:hover {
     background-color: #F7D358;
+    color: #ffffff;
 }
 
 .section .footer .create_button a {
     display: block;
     width: 100%;
     height: 100%;
+}
+
+.section .footer .paging .previous {
+    color: #2F5D62;
+}
+
+.section .footer .paging .next {
+    color: #2F5D62;
+}
+
+.section .footer .paging .previous:before {
+    content: "\f0a5";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 100;
+    font-size: 30px;
+    margin-right: 10px;
+}
+
+.section .footer .paging .next:after {
+    content: "\f0a4";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 100;
+    font-size: 30px;
+	margin-left: 10px;
+}
+
+.section .footer .paging .paging_number {
+    font-size: 25px;
+}
+
+.current-page {
+    font-weight: bold;
+    color: #2F5D62;
 }
