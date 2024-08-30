@@ -49,6 +49,7 @@ a {
     height: 700px;
     border-radius: 10px;
     border-radius: 20px;
+    box-shadow: 10px 10px 5px gray;
 }
 
 .side {
@@ -72,7 +73,6 @@ a {
 }
 
 .section {
-    background-color: #2EFEF7;
     width: 100%;
     height: 100%;
     border-radius: 20px;
@@ -105,8 +105,8 @@ a {
 }
 
 .section .header .search input {
-border: none;
-outline: none;
+    border: none;
+    outline: none;
 }
 
 .section .header .search i {
@@ -201,7 +201,7 @@ outline: none;
 }
 
 .section .footer .create_button button {
-    background-color: #EADFB4;
+    background-color: #A7C4BC;
     width: 100%;
     height: 100%;
     font-size: 20px;
@@ -210,8 +210,9 @@ outline: none;
 }
 
 .section .footer .create_button button:hover {
-    background-color: #F7D358;
+    background-color: #5E8B7E;
     color: #ffffff;
+    font-weight: bold;
 }
 
 .section .footer .create_button a {
@@ -251,4 +252,139 @@ outline: none;
 .current-page {
     font-weight: bold;
     color: #2F5D62;
+}
+
+.create_modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 0;
+    background-color: #DFEEEA;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    width: 550px;
+    height: 650px;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+.create_modal hr {
+    margin-top: 15px;
+    border: 1px solid #A7C4BC;
+}
+
+.modal_background {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은 배경 */
+    z-index: 1;
+}
+
+.create_modal .header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.create_modal .header h3 {
+    margin-left: 50%;
+    margin-top: 5px;
+    transform: translate(-50%);
+    font-weight: bold;
+    font-size: 35px;
+}
+
+.create_modal .header button {
+    border: none;
+    background: none;
+    outline: none;
+    margin-right: 15px;
+    color: #A7C4BC;
+}
+
+.create_modal .header button:hover {
+    color: #5E8B7E;
+}
+
+.create_modal .header button:after {
+    content: "\f057";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 100;
+    font-size: 40px;
+}
+
+.create_modal .section {
+    width: 100%;
+    height: 100%;
+}
+
+.create_modal .section .grop1 {
+    justify-content: space-evenly;
+    display: flex;
+    width: 100%;
+    height: 30px;
+}
+
+.create_modal .section .grop2 {
+    justify-content: flex-start;
+    display: flex;
+    width: 100%;
+    height: 30px;
+}
+
+.create_modal .section .grop3 {
+    justify-content: flex-start;
+    display: flex;
+    width: 100%;
+    height: 30px;
+}
+
+.create_modal .section .create {
+    margin-top: 10px;
+    margin-left: 30px;
+}
+
+.create_modal .section select {
+    height: 25px;
+    border: none;
+    border-radius: 10px;
+}
+
+.create_modal .section input {
+    width: 490px;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+.create_modal .section .submit {
+    width: 97%;
+    height: 50px;
+    margin-top: 15px;
+    margin-left: 50%;
+    transform: translate(-50%, 0px);
+    border-radius: 10px;
+}
+
+.create_modal .section .submit input {
+    width: 100%;
+    height: 100%;
+    background-color: #A7C4BC;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    font-size: 25px;
+}
+
+.create_modal .section .submit input:hover {
+    background-color: #5E8B7E;
+    color: #ffffff;
+    font-weight: bold;
 }

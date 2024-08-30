@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/product_info/style.css">
+
 </head>
 <body>
 
@@ -110,7 +111,7 @@
                     <!-- 페이징 -->
 
                     <div class="create_button">
-                        <a th:href="@{/product-info/product-info-create}"><button>등록하기</button></a>
+                        <a onclick="openModal()"><button>등록하기</button></a>
                     </div>
                 </div>
                 <!-- footer -->
@@ -118,16 +119,216 @@
             <!-- section -->
         </div>
         <!-- container -->
-
     </div>
     
+    <!-- 모달 -->
+    <div class="create_modal" id="create_modal">
+        <div class="header">
+            <h3>제품 정보 등록</h3>
+            <button type="button" class="create_modal_close" id="create_modal_close" onclick="closeModal()"></button>
+        </div>
+        <hr>
+        <div class="section">
+            <form th:action="@{/product-info/product-info-create}" method="post">
+                <div class="grop1">
+                    <div class="category create">
+                    <label for="category">카테고리</label>
+                        <select id="category" name="category" onchange="CategoryfetchProducts()">
+                            <option value="">선택하기</option>
+                            <option th:each="category, loop : ${categoryList}" th:text="${category.category}" th:value="${category.category}"></option>
+                        </select>
+                    </div>
+                    <div class="maker create">
+                        <label for="maker">제조사</label>
+                        <select id="maker" name="maker" onchange="MakerfetchProducts()">
+                            <option value="">선택하기</option>
+                            <option th:each="maker, loop : ${makerList}" th:text="${maker.maker}" th:value="${maker.maker}"></option>
+                        </select>
+                    </div>
+                    <div class="product create">
+                        <label for="product">제품</label>
+                        <select id="product" name="product">
+                            <option value="">선택하기</option>
+                            <option th:each="product, loop : ${productList}" th:text="${product.product}" th:value="${product.product}"></option>
+                        </select>
+                    </div>
+                </div>
+                <hr>
+                <div class="grop2">
+                    <div class="department create">
+                        <label for="department">부서</label>
+                        <select id="department" name="department" onchange="fetchEmployees()">
+                            <option value="">선택하기</option>
+                            <option th:each="department, loop : ${departmentList}" th:text="${department.department}" th:value="${department.department}"></option>
+                        </select>
+                    </div>
+                    <div class="employee create">
+                        <label for="employee">부서원</label>
+                        <select id="employee" name="employee">
+                            <option value="">선택하기</option>
+                            <option th:each="employee, loop : ${employeeList}" th:text="${employee.employee}" th:value="${employee.employee}"></option>
+                        </select>
+                    </div>
+                </div>
+                <hr>
+                <div class="grop3">
+                    <div class="useStatus create">
+                        <label for="useStatus">사용상태</label>
+                        <select id="useStatus" name="useStatus">
+                            <option value="">선택하기</option>
+                            <option value="새상품">새상품</option>
+                            <option value="중고">중고</option>
+                        </select>
+                    </div>
+                    <div class="itemStatus create">
+                        <label for="itemStatus">제품상태</label>
+                        <select id="itemStatus" name="itemStatus">
+                            <option value="">선택하기</option>
+                            <option value="정상">정상</option>
+                            <option value="결함">결함</option>
+                            <option value="고장">고장</option>
+                        </select>
+                    </div>
+                </div>
+                <hr>
+                <div class="simpleName create">
+                    <label for="simpleName">이름</label>
+                    <br>
+                    <input type="text" id="simpleName" name="simpleName">
+                </div>
+                <div class="location create">
+                    <label for="location">현위치</label>
+                    <br>
+                    <input type="text" id="location" name="location">
+                </div>
+                <div class="price create">
+                    <label for="price">구매가격</label>
+                    <br>
+                    <input type="text" id="price" name="price">
+                </div>
+                <div class="buyYear create">
+                    <label for="buyYear">구매년도</label>
+                    <br>
+                    <input type="text" id="buyYear" name="buyYear">
+                </div>
+                <div class="productComment create">
+                    <label for="productComment">비고</label>
+                    <br>
+                    <input type="text" id="productComment" name="productComment">
+                </div>
+                <div class="uniqueCode create">
+                    <label for="uniqueCode">고유식별번호</label>
+                    <br>
+                    <input type="text" id="uniqueCode" name="uniqueCode">
+                </div>
+                <div class="submit create">
+                    <input type="submit" value="등록하기">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal_background" id="modal_background" onclick="closeModal()"></div>
+    <!-- 모달 -->
+
+
+
+
+    <script>
+        // 모달 열기
+        function openModal() {
+            document.getElementById('create_modal').style.display = 'block';
+            document.getElementById('modal_background').style.display = 'block';
+        }
+
+        // 모달 닫기
+        function closeModal() {
+            document.getElementById('create_modal').style.display = 'none';
+            document.getElementById('modal_background').style.display = 'none';
+        }
+    </script>
+
+    <!-- 삭제 버튼 알림 -->
 	<script type="text/javascript">
 	    function confirmDelete() {
 	        return confirm("정말 삭제를 하시겠습니까?");
 	    }
 	</script>
 
-    <!-- <a href="">작업 확인</a> -->
+    <!-- 부서 선택 시 해당 부서원 조회 -->
+    <script>
+        function fetchEmployees() {
+            let department = document.getElementById("department").value;
+            if(department !== "") {
+                fetch("/product-info/getEmployeesByDepartment?department=" + encodeURIComponent(department))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(employees) {
+                    let employeeSelect = document.getElementById("employee");
+                    employeeSelect.innerHTML = "<option value=''>선택하기</option>";
+                    employees.forEach(function(employee){
+                        let option = document.createElement("option");
+                        option.value = employee;
+                        option.text = employee;
+                        employeeSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                });
+            }
+        }
+    </script>
+    
+    <!-- 카테고리 선택 시 해당 제품 조회 -->
+    <script>
+        function CategoryfetchProducts() {
+            let category = document.getElementById("category").value;
+            if(category !== "") {
+                fetch("/product-info/getProductsByCategory?category=" + encodeURIComponent(category))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(products) {
+                    let productSelect = document.getElementById("product");
+                    productSelect.innerHTML = "<option value=''>선택하기</option>";
+                    products.forEach(function(product){
+                        let option = document.createElement("option");
+                        option.value = product;
+                        option.text = product;
+                        productSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                });
+            }
+        }
+    </script>
+    
+    <!-- 제조사 선택 시 해당 제품 조회 -->
+    <script>
+        function MakerfetchProducts() {
+            let maker = document.getElementById("maker").value;
+            if(maker !== "") {
+                fetch("/product-info/getProductsByMaker?maker=" + encodeURIComponent(maker))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(products) {
+                    let productSelect = document.getElementById("product");
+                    productSelect.innerHTML = "<option value=''>선택하기</option>";
+                    products.forEach(function(product){
+                        let option = document.createElement("option");
+                        option.value = product;
+                        option.text = product;
+                        productSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                });
+            }
+        }
+    </script>
     
 </body>
 </html>
