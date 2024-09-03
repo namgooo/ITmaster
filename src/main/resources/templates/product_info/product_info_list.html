@@ -3,19 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>product-info</title>
+    <title>product-info-list</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/product_info/style.css">
-
 </head>
 <body>
 
     <div class="wrap">
-
         <div class="sun">
             <i class="sun fa-solid fa-sun"></i>
         </div>
@@ -46,6 +44,11 @@
                             <input class="searchbutton" type="submit" value="검색하기">
                         </form>
                     </div>
+
+                    <div class="create_button">
+                        <a onclick="openModal()"><button>등록하기</button></a>
+                    </div>
+                    
                 </div>
                 <!-- header -->
 
@@ -86,11 +89,11 @@
                                 <td th:text="${productInfo.uniqueCode}"></td>
                                 <td th:text="${productInfo.department.department}"></td>
                                 <td th:text="${productInfo.employee.employee}"></td>
-                                <td th:text="${productInfo.createDate}"></td>
+                                <td th:text="${#temporals.format(productInfo.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                 <td><a class="delete_button" th:href="@{|/product-info/product-info-delete/${productInfo.id}|}" onclick="return confirmDelete();">삭제</a></td>
                                 <td><a class="update_button" th:href="@{|/product-info/product-info-detail/${productInfo.id}|}">수정</a></td>
                             </tr>
-                        </tbody>
+                         </tbody>
                     </table>
                 </div>
 
@@ -98,6 +101,7 @@
                 <div class="footer">
                     <!-- 페이징 -->
                     <div class="paging">
+                		<a class="first_page" th:href="@{|?page=${first}|}" role="button">첫 페이지</a>
                         <a class="previous" th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button"></a>
                         <span class="previous" th:if="${!hasPrevious}"></span>
                         
@@ -107,12 +111,10 @@
                         
                         <a class="next" th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button"></a>
                         <span class="next" th:if="${!hasNext}"></span>
+                       	<a class="last_page" th:href="@{|?page=${totalPages - 1}|}" role="button">마지막 페이지</a>
                     </div>
                     <!-- 페이징 -->
 
-                    <div class="create_button">
-                        <a onclick="openModal()"><button>등록하기</button></a>
-                    </div>
                 </div>
                 <!-- footer -->
             </div>

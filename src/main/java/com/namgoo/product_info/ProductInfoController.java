@@ -46,8 +46,6 @@ public class ProductInfoController {
 	@Autowired
 	private EmployeeService employeeService;
 	
-	// 2024-08-28 퇴근
-	
 	// 제품 정보 목록
 	@GetMapping("/product-info-list")
 	public String findProductInfoList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
@@ -72,6 +70,8 @@ public class ProductInfoController {
 		model.addAttribute("currentPage", productInfoList.getNumber()); // 현재 페이지 번호 (0부터 시작)
 		model.addAttribute("totalPages", productInfoList.getTotalPages()); // 총 페이지 수
 		model.addAttribute("keyword", keyword); // 검색 시 키워드
+		model.addAttribute("first", pageable.first().getPageNumber()); // 첫 페이지
+		model.addAttribute("totalPages", productInfoList.getTotalPages()); // 마지막 페이지
 		return "product_info/product_info_list";
 	}
 	

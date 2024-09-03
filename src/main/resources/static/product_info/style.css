@@ -96,9 +96,9 @@ a {
 }
 
 .section .header .search {
-    background-color: #ffffff;
+    background-color:#ffffff;
     margin-top: 20px;
-    margin-right: 25px;
+    margin-left: 55%;
     width: 300px;
     height: 40px;
     border-radius: 5px;
@@ -110,14 +110,14 @@ a {
 }
 
 .section .header .search i {
-    position: absolute;
-    top: 30px;
-    right: 290px;
+    margin-top: 10px;
+    margin-left: 10px;
     font-size: 20px;
 }
 
 .section .header .search .searchbox {
-    margin-left: 45px;
+    position: absolute;
+    margin-left: 10px;
     margin-top: 0px;
     width: 250px;
     height: 40px;
@@ -127,6 +127,38 @@ a {
 .section .header .search .searchbutton {
     display: none;
 }
+
+/* 작업 중 */
+.section .header .create_button {
+    margin-top: 20px;
+    margin-right: 20px;
+    width: 120px;
+    height: 40px;
+    border: none;
+    text-align: center;
+}
+
+.section .header .create_button button {
+    background-color: #DFEEEA;
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    border-radius: 10px;
+    border: none;
+}
+
+.section .header .create_button button:hover {
+    background-color: #A7C4BC;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.section .header .create_button a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+/* 작업 중 */
 
 .section .content {
     background-color: #DFEEEA;
@@ -190,35 +222,20 @@ a {
     top: 20px;
 }
 
-.section .footer .create_button {
-    position: relative;
-    left: 39%;
-    top: 14px;
-    width: 120px;
-    height: 40px;
-    border: none;
-    text-align: center;
+.section .footer .paging .first_page {
+    color: #2F5D62;
 }
 
-.section .footer .create_button button {
-    background-color: #A7C4BC;
-    width: 100%;
-    height: 100%;
-    font-size: 20px;
-    border-radius: 10px;
-    border: none;
-}
-
-.section .footer .create_button button:hover {
-    background-color: #5E8B7E;
+.section .footer .paging .first_page:hover {
     color: #ffffff;
-    font-weight: bold;
 }
 
-.section .footer .create_button a {
-    display: block;
-    width: 100%;
-    height: 100%;
+.section .footer .paging .last_page {
+    color: #2F5D62;
+}
+
+.section .footer .paging .last_page:hover {
+    color: #ffffff;
 }
 
 .section .footer .paging .previous {

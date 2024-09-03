@@ -21,5 +21,12 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, Intege
 	 
 	// 제품 정보 단일 조회
 	public Optional<ProductInfo> findById(Integer id);
+	
+	// 등록 시간이 가장 빠른 제품 정보 단일 조회
+	
+	
+	
+	// 등록 시간이 가장 최근 제품 정보 단일 저회
+	
 		
 }
