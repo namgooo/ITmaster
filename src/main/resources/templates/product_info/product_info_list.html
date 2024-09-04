@@ -10,245 +10,81 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/product_info/style.css">
-</head>
-<body>
 
-    <div class="wrap">
-        <div class="sun">
-            <i class="sun fa-solid fa-sun"></i>
-        </div>
-
-        <!-- container -->
-        <div class="container">
-            <!-- side -->
-            <div class="side">
-                <i class="home fa-solid fa-house"></i>
-                <h3>HOME</h3>
-            </div>
-            <!-- side -->
-
-            <!-- section -->
-            <div class="section">
-
-                <!-- header -->
-                <div class="header">
-
-                    <div class="title">
-                        <h2>제품 정보</h2>
-                    </div>
-
-                    <div class="search">
-                        <form th:action="@{/product-info/product-info-list}" method="get">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <input class="searchbox" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="   검색어를 입력하세요.">
-                            <input class="searchbutton" type="submit" value="검색하기">
-                        </form>
-                    </div>
-
-                    <div class="create_button">
-                        <a onclick="openModal()"><button>등록하기</button></a>
-                    </div>
-                    
-                </div>
-                <!-- header -->
-
-                <div class="content">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>번호</th>
-                                <th>카테고리</th>
-                                <th>제조사</th>
-                                <th>제품</th>
-                                <th>제품명</th>
-                                <th>사용상태</th>
-                                <th>제품상태</th>
-                                <th>현위치</th>
-                                <th>구매가격</th>
-                                <th>구매년도</th>
-                                <th>고유식별번호</th>
-                                <th>부서</th>
-                                <th>부서원</th>
-                                <th>등록일자</th>
-                                <th>삭제</th>
-                                <th>수정</th>
-                            </tr>
-                        </thead>                            
-                        <tbody>
-                            <tr class="list" th:each="productInfo, loop : ${productInfoList}">
-                                <td th:text="${productInfoList.getTotalElements - (productInfoList.number * productInfoList.size) - loop.index}"></td>
-                                <td th:text="${productInfo.category.category}"></td>
-                                <td th:text="${productInfo.maker.maker}"></td>
-                                <td th:text="${productInfo.product.product}"></td>
-                                <td th:text="${productInfo.simpleName}"></td>
-                                <td th:text="${productInfo.useStatus}"></td>
-                                <td th:text="${productInfo.itemStatus}"></td>
-                                <td th:text="${productInfo.location}"></td>
-                                <td th:text="${productInfo.price}"></td>
-                                <td th:text="${productInfo.buyYear}"></td>
-                                <td th:text="${productInfo.uniqueCode}"></td>
-                                <td th:text="${productInfo.department.department}"></td>
-                                <td th:text="${productInfo.employee.employee}"></td>
-                                <td th:text="${#temporals.format(productInfo.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                <td><a class="delete_button" th:href="@{|/product-info/product-info-delete/${productInfo.id}|}" onclick="return confirmDelete();">삭제</a></td>
-                                <td><a class="update_button" th:href="@{|/product-info/product-info-detail/${productInfo.id}|}">수정</a></td>
-                            </tr>
-                         </tbody>
-                    </table>
-                </div>
-
-                <!-- footer -->
-                <div class="footer">
-                    <!-- 페이징 -->
-                    <div class="paging">
-                		<a class="first_page" th:href="@{|?page=${first}|}" role="button">첫 페이지</a>
-                        <a class="previous" th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button"></a>
-                        <span class="previous" th:if="${!hasPrevious}"></span>
-                        
-                        <span class="paging_number" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
-                            <a class="paging_number" th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
-                        </span>
-                        
-                        <a class="next" th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button"></a>
-                        <span class="next" th:if="${!hasNext}"></span>
-                       	<a class="last_page" th:href="@{|?page=${totalPages - 1}|}" role="button">마지막 페이지</a>
-                    </div>
-                    <!-- 페이징 -->
-
-                </div>
-                <!-- footer -->
-            </div>
-            <!-- section -->
-        </div>
-        <!-- container -->
-    </div>
-    
-    <!-- 모달 -->
-    <div class="create_modal" id="create_modal">
-        <div class="header">
-            <h3>제품 정보 등록</h3>
-            <button type="button" class="create_modal_close" id="create_modal_close" onclick="closeModal()"></button>
-        </div>
-        <hr>
-        <div class="section">
-            <form th:action="@{/product-info/product-info-create}" method="post">
-                <div class="grop1">
-                    <div class="category create">
-                    <label for="category">카테고리</label>
-                        <select id="category" name="category" onchange="CategoryfetchProducts()">
-                            <option value="">선택하기</option>
-                            <option th:each="category, loop : ${categoryList}" th:text="${category.category}" th:value="${category.category}"></option>
-                        </select>
-                    </div>
-                    <div class="maker create">
-                        <label for="maker">제조사</label>
-                        <select id="maker" name="maker" onchange="MakerfetchProducts()">
-                            <option value="">선택하기</option>
-                            <option th:each="maker, loop : ${makerList}" th:text="${maker.maker}" th:value="${maker.maker}"></option>
-                        </select>
-                    </div>
-                    <div class="product create">
-                        <label for="product">제품</label>
-                        <select id="product" name="product">
-                            <option value="">선택하기</option>
-                            <option th:each="product, loop : ${productList}" th:text="${product.product}" th:value="${product.product}"></option>
-                        </select>
-                    </div>
-                </div>
-                <hr>
-                <div class="grop2">
-                    <div class="department create">
-                        <label for="department">부서</label>
-                        <select id="department" name="department" onchange="fetchEmployees()">
-                            <option value="">선택하기</option>
-                            <option th:each="department, loop : ${departmentList}" th:text="${department.department}" th:value="${department.department}"></option>
-                        </select>
-                    </div>
-                    <div class="employee create">
-                        <label for="employee">부서원</label>
-                        <select id="employee" name="employee">
-                            <option value="">선택하기</option>
-                            <option th:each="employee, loop : ${employeeList}" th:text="${employee.employee}" th:value="${employee.employee}"></option>
-                        </select>
-                    </div>
-                </div>
-                <hr>
-                <div class="grop3">
-                    <div class="useStatus create">
-                        <label for="useStatus">사용상태</label>
-                        <select id="useStatus" name="useStatus">
-                            <option value="">선택하기</option>
-                            <option value="새상품">새상품</option>
-                            <option value="중고">중고</option>
-                        </select>
-                    </div>
-                    <div class="itemStatus create">
-                        <label for="itemStatus">제품상태</label>
-                        <select id="itemStatus" name="itemStatus">
-                            <option value="">선택하기</option>
-                            <option value="정상">정상</option>
-                            <option value="결함">결함</option>
-                            <option value="고장">고장</option>
-                        </select>
-                    </div>
-                </div>
-                <hr>
-                <div class="simpleName create">
-                    <label for="simpleName">이름</label>
-                    <br>
-                    <input type="text" id="simpleName" name="simpleName">
-                </div>
-                <div class="location create">
-                    <label for="location">현위치</label>
-                    <br>
-                    <input type="text" id="location" name="location">
-                </div>
-                <div class="price create">
-                    <label for="price">구매가격</label>
-                    <br>
-                    <input type="text" id="price" name="price">
-                </div>
-                <div class="buyYear create">
-                    <label for="buyYear">구매년도</label>
-                    <br>
-                    <input type="text" id="buyYear" name="buyYear">
-                </div>
-                <div class="productComment create">
-                    <label for="productComment">비고</label>
-                    <br>
-                    <input type="text" id="productComment" name="productComment">
-                </div>
-                <div class="uniqueCode create">
-                    <label for="uniqueCode">고유식별번호</label>
-                    <br>
-                    <input type="text" id="uniqueCode" name="uniqueCode">
-                </div>
-                <div class="submit create">
-                    <input type="submit" value="등록하기">
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal_background" id="modal_background" onclick="closeModal()"></div>
-    <!-- 모달 -->
-
-
-
-
+    <!-- 제품 정보 등록 모달 -->
     <script>
-        // 모달 열기
-        function openModal() {
-            document.getElementById('create_modal').style.display = 'block';
-            document.getElementById('modal_background').style.display = 'block';
+        // 등록 모달 열기
+        function openCreateModal() {
+            document.getElementById('createModal').style.display = 'block';
+            document.getElementById('createModalBackground').style.display = 'block';
         }
 
         // 모달 닫기
-        function closeModal() {
-            document.getElementById('create_modal').style.display = 'none';
-            document.getElementById('modal_background').style.display = 'none';
+        function closeCreateModal() {
+            document.getElementById('createModal').style.display = 'none';
+            document.getElementById('createModalBackground').style.display = 'none';
         }
     </script>
+
+    <!-- 제품 정보 수정 모달 -->
+    <script>
+        // 수정 모달 열기
+        function openUpdateModal(updateButton) {
+            let row = updateButton.closest('tr');
+            // 카테고리
+            let category = row.querySelector('td:nth-child(2)').textContent;
+            document.getElementById('modalCategory').textContent = category;
+            // 제조사
+            let maker = row.querySelector('td:nth-child(3)').textContent;
+            document.getElementById('modalMaker').textContent = maker;
+            // 제품
+            let product = row.querySelector('td:nth-child(4)').textContent;
+            document.getElementById('modalProduct').textContent = product;
+            // 제품명
+            let simpleName = row.querySelector('td:nth-child(5)').textContent;
+            document.getElementById('modalSimpleName').textContent = simpleName;
+            // 사용상태
+            let useStatus = row.querySelector('td:nth-child(6)').textContent;
+            document.getElementById('modalUseStatus').textContent = useStatus;
+            // 제품상태
+            let itemStatus = row.querySelector('td:nth-child(7)').textContent;
+            document.getElementById('modalItemStatus').textContent = itemStatus;
+            // 현위치
+            let location = row.querySelector('td:nth-child(8)').textContent;
+            document.getElementById('modalLocation').textContent = location;
+            // 구매가격
+            let price = row.querySelector('td:nth-child(9)').textContent;
+            document.getElementById('modalPrice').textContent = price;
+            // 구매년도
+            let buyYear = row.querySelector('td:nth-child(10)').textContent;
+            document.getElementById('modalBuyYear').textContent = buyYear;
+            // 고유식별번호
+            let uniqueCode = row.querySelector('td:nth-child(11)').textContent;
+            document.getElementById('modalUniqueCode').textContent = uniqueCode;
+            // 부서
+            let department = row.querySelector('td:nth-child(12)').textContent;
+            document.getElementById('modalDepartment').textContent = department;
+            // 부서원
+            let employee = row.querySelector('td:nth-child(13)').textContent;
+            document.getElementById('modalEmployee').textContent = employee;
+            // 등록일자
+            let createDate = row.querySelector('td:nth-child(14)').textContent;
+            document.getElementById('modalCreateDate').textContent = createDate;
+            // 비고
+            let productComment = row.querySelector('td:nth-child(15)').textContent;
+            document.getElementById('modalProductComment').textContent = productComment;
+
+            document.getElementById('updateModal').style.display = 'block';
+            document.getElementById('updateModalBackground').style.display = 'block';
+        }
+
+        // 수정 모달 닫기
+        function closeUpdateModal() {
+            document.getElementById('updateModal').style.display = 'none';
+            document.getElementById('updateModalBackground').style.display = 'none';
+        }
+    </script>
+
 
     <!-- 삭제 버튼 알림 -->
 	<script type="text/javascript">
@@ -331,6 +167,425 @@
             }
         }
     </script>
+</head>
+<body>
+
+    <div class="wrap">
+        <div class="sun">
+            <i class="sun fa-solid fa-sun"></i>
+        </div>
+
+        <!-- container -->
+        <div class="container">
+            <!-- side -->
+            <div class="side">
+                <i class="home fa-solid fa-house"></i>
+                <h3>HOME</h3>
+            </div>
+            <!-- side -->
+
+            <!-- section -->
+            <div class="section">
+
+                <!-- header -->
+                <div class="header">
+
+                    <div class="title">
+                        <h2>제품 정보</h2>
+                    </div>
+
+                    <div class="search">
+                        <form th:action="@{/product-info/product-info-list}" method="get">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input class="searchbox" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="   검색어를 입력하세요.">
+                            <input class="searchbutton" type="submit" value="검색하기">
+                        </form>
+                    </div>
+
+                    <div class="create_button">
+                        <a onclick="openCreateModal()"><button>등록하기</button></a>
+                    </div>
+
+                </div>
+                <!-- header -->
+
+                <div class="content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>카테고리</th>
+                                <th>제조사</th>
+                                <th>제품</th>
+                                <th>제품명</th>
+                                <th>사용상태</th>
+                                <th>제품상태</th>
+                                <th>현위치</th>
+                                <th>구매가격</th>
+                                <th>구매년도</th>
+                                <th>고유식별번호</th>
+                                <th>부서</th>
+                                <th>부서원</th>
+                                <th>등록일자</th>
+                                <th>삭제</th>
+                                <th>수정</th>
+                            </tr>
+                        </thead>                            
+                        <tbody>
+                            <tr class="list" th:each="productInfo, loop : ${productInfoList}">
+                                <td th:text="${productInfoList.getTotalElements - (productInfoList.number * productInfoList.size) - loop.index}"></td>
+                                <td th:text="${productInfo.category.category}"></td>
+                                <td th:text="${productInfo.maker.maker}"></td>
+                                <td th:text="${productInfo.product.product}"></td>
+                                <td th:text="${productInfo.simpleName}"></td>
+                                <td th:text="${productInfo.useStatus}"></td>
+                                <td th:text="${productInfo.itemStatus}"></td>
+                                <td th:text="${productInfo.location}"></td>
+                                <td th:text="${productInfo.price}"></td>
+                                <td th:text="${productInfo.buyYear}"></td>
+                                <td th:text="${productInfo.uniqueCode}"></td>
+                                <td th:text="${productInfo.department.department}"></td>
+                                <td th:text="${productInfo.employee.employee}"></td>
+                                <td th:text="${#temporals.format(productInfo.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td th:text="${productInfo.productComment}" style="display: none;"></td>
+                                <td><a class="delete_button" th:href="@{|/product-info/product-info-delete/${productInfo.id}|}" onclick="return confirmDelete();">삭제</a></td>
+                                <td><a class="update_button" onclick="openUpdateModal(this)">수정</a></td>
+                            </tr>
+                         </tbody>
+                    </table>
+                </div>
+
+                <!-- footer -->
+                <div class="footer">
+                    <!-- 페이징 -->
+                    <div class="paging">
+                		<a class="first_page" th:href="@{|?page=${first}|}" role="button">첫 페이지</a>
+                        <a class="previous" th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button"></a>
+                        <span class="previous" th:if="${!hasPrevious}"></span>
+                        
+                        <span class="paging_number" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                            <a class="paging_number" th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
+                        </span>
+                        
+                        <a class="next" th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button"></a>
+                        <span class="next" th:if="${!hasNext}"></span>
+                       	<a class="last_page" th:href="@{|?page=${totalPages - 1}|}" role="button">마지막 페이지</a>
+                    </div>
+                    <!-- 페이징 -->
+
+                </div>
+                <!-- footer -->
+            </div>
+            <!-- section -->
+        </div>
+        <!-- container -->
+    </div>
+    
+    <!-- 제품 정보 등록 모달 -->
+    <!-- 제품 정보 등록 모달 백그라운드 -->
+    <div class="create_modal_background" id="createModalBackground" onclick="closeCreateModal()"></div>
+    <div class="create_modal" id="createModal">
+        <div class="header">
+            <h3>제품 정보 등록</h3>
+            <button type="button" class="create_modal_close" id="createModalClose" onclick="closeCreateModal()"></button>
+        </div>
+        <hr>
+        <div class="section">
+            <form th:action="@{/product-info/product-info-create}" method="post">
+                <div class="grop1">
+                    <div class="category create">
+                    <label for="category">카테고리</label>
+                        <select id="category" name="category" onchange="CategoryfetchProducts()">
+                            <option value="">선택하기</option>
+                            <option th:each="category, loop : ${categoryList}" th:text="${category.category}" th:value="${category.category}"></option>
+                        </select>
+                    </div>
+                    <div class="maker create">
+                        <label for="maker">제조사</label>
+                        <select id="maker" name="maker" onchange="MakerfetchProducts()">
+                            <option value="">선택하기</option>
+                            <option th:each="maker, loop : ${makerList}" th:text="${maker.maker}" th:value="${maker.maker}"></option>
+                        </select>
+                    </div>
+                    <div class="product create">
+                        <label for="product">제품</label>
+                        <select id="product" name="product">
+                            <option value="">선택하기</option>
+                            <option th:each="product, loop : ${productList}" th:text="${product.product}" th:value="${product.product}"></option>
+                        </select>
+                    </div>
+                </div>
+                <hr>
+                <div class="grop2">
+                    <div class="department create">
+                        <label for="department">부서</label>
+                        <select id="department" name="department" onchange="fetchEmployees()">
+                            <option value="">선택하기</option>
+                            <option th:each="department, loop : ${departmentList}" th:text="${department.department}" th:value="${department.department}"></option>
+                        </select>
+                    </div>
+                    <div class="employee create">
+                        <label for="employee">부서원</label>
+                        <select id="employee" name="employee">
+                            <option value="">선택하기</option>
+                            <option th:each="employee, loop : ${employeeList}" th:text="${employee.employee}" th:value="${employee.employee}"></option>
+                        </select>
+                    </div>
+                </div>
+                <hr>
+                <div class="grop3">
+                    <div class="use_status create">
+                        <label for="useStatus">사용상태</label>
+                        <select id="useStatus" name="useStatus">
+                            <option value="">선택하기</option>
+                            <option value="새상품">새상품</option>
+                            <option value="중고">중고</option>
+                        </select>
+                    </div>
+                    <div class="item_status create">
+                        <label for="itemStatus">제품상태</label>
+                        <select id="itemStatus" name="itemStatus">
+                            <option value="">선택하기</option>
+                            <option value="정상">정상</option>
+                            <option value="결함">결함</option>
+                            <option value="고장">고장</option>
+                        </select>
+                    </div>
+                </div>
+                <hr>
+                <div class="simple_name create">
+                    <label for="simpleName">이름</label>
+                    <br>
+                    <input type="text" id="simpleName" name="simpleName">
+                </div>
+                <div class="location create">
+                    <label for="location">현위치</label>
+                    <br>
+                    <input type="text" id="location" name="location">
+                </div>
+                <div class="price create">
+                    <label for="price">구매가격</label>
+                    <br>
+                    <input type="text" id="price" name="price">
+                </div>
+                <div class="buy_year create">
+                    <label for="buyYear">구매년도</label>
+                    <br>
+                    <input type="text" id="buyYear" name="buyYear">
+                </div>
+                <div class="product_comment create">
+                    <label for="productComment">비고</label>
+                    <br>
+                    <input type="text" id="productComment" name="productComment">
+                </div>
+                <div class="unique_code create">
+                    <label for="uniqueCode">고유식별번호</label>
+                    <br>
+                    <input type="text" id="uniqueCode" name="uniqueCode">
+                </div>
+                <div class="submit create">
+                    <input type="submit" value="등록하기">
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- 제품 정보 등록 모달 -->
+
+    <!-- 제품 정보 수정 모달 -->
+    <!-- 제품 정보 수정 모달 백그라운드 -->
+    <div class="update_modal_background" id="updateModalBackground" onclick="closeUpdateModal()"></div>
+
+    <div class="update_modal" id="updateModal">
+        <div class="container1">
+            <div class="header">
+                <h3>제품 정보 상세</h3>
+                <hr>
+            </div>
+
+            <div class="section">
+                <div class="category detail">
+                    <span>카테고리 :</span>
+                    <span id="modalCategory"></span>
+                    <hr>
+                </div>
+                <div class="maker detail">
+                    <span>제조사 :</span>
+                    <span id="modalMaker"></span>
+                    <hr>
+                </div>
+                <div class="product detail">
+                    <span>제품 :</span>
+                    <span id="modalProduct"></span>
+                    <hr>
+                </div>
+                <div class="simple_name detail">
+                    <span>제품명 :</span>
+                    <span id="modalSimpleName"></span>
+                    <hr>
+                </div>
+                <div class="use_status detail">
+                    <span>사용상태 :</span>
+                    <span id="modalUseStatus"></span>
+                    <hr>
+                </div>
+                <div class="item_status detail">
+                    <span>제품상태 :</span>
+                    <span id="modalItemStatus"></span>
+                    <hr>
+                </div>
+                <div class="location detail">
+                    <span>현위치 :</span>
+                    <span id="modalLocation"></span>
+                    <hr>
+                </div>
+                <div class="price detail">
+                    <span>구매가격 :</span>
+                    <span id="modalPrice"></span>
+                    <hr>
+                </div>
+                <div class="buy_year detail">
+                    <span>구매년도 :</span>
+                    <span id="modalBuyYear"></span>
+                    <hr>
+                </div>
+                <div class="unique_code detail">
+                    <span>고유식별번호 :</span>
+                    <span id="modalUniqueCode"></span>
+                    <hr>
+                </div> 
+                <div class="department detail">
+                    <span>부서 :</span>
+                    <span id="modalDepartment"></span>
+                    <hr>
+                </div>
+                <div class="employee detail">
+                    <span>부서원 :</span>
+                    <span id="modalEmployee"></span>
+                    <hr>
+                </div>
+                <div class="product_comment detail">
+                    <span>비고 :</span>
+                    <span id="modalProductComment"></span>
+                    <hr>
+                </div>
+                <div class="create_date detail">
+                    <span>등록일자 :</span>
+                    <span id="modalCreateDate"></span>
+                    <hr>
+                </div>
+            </div>
+        </div>
+
+        <div class="meddle_line"></div>
+
+        <div class="container2">
+            <div class="header">
+                <h3>제품 정보 수정</h3>
+                <button type="button" class="update_modal_close" id="updateModalClose" onclick="closeUpdateModal()"></button>
+            </div>
+            <hr>
+            <div class="section">
+                <form th:action="@{/product-info/product-info-create}" method="post">
+                    <div class="grop1">
+                        <div class="category update">
+                        <label for="category">카테고리</label>
+                            <select id="category" name="category" onchange="CategoryfetchProducts()">
+                                <option value="">선택하기</option>
+                                <option th:each="category, loop : ${categoryList}" th:text="${category.category}" th:value="${category.category}"></option>
+                            </select>
+                        </div>
+                        <div class="maker update">
+                            <label for="maker">제조사</label>
+                            <select id="maker" name="maker" onchange="MakerfetchProducts()">
+                                <option value="">선택하기</option>
+                                <option th:each="maker, loop : ${makerList}" th:text="${maker.maker}" th:value="${maker.maker}"></option>
+                            </select>
+                        </div>
+                        <div class="product update">
+                            <label for="product">제품</label>
+                            <select id="product" name="product">
+                                <option value="">선택하기</option>
+                                <option th:each="product, loop : ${productList}" th:text="${product.product}" th:value="${product.product}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="grop2">
+                        <div class="department update">
+                            <label for="department">부서</label>
+                            <select id="department" name="department" onchange="fetchEmployees()">
+                                <option value="">선택하기</option>
+                                <option th:each="department, loop : ${departmentList}" th:text="${department.department}" th:value="${department.department}"></option>
+                            </select>
+                        </div>
+                        <div class="employee update">
+                            <label for="employee">부서원</label>
+                            <select id="employee" name="employee">
+                                <option value="">선택하기</option>
+                                <option th:each="employee, loop : ${employeeList}" th:text="${employee.employee}" th:value="${employee.employee}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="grop3">
+                        <div class="use_status update">
+                            <label for="useStatus">사용상태</label>
+                            <select id="useStatus" name="useStatus">
+                                <option value="">선택하기</option>
+                                <option value="새상품">새상품</option>
+                                <option value="중고">중고</option>
+                            </select>
+                        </div>
+                        <div class="item_status update">
+                            <label for="itemStatus">제품상태</label>
+                            <select id="itemStatus" name="itemStatus">
+                                <option value="">선택하기</option>
+                                <option value="정상">정상</option>
+                                <option value="결함">결함</option>
+                                <option value="고장">고장</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="simple_name update">
+                        <label for="simpleName">이름</label>
+                        <br>
+                        <input type="text" id="simpleName" name="simpleName">
+                    </div>
+                    <div class="location update">
+                        <label for="location">현위치</label>
+                        <br>
+                        <input type="text" id="location" name="location">
+                    </div>
+                    <div class="price update">
+                        <label for="price">구매가격</label>
+                        <br>
+                        <input type="text" id="price" name="price">
+                    </div>
+                    <div class="buy_year update">
+                        <label for="buyYear">구매년도</label>
+                        <br>
+                        <input type="text" id="buyYear" name="buyYear">
+                    </div>
+                    <div class="product_comment update">
+                        <label for="productComment">비고</label>
+                        <br>
+                        <input type="text" id="productComment" name="productComment">
+                    </div>
+                    <div class="unique_code update">
+                        <label for="uniqueCode">고유식별번호</label>
+                        <br>
+                        <input type="text" id="uniqueCode" name="uniqueCode">
+                    </div>
+                    <div class="submit update">
+                        <input type="submit" value="등록하기">
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+    <!-- 제품 정보 수정 모달 -->
     
 </body>
 </html>
