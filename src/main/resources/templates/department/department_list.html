@@ -4,41 +4,138 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>department</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/department/style.css">
+
 </head>
 <body>
-    <h2>부서</h2>
-    
-    <div>
-        <table>
-		    <thead>
-		        <tr>
-		            <th>번호</th>
-		            <th>부서명</th>
-		            <th>등록일시</th>
-		            <th>삭제</th>
-		            <th>수정</th>
-		        </tr>
-		    </thead>
-		    <tbody>
-		        <tr th:each="department, loop : ${departmentList}">
-		            <td th:text="${loop.count}"></td>
-		            <td th:text="${department.department}"></td>
-		            <td th:text="${department.createDate}"></td>
-		            <td><a th:href="@{|/department/department-delete/${department.id}|}">삭제하기</a></td>
-		            <td><a th:href="@{|/department/department-detail/${department.id}|}">수정하기</a></td>
-		        </tr>
-		    </tbody>
-		</table>
-    </div>
-    <hr>
-    <div>
-        <form th:action="@{/department/department-create}" method="post">
-            <label for="department">부서명</label>
-            <input type="text" id="department" name="department">
-            <input type="submit" value="등록하기">
-        </form>
+	<div class="wrap">
+
+		<div class="">
+
+		</div>
+
+		<div class="container">
+
+		    <!-- side -->
+            <div class="side">
+                <div class="header">
+                    <a class="home" th:href="@{/root}">
+                        <i class="fa-solid fa-house"></i>
+                        <h3>HOME</h3>
+                    </a>
+                </div>
+
+                <div class="list">
+                    <ul>
+                        <li>
+                            <a class="department" th:href="@{/department/department-list}">
+                                <i class="fa-solid fa-people-group"></i>
+                                부서
+                            </a>
+                        </li>
+                        <li>
+                            <a class="employee" th:href="@{/employee/employee-list}">
+                                <i class="fa-solid fa-address-card"></i>
+                                부서원
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="category" th:href="@{/category/category-list}">
+                                <i class="fa-solid fa-icons"></i>
+                                카테고리
+                            </a>
+                        </li>
+                        <li>
+                            <a class="maker" th:href="@{/maker/maker-list}">
+                                <i class="fa-solid fa-book-open"></i>
+                                제조사
+                            </a>
+                        </li>
+                        <li>
+                            <a class="product" th:href="@{/product/product-list}">
+                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                                제품
+                            </a>
+                        </li>
+                        <li>
+                            <a class="product-info" th:href="@{/product-info/product-info-list}">
+                                <i class="fa-solid fa-box-archive"></i>
+                                제품 정보
+                            </a>
+                        </li>
+                        <li>
+                            <a class="desktop" th:href="@{/desktop/desktop-list}">
+                                <i class="fa-solid fa-desktop"></i>
+                                데스크탑
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <!-- side -->	
+
+			<!-- section -->
+			<div class="section">
+				<div class="header">
+					<div title>
+						<i class="fa-solid fa-people-group"></i>
+						<h2>부서</h2>
+					</div>
+					<div class="search">
+						<form th:action="@{/product-info/product-info-list}" method="get">
+							<i class="fa-solid fa-magnifying-glass"></i>
+							<input class="searchbox" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="   검색어를 입력하세요.">
+							<input class="searchbutton" type="submit" value="검색하기">
+						</form>
+					</div>
+					<div class="create_button">
+						<a onclick="openCreateModal()"><button>등록하기</button></a>
+					</div>
+
+				</div>
+				
+				<div>
+					<table>
+						<thead>
+							<tr>
+								<th>번호</th>
+								<th>부서명</th>
+								<th>등록일시</th>
+								<th>삭제</th>
+								<th>수정</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="department, loop : ${departmentList}">
+								<td th:text="${loop.count}"></td>
+								<td th:text="${department.department}"></td>
+								<td th:text="${department.createDate}"></td>
+								<td><a th:href="@{|/department/department-delete/${department.id}|}">삭제하기</a></td>
+								<td><a th:href="@{|/department/department-detail/${department.id}|}">수정하기</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>		
+			<!-- section -->
+		</div>
+
     </div>
 
-    
+			<!-- <div>
+				<form th:action="@{/department/department-create}" method="post">
+					<label for="department">부서명</label>
+					<input type="text" id="department" name="department">
+					<input type="submit" value="등록하기">
+				</form>
+			</div> -->
+
 </body>
 </html>

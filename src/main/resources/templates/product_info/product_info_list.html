@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>product-info-list</title>
+    <title>product-info-list/ITmaster</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -179,8 +179,61 @@
         <div class="container">
             <!-- side -->
             <div class="side">
-                <i class="home fa-solid fa-house"></i>
-                <h3>HOME</h3>
+                <div class="header">
+                    <a class="home" th:href="@{/root}">
+                        <i class="fa-solid fa-house"></i>
+                        <h3>HOME</h3>
+                    </a>
+                </div>
+
+                <div class="list">
+                    <ul>
+                        <li>
+                            <a class="department" th:href="@{/department/department-list}">
+                                <i class="fa-solid fa-people-group"></i>
+                                부서
+                            </a>
+                        </li>
+                        <li>
+                            <a class="employee" th:href="@{/employee/employee-list}">
+                                <i class="fa-solid fa-address-card"></i>
+                                부서원
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="category" th:href="@{/category/category-list}">
+                                <i class="fa-solid fa-icons"></i>
+                                카테고리
+                            </a>
+                        </li>
+                        <li>
+                            <a class="maker" th:href="@{/maker/maker-list}">
+                                <i class="fa-solid fa-book-open"></i>
+                                제조사
+                            </a>
+                        </li>
+                        <li>
+                            <a class="product" th:href="@{/product/product-list}">
+                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                                제품
+                            </a>
+                        </li>
+                        <li>
+                            <a class="product-info" th:href="@{/product-info/product-info-list}">
+                                <i class="fa-solid fa-box-archive"></i>
+                                제품 정보
+                            </a>
+                        </li>
+                        <li>
+                            <a class="desktop" th:href="@{/desktop/desktop-list}">
+                                <i class="fa-solid fa-desktop"></i>
+                                데스크탑
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
             </div>
             <!-- side -->
 
@@ -191,6 +244,7 @@
                 <div class="header">
 
                     <div class="title">
+                        <i class="fa-solid fa-box-archive"></i>
                         <h2>제품 정보</h2>
                     </div>
 
@@ -262,19 +316,19 @@
                 		<a class="first_page" th:href="@{|?page=${first}|}" role="button">첫 페이지</a>
                         <a class="previous" th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button"></a>
                         <span class="previous" th:if="${!hasPrevious}"></span>
-                        
-                        <span class="paging_number" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
-                            <a class="paging_number" th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
-                        </span>
-                        
+                       	
+					    <span class="paging_number" th:each="pageNumber : ${#numbers.sequence(currentPage >= 2 ? (currentPage - 2) : 0, currentPage >= 2 ? (currentPage + 2 < totalPages ? currentPage + 2 : totalPages - 1) : (totalPages > 5 ? 4 : totalPages - 1))}">
+					        <a class="paging_number" th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
+					    </span>
+					                           
                         <a class="next" th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button"></a>
                         <span class="next" th:if="${!hasNext}"></span>
                        	<a class="last_page" th:href="@{|?page=${totalPages - 1}|}" role="button">마지막 페이지</a>
                     </div>
                     <!-- 페이징 -->
 
-                </div>
                 <!-- footer -->
+                </div>
             </div>
             <!-- section -->
         </div>

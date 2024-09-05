@@ -86,7 +86,7 @@ public class ProductInfoController {
 		model.addAttribute("productList", productList);
 		List<Department> departmentList = this.departmentService.findDepartmentList();
 		model.addAttribute("departmentList", departmentList);
-		List<Employee> employeeList = this.employeeService.findEmployeeList();
+		List<Employee> employeeList = this.employeeService.findEmployeeList(); 
 		model.addAttribute("employeeList", employeeList);
 		return "product_info/product_info_create";
 	}
