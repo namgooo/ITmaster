@@ -85,7 +85,6 @@
         }
     </script>
 
-
     <!-- 삭제 버튼 알림 -->
 	<script type="text/javascript">
 	    function confirmDelete() {
@@ -93,17 +92,67 @@
 	    }
 	</script>
 
-    <!-- 부서 선택 시 해당 부서원 조회 -->
+    <!-- 카테고리 선택 시 해당 제품 조회(등록) -->
     <script>
-        function fetchEmployees() {
-            let department = document.getElementById("department").value;
-            if(department !== "") {
-                fetch("/product-info/getEmployeesByDepartment?department=" + encodeURIComponent(department))
+        function createCategoryFetchProducts() {
+            let createCategory = document.getElementById("createCategory").value;
+            if(createCategory !== "") {
+                fetch("/product-info/getProductsByCategory?category=" + encodeURIComponent(createCategory))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(products) {
+                    let productSelect = document.getElementById("createProduct");
+                    productSelect.innerHTML = "<option value=''>선택하기</option>";
+                    products.forEach(function(product){
+                        let option = document.createElement("option");
+                        option.value = product;
+                        option.text = product;
+                        productSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                });
+            }
+        }
+    </script>
+    
+    <!-- 제조사 선택 시 해당 제품 조회(등록) -->
+    <script>
+        function createMakerFetchProducts() {
+            let createMaker = document.getElementById("createMaker").value;
+            if(createMaker !== "") {
+                fetch("/product-info/getProductsByMaker?maker=" + encodeURIComponent(createMaker))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(products) {
+                    let productSelect = document.getElementById("createProduct");
+                    productSelect.innerHTML = "<option value=''>선택하기</option>";
+                    products.forEach(function(product){
+                        let option = document.createElement("option");
+                        option.value = product;
+                        option.text = product;
+                        productSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                });
+            }
+        }
+    </script>
+
+    <!-- 부서 선택 시 해당 부서원 조회(등록) -->
+    <script>
+        function createDepartmentFetchEmployees() {
+            let createDepartment = document.getElementById("createDepartment").value;
+            if(createDepartment !== "") {
+                fetch("/product-info/getEmployeesByDepartment?department=" + encodeURIComponent(createDepartment))
                 .then(function(response) {
                     return response.json();
                 })
                 .then(function(employees) {
-                    let employeeSelect = document.getElementById("employee");
+                    let employeeSelect = document.getElementById("createEmployee");
                     employeeSelect.innerHTML = "<option value=''>선택하기</option>";
                     employees.forEach(function(employee){
                         let option = document.createElement("option");
@@ -117,18 +166,18 @@
             }
         }
     </script>
-    
-    <!-- 카테고리 선택 시 해당 제품 조회 -->
+
+    <!-- 카테고리 선택 시 해당 제품 조회(수정) -->
     <script>
-        function CategoryfetchProducts() {
-            let category = document.getElementById("category").value;
-            if(category !== "") {
-                fetch("/product-info/getProductsByCategory?category=" + encodeURIComponent(category))
+        function updateCategoryFetchProducts() {
+            let updateCategory = document.getElementById("updateCategory").value;
+            if(updateCategory !== "") {
+                fetch("/product-info/getProductsByCategory?category=" + encodeURIComponent(updateCategory))
                 .then(function(response) {
                     return response.json();
                 })
                 .then(function(products) {
-                    let productSelect = document.getElementById("product");
+                    let productSelect = document.getElementById("updateProduct");
                     productSelect.innerHTML = "<option value=''>선택하기</option>";
                     products.forEach(function(product){
                         let option = document.createElement("option");
@@ -143,17 +192,17 @@
         }
     </script>
     
-    <!-- 제조사 선택 시 해당 제품 조회 -->
+    <!-- 제조사 선택 시 해당 제품 조회(수정) -->
     <script>
-        function MakerfetchProducts() {
-            let maker = document.getElementById("maker").value;
-            if(maker !== "") {
-                fetch("/product-info/getProductsByMaker?maker=" + encodeURIComponent(maker))
+        function updateMakerFetchProducts() {
+            let updateMaker = document.getElementById("updateMaker").value;
+            if(updateMaker !== "") {
+                fetch("/product-info/getProductsByMaker?maker=" + encodeURIComponent(updateMaker))
                 .then(function(response) {
                     return response.json();
                 })
                 .then(function(products) {
-                    let productSelect = document.getElementById("product");
+                    let productSelect = document.getElementById("updateProduct");
                     productSelect.innerHTML = "<option value=''>선택하기</option>";
                     products.forEach(function(product){
                         let option = document.createElement("option");
@@ -167,6 +216,32 @@
             }
         }
     </script>
+
+    <!-- 부서 선택 시 해당 부서원 조회(수정) -->
+    <script>
+        function updateDepartmentFetchEmployees() {
+            let updateDepartment = document.getElementById("updateDepartment").value;
+            if(updateDepartment !== "") {
+                fetch("/product-info/getEmployeesByDepartment?department=" + encodeURIComponent(updateDepartment))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(employees) {
+                    let employeeSelect = document.getElementById("updateEmployee");
+                    employeeSelect.innerHTML = "<option value=''>선택하기</option>";
+                    employees.forEach(function(employee){
+                        let option = document.createElement("option");
+                        option.value = employee;
+                        option.text = employee;
+                        employeeSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                });
+            }
+        }
+    </script>
+
 </head>
 <body>
 
@@ -348,22 +423,22 @@
             <form th:action="@{/product-info/product-info-create}" method="post">
                 <div class="grop1">
                     <div class="category create">
-                    <label for="category">카테고리</label>
-                        <select id="category" name="category" onchange="CategoryfetchProducts()">
+                    <label for="createCategory">카테고리</label>
+                        <select id="createCategory" name="createCategory" onchange="createCategoryFetchProducts()">
                             <option value="">선택하기</option>
                             <option th:each="category, loop : ${categoryList}" th:text="${category.category}" th:value="${category.category}"></option>
                         </select>
                     </div>
                     <div class="maker create">
-                        <label for="maker">제조사</label>
-                        <select id="maker" name="maker" onchange="MakerfetchProducts()">
+                        <label for="createMaker">제조사</label>
+                        <select id="createMaker" name="createMaker" onchange="createMakerFetchProducts()">
                             <option value="">선택하기</option>
                             <option th:each="maker, loop : ${makerList}" th:text="${maker.maker}" th:value="${maker.maker}"></option>
                         </select>
                     </div>
                     <div class="product create">
-                        <label for="product">제품</label>
-                        <select id="product" name="product">
+                        <label for="createProduct">제품</label>
+                        <select id="createProduct" name="createProduct">
                             <option value="">선택하기</option>
                             <option th:each="product, loop : ${productList}" th:text="${product.product}" th:value="${product.product}"></option>
                         </select>
@@ -372,15 +447,15 @@
                 <hr>
                 <div class="grop2">
                     <div class="department create">
-                        <label for="department">부서</label>
-                        <select id="department" name="department" onchange="fetchEmployees()">
+                        <label for="createDepartment">부서</label>
+                        <select id="createDepartment" name="createDepartment" onchange="createDepartmentFetchEmployees()">
                             <option value="">선택하기</option>
                             <option th:each="department, loop : ${departmentList}" th:text="${department.department}" th:value="${department.department}"></option>
                         </select>
                     </div>
                     <div class="employee create">
-                        <label for="employee">부서원</label>
-                        <select id="employee" name="employee">
+                        <label for="createEmployee">부서원</label>
+                        <select id="createEmployee" name="createEmployee">
                             <option value="">선택하기</option>
                             <option th:each="employee, loop : ${employeeList}" th:text="${employee.employee}" th:value="${employee.employee}"></option>
                         </select>
@@ -542,22 +617,22 @@
                 <form th:action="@{/product-info/product-info-create}" method="post">
                     <div class="grop1">
                         <div class="category update">
-                        <label for="category">카테고리</label>
-                            <select id="category" name="category" onchange="CategoryfetchProducts()">
+                        <label for="updateCategory">카테고리</label>
+                            <select id="updateCategory" name="updateCategory" onchange="updateCategoryFetchProducts()">
                                 <option value="">선택하기</option>
                                 <option th:each="category, loop : ${categoryList}" th:text="${category.category}" th:value="${category.category}"></option>
                             </select>
                         </div>
                         <div class="maker update">
-                            <label for="maker">제조사</label>
-                            <select id="maker" name="maker" onchange="MakerfetchProducts()">
+                            <label for="updateMaker">제조사</label>
+                            <select id="updateMaker" name="updateMaker" onchange="updateMakerFetchProducts()">
                                 <option value="">선택하기</option>
                                 <option th:each="maker, loop : ${makerList}" th:text="${maker.maker}" th:value="${maker.maker}"></option>
                             </select>
                         </div>
                         <div class="product update">
-                            <label for="product">제품</label>
-                            <select id="product" name="product">
+                            <label for="updateProduct">제품</label>
+                            <select id="updateProduct" name="updateProduct">
                                 <option value="">선택하기</option>
                                 <option th:each="product, loop : ${productList}" th:text="${product.product}" th:value="${product.product}"></option>
                             </select>
@@ -566,15 +641,15 @@
                     <hr>
                     <div class="grop2">
                         <div class="department update">
-                            <label for="department">부서</label>
-                            <select id="department" name="department" onchange="fetchEmployees()">
+                            <label for="updateDepartment">부서</label>
+                            <select id="updateDepartment" name="updateDepartment" onchange="updateDepartmentFetchEmployees()">
                                 <option value="">선택하기</option>
                                 <option th:each="department, loop : ${departmentList}" th:text="${department.department}" th:value="${department.department}"></option>
                             </select>
                         </div>
                         <div class="employee update">
-                            <label for="employee">부서원</label>
-                            <select id="employee" name="employee">
+                            <label for="updateEmployee">부서원</label>
+                            <select id="updateEmployee" name="updateEmployee">
                                 <option value="">선택하기</option>
                                 <option th:each="employee, loop : ${employeeList}" th:text="${employee.employee}" th:value="${employee.employee}"></option>
                             </select>
