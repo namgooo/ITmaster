@@ -8,12 +8,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductInfoRepository extends JpaRepository<ProductInfo, Integer>, JpaSpecificationExecutor<ProductInfo> {
 	
 	// 제품 정보 목록
+	@Query(value = "SELECT * FROM product_info " +
+                   "ORDER BY CAST(simple_name AS SIGNED) DESC", 
+                   nativeQuery = true)
 	public Page<ProductInfo> findAll(Pageable pageable);
 	
 	// 제품 정보 검색 목록
@@ -21,12 +25,5 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, Intege
 	 
 	// 제품 정보 단일 조회
 	public Optional<ProductInfo> findById(Integer id);
-	
-	// 등록 시간이 가장 빠른 제품 정보 단일 조회
-	
-	
-	
-	// 등록 시간이 가장 최근 제품 정보 단일 저회
-	
-		
+			
 }

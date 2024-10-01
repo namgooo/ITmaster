@@ -31,47 +31,50 @@
         // 수정 모달 열기
         function openUpdateModal(updateButton) {
             let row = updateButton.closest('tr');
+            // id
+            let productInfoId = row.querySelector('td:nth-child(2)').textContent;
+            document.getElementById('modalId').value = productInfoId;         
             // 카테고리
-            let category = row.querySelector('td:nth-child(2)').textContent;
+            let category = row.querySelector('td:nth-child(3)').textContent;
             document.getElementById('modalCategory').textContent = category;
             // 제조사
-            let maker = row.querySelector('td:nth-child(3)').textContent;
+            let maker = row.querySelector('td:nth-child(4)').textContent;
             document.getElementById('modalMaker').textContent = maker;
             // 제품
-            let product = row.querySelector('td:nth-child(4)').textContent;
+            let product = row.querySelector('td:nth-child(5)').textContent;
             document.getElementById('modalProduct').textContent = product;
             // 제품명
-            let simpleName = row.querySelector('td:nth-child(5)').textContent;
+            let simpleName = row.querySelector('td:nth-child(6)').textContent;
             document.getElementById('modalSimpleName').textContent = simpleName;
             // 사용상태
-            let useStatus = row.querySelector('td:nth-child(6)').textContent;
+            let useStatus = row.querySelector('td:nth-child(7)').textContent;
             document.getElementById('modalUseStatus').textContent = useStatus;
             // 제품상태
-            let itemStatus = row.querySelector('td:nth-child(7)').textContent;
+            let itemStatus = row.querySelector('td:nth-child(8)').textContent;
             document.getElementById('modalItemStatus').textContent = itemStatus;
             // 현위치
-            let location = row.querySelector('td:nth-child(8)').textContent;
+            let location = row.querySelector('td:nth-child(9)').textContent;
             document.getElementById('modalLocation').textContent = location;
             // 구매가격
-            let price = row.querySelector('td:nth-child(9)').textContent;
+            let price = row.querySelector('td:nth-child(10)').textContent;
             document.getElementById('modalPrice').textContent = price;
             // 구매년도
-            let buyYear = row.querySelector('td:nth-child(10)').textContent;
+            let buyYear = row.querySelector('td:nth-child(11)').textContent;
             document.getElementById('modalBuyYear').textContent = buyYear;
             // 고유식별번호
-            let uniqueCode = row.querySelector('td:nth-child(11)').textContent;
+            let uniqueCode = row.querySelector('td:nth-child(12)').textContent;
             document.getElementById('modalUniqueCode').textContent = uniqueCode;
             // 부서
-            let department = row.querySelector('td:nth-child(12)').textContent;
+            let department = row.querySelector('td:nth-child(13)').textContent;
             document.getElementById('modalDepartment').textContent = department;
             // 부서원
-            let employee = row.querySelector('td:nth-child(13)').textContent;
+            let employee = row.querySelector('td:nth-child(14)').textContent;
             document.getElementById('modalEmployee').textContent = employee;
             // 등록일자
-            let createDate = row.querySelector('td:nth-child(14)').textContent;
+            let createDate = row.querySelector('td:nth-child(15)').textContent;
             document.getElementById('modalCreateDate').textContent = createDate;
             // 비고
-            let productComment = row.querySelector('td:nth-child(15)').textContent;
+            let productComment = row.querySelector('td:nth-child(16)').textContent;
             document.getElementById('modalProductComment').textContent = productComment;
 
             document.getElementById('updateModal').style.display = 'block';
@@ -166,7 +169,7 @@
             }
         }
     </script>
-
+	
     <!-- 카테고리 선택 시 해당 제품 조회(수정) -->
     <script>
         function updateCategoryFetchProducts() {
@@ -187,6 +190,7 @@
                     });
                 })
                 .catch(function(error){
+                    console.log("필터링 실패");
                 });
             }
         }
@@ -212,10 +216,46 @@
                     });
                 })
                 .catch(function(error){
+                    console.log("필터링 실패");
                 });
             }
         }
     </script>
+
+    <!-- <script>
+        function updateCategoryAndMakerFetchProducts() {
+            let updateCategory = document.getElementById("updateCategory").value;
+            let updateMaker = document.getElementById("updateMaker").value;
+
+            if(updateCategory !== "" || updateMaker !== "") {
+                let url = "/product-info/getProducts?";
+                if(updateCategory !== "") {
+                    url += "category" + encodeURIComponent(updateCategory) + "&";
+                }
+                if(updateMaker !== "") {
+                    url += "maker" + encodeURIComponent(updateMaker);
+                }
+                
+                fetch(url)
+                .then(function(response){
+                    return response.json();
+                });
+                then(function(products){
+                    let productSelect = document.getElementById("updateProduct");
+                    productSelect.innerHTML = "<option value=''>선택하기</option>"
+                    products.forEach(function(product){
+                        let option = document.createElement("option");
+                        option.value = product;
+                        option.text = product;
+                        productSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                    console.log("필터링 실패");
+                });
+            }
+        }
+    </script> -->
 
     <!-- 부서 선택 시 해당 부서원 조회(수정) -->
     <script>
@@ -242,10 +282,86 @@
         }
     </script>
 
+    <script>
+        function toggleSidebar() {
+            let sidebar = document.getElementById("sidebar");
+            let sidebar_button = document.getElementById("sidebar_button");
+
+            // 초기 상태를 명확하게 설정
+            if (!sidebar.style.left) {
+                sidebar.style.left = "-250px";  // 기본값을 설정
+            }
+
+            if (sidebar.style.left === "-250px") {
+                sidebar.style.left = "0";  // 사이드바 보이기
+                sidebar_button.style.left = "260px";
+            } else {
+                sidebar.style.left = "-250px";  // 사이드바 숨기기
+                sidebar_button.style.left = "10px";
+            }
+        }
+    </script>
+
 </head>
 <body>
 
     <div class="wrap">
+    <!-- --------------------------------------------------------------------------------------- -->
+        <button class="sidebar_button" id="sidebar_button" onclick="toggleSidebar()">
+            <i class="fa-solid fa-sun"></i>
+        </button>
+        <div class="sidebar" id="sidebar">
+            <h2>HOME</h2>
+            <div class="list">
+                <ul>
+                    <li>
+                        <a class="department" th:href="@{/department/department-list}">
+                            <i class="fa-solid fa-people-group"></i>
+                            부서
+                        </a>
+                    </li>
+                    <li>
+                        <a class="employee" th:href="@{/employee/employee-list}">
+                            <i class="fa-solid fa-address-card"></i>
+                            부서원
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="category" th:href="@{/category/category-list}">
+                            <i class="fa-solid fa-icons"></i>
+                            카테고리
+                        </a>
+                    </li>
+                    <li>
+                        <a class="maker" th:href="@{/maker/maker-list}">
+                            <i class="fa-solid fa-book-open"></i>
+                            제조사
+                        </a>
+                    </li>
+                    <li>
+                        <a class="product" th:href="@{/product/product-list}">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            제품
+                        </a>
+                    </li>
+                    <li>
+                        <a class="product-info" th:href="@{/product-info/product-info-list}">
+                            <i class="fa-solid fa-box-archive"></i>
+                            제품 정보
+                        </a>
+                    </li>
+                    <li>
+                        <a class="desktop" th:href="@{/desktop/desktop-list}">
+                            <i class="fa-solid fa-desktop"></i>
+                            데스크탑
+                        </a>
+                    </li>
+                </ul>
+            </div>      
+        </div>
+    <!-- --------------------------------------------------------------------------------------- -->
+
         <div class="sun">
             <i class="sun fa-solid fa-sun"></i>
         </div>
@@ -363,6 +479,7 @@
                         <tbody>
                             <tr class="list" th:each="productInfo, loop : ${productInfoList}">
                                 <td th:text="${productInfoList.getTotalElements - (productInfoList.number * productInfoList.size) - loop.index}"></td>
+                                <td th:text="${productInfo.id}" style="display: none;"></td>
                                 <td th:text="${productInfo.category.category}"></td>
                                 <td th:text="${productInfo.maker.maker}"></td>
                                 <td th:text="${productInfo.product.product}"></td>
@@ -424,21 +541,21 @@
                 <div class="grop1">
                     <div class="category create">
                     <label for="createCategory">카테고리</label>
-                        <select id="createCategory" name="createCategory" onchange="createCategoryFetchProducts()">
+                        <select id="createCategory" name="category" onchange="createCategoryFetchProducts()">
                             <option value="">선택하기</option>
                             <option th:each="category, loop : ${categoryList}" th:text="${category.category}" th:value="${category.category}"></option>
                         </select>
                     </div>
                     <div class="maker create">
                         <label for="createMaker">제조사</label>
-                        <select id="createMaker" name="createMaker" onchange="createMakerFetchProducts()">
+                        <select id="createMaker" name="maker" onchange="createMakerFetchProducts()">
                             <option value="">선택하기</option>
                             <option th:each="maker, loop : ${makerList}" th:text="${maker.maker}" th:value="${maker.maker}"></option>
                         </select>
                     </div>
                     <div class="product create">
                         <label for="createProduct">제품</label>
-                        <select id="createProduct" name="createProduct">
+                        <select id="createProduct" name="product">
                             <option value="">선택하기</option>
                             <option th:each="product, loop : ${productList}" th:text="${product.product}" th:value="${product.product}"></option>
                         </select>
@@ -448,14 +565,14 @@
                 <div class="grop2">
                     <div class="department create">
                         <label for="createDepartment">부서</label>
-                        <select id="createDepartment" name="createDepartment" onchange="createDepartmentFetchEmployees()">
+                        <select id="createDepartment" name="department" onchange="createDepartmentFetchEmployees()">
                             <option value="">선택하기</option>
                             <option th:each="department, loop : ${departmentList}" th:text="${department.department}" th:value="${department.department}"></option>
                         </select>
                     </div>
                     <div class="employee create">
                         <label for="createEmployee">부서원</label>
-                        <select id="createEmployee" name="createEmployee">
+                        <select id="createEmployee" name="employee">
                             <option value="">선택하기</option>
                             <option th:each="employee, loop : ${employeeList}" th:text="${employee.employee}" th:value="${employee.employee}"></option>
                         </select>
@@ -530,7 +647,6 @@
                 <h3>제품 정보 상세</h3>
                 <hr>
             </div>
-
             <div class="section">
                 <div class="category detail">
                     <span>카테고리 :</span>
@@ -604,7 +720,6 @@
                 </div>
             </div>
         </div>
-
         <div class="meddle_line"></div>
 
         <div class="container2">
@@ -614,25 +729,26 @@
             </div>
             <hr>
             <div class="section">
-                <form th:action="@{/product-info/product-info-create}" method="post">
+                <form th:action="@{/product-info/product-info-update}" method="post">
+                    <input type="hidden" id="modalId" name="id">
                     <div class="grop1">
                         <div class="category update">
                         <label for="updateCategory">카테고리</label>
-                            <select id="updateCategory" name="updateCategory" onchange="updateCategoryFetchProducts()">
+                            <select id="updateCategory" name="category" onchange="updateCategoryFetchProducts()">
                                 <option value="">선택하기</option>
                                 <option th:each="category, loop : ${categoryList}" th:text="${category.category}" th:value="${category.category}"></option>
                             </select>
                         </div>
                         <div class="maker update">
                             <label for="updateMaker">제조사</label>
-                            <select id="updateMaker" name="updateMaker" onchange="updateMakerFetchProducts()">
+                            <select id="updateMaker" name="maker" onchange="updateMakerFetchProducts()">
                                 <option value="">선택하기</option>
                                 <option th:each="maker, loop : ${makerList}" th:text="${maker.maker}" th:value="${maker.maker}"></option>
                             </select>
                         </div>
                         <div class="product update">
                             <label for="updateProduct">제품</label>
-                            <select id="updateProduct" name="updateProduct">
+                            <select id="updateProduct" name="product">
                                 <option value="">선택하기</option>
                                 <option th:each="product, loop : ${productList}" th:text="${product.product}" th:value="${product.product}"></option>
                             </select>
@@ -642,14 +758,14 @@
                     <div class="grop2">
                         <div class="department update">
                             <label for="updateDepartment">부서</label>
-                            <select id="updateDepartment" name="updateDepartment" onchange="updateDepartmentFetchEmployees()">
+                            <select id="updateDepartment" name="department" onchange="updateDepartmentFetchEmployees()">
                                 <option value="">선택하기</option>
                                 <option th:each="department, loop : ${departmentList}" th:text="${department.department}" th:value="${department.department}"></option>
                             </select>
                         </div>
                         <div class="employee update">
                             <label for="updateEmployee">부서원</label>
-                            <select id="updateEmployee" name="updateEmployee">
+                            <select id="updateEmployee" name="employee">
                                 <option value="">선택하기</option>
                                 <option th:each="employee, loop : ${employeeList}" th:text="${employee.employee}" th:value="${employee.employee}"></option>
                             </select>

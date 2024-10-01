@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,8 @@ import net.bytebuddy.matcher.MethodSortMatcher.Sort;
 @Controller
 @RequestMapping("/product-info")
 public class ProductInfoController {
+	
+	// 2024-10-02 오전 커밋
 	
 	@Autowired
 	private ProductInfoService productInfoService;
@@ -126,6 +129,7 @@ public class ProductInfoController {
 	// 제품 정보 수정
 	@PostMapping("/product-info-update")
 	public String updateProductInfo(ProductInfoDTO dto) {
+		System.out.println("진입확인: " + dto.getId());
 		this.productInfoService.updateProductInfo(dto);
 		return "redirect:/product-info/product-info-list";
 	}
@@ -150,5 +154,27 @@ public class ProductInfoController {
 	public List<String> getProductsByMaker(@RequestParam("maker") String maker) {
 		return this.productService.findProductsByMaker(maker);
 	}
+	
+//	@GetMapping("/product-info/getProducts")
+//	public ResponseEntity<List<String>> getProducts(
+//			@RequestParam(required = false) String category,
+//			@RequestParam(required = false) String maker) {
+//		
+//		List<String> products = null;
+//		
+//		if(category != null && maker != null) {
+//			products = this.productService.findProductsByCategoryAndMaker(category, maker);
+//		}
+//		else if(category != null) {
+//			products = this.productService.findProductsByCategory(category);
+//		}
+//		else if(maker != null) {
+//			products = this.productService.findProductsByMaker(maker);
+//		}
+//
+//		return ResponseEntity.ok(products);
+//	}
+	
+	
 	
 }

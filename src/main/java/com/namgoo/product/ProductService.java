@@ -76,4 +76,10 @@ public class ProductService {
 		return makerList;
 	}
 	
+//	// 카테고리/제조사 모두 선택 시 해당 제품 조회
+//	public List<String> findProductsByCategoryAndMaker(String category, String maker) {
+//			List<String> productList = this.productRepository.findProductsByCategoryAndMaker(category, maker);
+//		return productList;
+//	}
+	
 }

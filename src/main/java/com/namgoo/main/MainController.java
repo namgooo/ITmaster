@@ -10,5 +10,10 @@ public class MainController {
 	public String main() {
 		return "main/main";
 	}
+	
+	@GetMapping("/test")
+	public String test() {
+		return "product_info/product_info_test";
+	}
 
 }

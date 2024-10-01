@@ -27,4 +27,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 	@Query("SELECT p.product FROM Product p JOIN p.maker m WHERE m.maker = ?1")
 	public List<String> findProductsByMaker(String maker);
 	
+	// 카테고리/제조사 모두 선택 시 해당 제품 조회
+	@Query("SELECT p.product FROM Product p WHERE p.category = ?1 AND p.maker.maker = ?2")
+	public List<String> findProductsByCategoryAndMaker(String category, String maker);
+	
 }
