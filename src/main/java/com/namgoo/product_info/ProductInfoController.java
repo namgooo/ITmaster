@@ -34,7 +34,7 @@ import net.bytebuddy.matcher.MethodSortMatcher.Sort;
 @RequestMapping("/product-info")
 public class ProductInfoController {
 	
-	// 2024-10-02 오전 커밋
+	// 2024-10-02 오후 커밋
 	
 	@Autowired
 	private ProductInfoService productInfoService;

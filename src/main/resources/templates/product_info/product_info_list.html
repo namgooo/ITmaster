@@ -282,36 +282,54 @@
         }
     </script>
 
+    <!-- 사이드바 동작 -->
     <script>
         function toggleSidebar() {
             let sidebar = document.getElementById("sidebar");
             let sidebar_button = document.getElementById("sidebar_button");
 
-            // 초기 상태를 명확하게 설정
+            // 초기 위치를 설정
             if (!sidebar.style.left) {
-                sidebar.style.left = "-250px";  // 기본값을 설정
+                sidebar.style.left = "-200px";
             }
 
-            if (sidebar.style.left === "-250px") {
-                sidebar.style.left = "0";  // 사이드바 보이기
-                sidebar_button.style.left = "260px";
+            if (sidebar.style.left === "-200px") {
+                sidebar.style.left = "0"; 
+                sidebar_button.style.left = "210px";
             } else {
-                sidebar.style.left = "-250px";  // 사이드바 숨기기
+                sidebar.style.left = "-200px";
                 sidebar_button.style.left = "10px";
+            }
+
+            if (sidebar.style.left === "0px") {
+                document.getElementById('sidebar_xmark').style.display = 'block';
+                document.getElementById('sidebar_right').style.display = 'none';
+                console.log("동작 확인 : 오늘쪽 아이콘");
+            } else {
+                document.getElementById('sidebar_xmark').style.display = 'none';
+                document.getElementById('sidebar_right').style.display = 'block';
+                console.log("동작 확인 : 닫기 아이콘");
             }
         }
     </script>
 
 </head>
 <body>
-
     <div class="wrap">
-    <!-- --------------------------------------------------------------------------------------- -->
+    <!------------------------------------------- 사이드바 ------------------------------------------->
         <button class="sidebar_button" id="sidebar_button" onclick="toggleSidebar()">
-            <i class="fa-solid fa-sun"></i>
+            <i class="fa-solid fa-chevron-right" id="sidebar_right"></i>
+            <i class="fa-solid fa-xmark" id="sidebar_xmark" style="display: none;"></i>
         </button>
         <div class="sidebar" id="sidebar">
-            <h2>HOME</h2>
+
+            <div class="header">
+                <a class="home" th:href="@{/root}">
+                    <i class="fa-solid fa-house"></i>
+                    <h2>HOME</h2>
+                </a>
+            </div>
+
             <div class="list">
                 <ul>
                     <li>
@@ -360,7 +378,7 @@
                 </ul>
             </div>      
         </div>
-    <!-- --------------------------------------------------------------------------------------- -->
+    <!------------------------------------------- 사이드바 ------------------------------------------->
 
         <div class="sun">
             <i class="sun fa-solid fa-sun"></i>
