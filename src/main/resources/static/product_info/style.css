@@ -56,77 +56,6 @@ ul {
     box-shadow: 10px 10px 5px gray;
 }
 
-.side {
-    background-color: #2F5D62;
-    width: 180px;
-    height: 100%;
-    border-radius: 15px 0px 0px 15px;
-}
-
-.side .header {
-    margin-top: 19px;
-    margin-left: 10px;
-    width: 140px;
-    height: 60px;
-    border-bottom: 2px dashed #dbdbdb;
-}
-
-.side .header .home {
-    width: 100%;
-    height: 40px;
-    font-size: 30px;
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    color: #000000;
-}
-
-.side .header .home:hover {
-    color: #ffffff;
-}
-
-.side .header .home i {
-    margin-top: 3px;
-}
-
-.side .header .home h3 {
-    margin-left: 5px;
-}
-
-.side .list {
-    width: 140px;
-    height: 400px;
-    margin-top: 50px;
-    margin-left: 12px;
-}
-
-.side .list li {
-    width: 140px;
-    height: 40px;
-    line-height: 45px;
-    border-bottom: 1px solid #dbdbdb;
-}
-
-.side .list li a {
-    color: #000000;
-    display: block;
-    width: 100%;
-    height: 100%;
-    transition: 0.5s ease;
-}
-
-.side .list li a:hover {
-    background: #A7C4BC;
-    color: white;
-    box-shadow: inset 140px 0px 0 #5E8B7E;
-}
-
-.side .list li i {
-    margin-left: 10px;
-}
-
-
-
 
 
 .section {
@@ -141,7 +70,7 @@ ul {
     justify-content: space-between;
     width: 100%;
     height: 80px;
-    border-radius: 0px 15px 0px 0px;
+    border-radius: 15px 15px 0px 0px;
 }
 
 .section .header .title {
@@ -277,7 +206,7 @@ ul {
     height: 70px;
     display: flex;
     justify-content: center;
-    border-radius: 0px 0px 15px 0px;
+    border-radius: 0px 0px 15px 15px;
 }
 
 .section .footer .paging {
@@ -670,7 +599,7 @@ ul {
 /* ------------------------ 사이드바 ------------------------ */
 .sidebar {
     width: 200px;
-    background-color: #2F5D62;
+    background-color: #6E6E6E;
     color: white;
     position: fixed;
     height: 100%;
@@ -745,9 +674,9 @@ ul {
 }
 
 .sidebar .list li a:hover {
-    background: #A7C4BC;
+    background: #585858;
     color: white;
-    box-shadow: inset 170px 0px 0 #5E8B7E;
+    box-shadow: inset 170px 0px 0 #424242;
 }
 
 .sidebar .list li i {
