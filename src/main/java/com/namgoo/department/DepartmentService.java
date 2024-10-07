@@ -5,13 +5,52 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import com.namgoo.category.Category;
+import com.namgoo.employee.Employee;
+import com.namgoo.maker.Maker;
+import com.namgoo.product.Product;
+import com.namgoo.product_info.ProductInfo;
+
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 @Service
 public class DepartmentService {
 	
 	@Autowired
 	private DepartmentRepository departmentRepository;
+	
+	// 부서 검색
+	private Specification<Department> search(String keyword) {
+		return new Specification<>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Predicate toPredicate(Root<Department> dm, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				Predicate filterPredicate = cb.or(						
+						cb.like(dm.get("department"), "%" + keyword + "%")
+				);
+				query.distinct(true);
+				query.orderBy(cb.desc(dm.get("createDate")));
+				return filterPredicate;
+			}
+		};
+	}
+	
+	// 부서 목록 - 페이징
+	public Page<Department> findDepartmentPagingList(String keyword, Pageable pageable) {
+		Specification<Department> specification = search(keyword);
+		Page<Department> departmentPagingList = this.departmentRepository.findAll(specification, pageable);
+		return departmentPagingList;
+	}
 	
 	// 부서 목록
 	public List<Department> findDepartmentList() {
