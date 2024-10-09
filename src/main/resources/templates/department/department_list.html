@@ -33,7 +33,7 @@
             if (sidebar.style.left === "0px") {
                 document.getElementById('sidebar_xmark').style.display = 'block';
                 document.getElementById('sidebar_right').style.display = 'none';
-                console.log("동작 확인 : 오늘쪽 아이콘");
+                console.log("동작 확인 : 오른쪽 아이콘");
             } else {
                 document.getElementById('sidebar_xmark').style.display = 'none';
                 document.getElementById('sidebar_right').style.display = 'block';
@@ -52,14 +52,37 @@
     <!-- 부서 등록 모달 -->
     <script>
         function openCreateModal() {
+        	console.log("진입확인");
             document.getElementById('createModal').style.display = 'block';
             document.getElementById('createModalBackground').style.display = 'block';
         }
         function closeCreateModal() {
             document.getElementById('createModal').style.display = 'none';
             document.getElementById('createModalBackground').style.display = 'none';
+        }   
+    </script>
+
+    <!-- 부서 수정 모달 -->
+    <script>
+        function openUpdateModal(updateButton) {
+            let row = updateButton.closest('tr');
+            // id
+            let departmentId = row.querySelector('td:nth-child(2)').textContent;
+            document.getElementById('modalId').value = departmentId;         
+            // 부서
+            let department = row.querySelector('td:nth-child(3)').textContent;
+            document.getElementById('modalDepartment').textContent = department;
+
+            document.getElementById('updateModal').style.display = 'block';
+            document.getElementById('updateModalBackground').style.display = 'block';
         }
- {}    </script>
+
+        // 수정 모달 닫기
+        function closeUpdateModal() {
+            document.getElementById('updateModal').style.display = 'none';
+            document.getElementById('updateModalBackground').style.display = 'none';
+        }
+    </script>
 
 </head>
 <body>
@@ -144,7 +167,7 @@
 					</div>
 
 					<div class="search">
-						<form th:action="@{/product-info/product-info-list}" method="get">
+						<form th:action="@{/department/department-list}" method="get">
 							<i class="fa-solid fa-magnifying-glass"></i>
 							<input class="searchbox" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="   검색어를 입력하세요.">
 							<input class="searchbutton" type="submit" value="검색하기">
@@ -170,12 +193,13 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="department, loop : ${departmentList}">
+							<tr class="list" th:each="department, loop : ${departmentList}">
 								<td th:text="${loop.count}"></td>
+                                <td th:text="${department.id}" style="display: none;"></td>
 								<td th:text="${department.department}"></td>
-								<td th:text="${department.createDate}"></td>
-								<td><a th:href="@{|/department/department-delete/${department.id}|}" onclick="return confirmDelete();">삭제하기</a></td>
-								<td><a th:href="@{|/department/department-detail/${department.id}|}">수정하기</a></td>
+                                <td th:text="${#temporals.format(department.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+								<td><a class="delete_button" th:href="@{|/department/department-delete/${department.id}|}" onclick="return confirmDelete();">삭제하기</a></td>
+								<td><a class="update_button" onclick="openUpdateModal(this)">수정하기</a></td>
 							</tr>
 						</tbody>
 					</table>
@@ -226,6 +250,46 @@
         </div>
     </div>
 
+    <!-- 부서 수정 모달 -->
+    <div class="update_modal_background" id="updateModalBackground" onclick="closeUpdateModal()"></div>
+    <div class="update_modal" id="updateModal">
+        <div class="container1">
+            <div class="header">
+                <h3>부서 상세</h3>
+                <button type="button" class="update_modal_close" id="updateModalClose" onclick="closeUpdateModal()"></button>
+            </div>
+            <hr>
+            <div class="section">
+                <div class="department detail">
+                    <span>부서 :</span>
+                    <span id="modalDepartment"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="meddle_line"></div>
+
+        <div class="container2">
+            <div class="header">
+                <h3>부서 수정</h3>
+            </div>
+            <hr>
+            <div class="section">
+                <form th:action="@{/department/department-update}" method="post">
+                    <input type="hidden" id="modalId" name="id">
+                    <div class="department update">
+                        <label for="department">부서</label>
+                        <br>
+                        <input type="text" id="department" name="department">
+                    </div>
+                    <div class="submit update">
+                        <input type="submit" value="등록하기">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
 
 </body>
 </html>

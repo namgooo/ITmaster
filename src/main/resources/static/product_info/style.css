@@ -271,6 +271,7 @@ ul {
 }
 
 .section .content table .delete_button {
+    cursor: pointer;
     color: #FE2E9A;
 }
 
@@ -279,6 +280,7 @@ ul {
 }
 
 .section .content table .update_button {
+    cursor: pointer;
     color: #0000FF;
 }
 

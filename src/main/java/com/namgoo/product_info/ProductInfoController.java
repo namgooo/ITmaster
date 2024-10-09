@@ -65,6 +65,8 @@ public class ProductInfoController {
 		
 		Page<ProductInfo> productInfoList = this.productInfoService.findProductInfoList(keyword, pageable);
 		model.addAttribute("productInfoList", productInfoList);
+		
+		
 		// 페이징
 		model.addAttribute("previous", pageable.previousOrFirst().getPageNumber()); // 이전 페이지 번호
 		model.addAttribute("next", pageable.next().getPageNumber()); // 다음 페이지 번호
