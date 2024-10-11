@@ -4,10 +4,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.namgoo.department.Department;
 import com.namgoo.department.DepartmentRepository;
+
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 @Service
 public class EmployeeService {
@@ -17,13 +25,36 @@ public class EmployeeService {
 	@Autowired
 	private DepartmentRepository departmentRepository;
 	
+	// 부서원 검색
+	private Specification<Employee> search(String keyword) {
+		return new Specification<>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Predicate toPredicate(Root<Employee> em, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				Predicate filterPredicate = cb.or(						
+						cb.like(em.get("employee"), "%" + keyword + "%")
+				);
+				query.distinct(true);
+				query.orderBy(cb.desc(em.get("createDate")));
+				return filterPredicate;
+			}
+		};
+	}
+	
 	// 부서원 목록
 	public List<Employee> findEmployeeList() {
 		List<Employee> employeeList = this.employeeRepository.findAll();
 		return employeeList;
 	}
 	
-	// 부서별 부서원 목록
+	// 부서원 목록 - 페이징
+	public Page<Employee> findEmployeePagingList(String keyword, Pageable pageable) {
+		Specification<Employee> specification = search(keyword);
+		Page<Employee> employeePagingList = this.employeeRepository.findAll(specification, pageable);
+ 		return employeePagingList;
+	}
+	
+	// 부서별 부서원 목록 - 페이징
 	public List<Employee> findEmployeesByDepartment(Department departmnet) {
 		List<Employee> employeeList = this.employeeRepository.findByDepartment(departmnet);
 		return employeeList;

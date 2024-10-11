@@ -12,10 +12,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Integer>{
 	
-	public Page<Department> findAll(Specification<Department> specification, Pageable pageable);
-	
 	// 부서 목록
 	public List<Department> findAll();
+	
+	// 부서 목록 - 페이징
+	public Page<Department> findAll(Specification<Department> specification, Pageable pageable);
 	
 	// 부서 단일 조회
 	public Optional<Department> findById(Integer id);

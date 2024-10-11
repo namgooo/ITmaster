@@ -3,12 +3,16 @@ package com.namgoo.employee;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.namgoo.department.Department;
 import com.namgoo.department.DepartmentService;
@@ -24,19 +28,32 @@ public class EmployeeController {
 	
 	// 부서 목록
 	@GetMapping("/employee-list")
-	public String findEmployeeList(Model model) {
+	public String findEmployeeList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
 		List<Department> departmentList = this.departmentService.findDepartmentList();
 		model.addAttribute("departmentList", departmentList);
+		Page<Employee> employeeList = this.employeeService.findEmployeePagingList(keyword, pageable);
+		model.addAttribute("employeeList", employeeList);
+		
+		// 페이징
+		model.addAttribute("previous", pageable.previousOrFirst().getPageNumber()); // 이전 페이지 번호
+		model.addAttribute("next", pageable.next().getPageNumber()); // 다음 페이지 번호
+		model.addAttribute("hasPrevious", employeeList.hasPrevious()); // 이전 페이지가 있는지 여부 확인 (boolean)
+		model.addAttribute("hasNext", employeeList.hasNext()); // 다음 페이지가 있는지 여부 확인 (boolean)
+		model.addAttribute("currentPage", employeeList.getNumber()); // 현재 페이지 번호 (0부터 시작)
+		model.addAttribute("totalPages", employeeList.getTotalPages()); // 총 페이지 수
+		model.addAttribute("keyword", keyword); // 검색 시 키워드
+		model.addAttribute("first", pageable.first().getPageNumber()); // 첫 페이지
+		model.addAttribute("totalPages", employeeList.getTotalPages()); // 마지막 페이지
 		return "employee/employee_list";
 	}
-	
+
 	// 부서별 부서원 목록
 	@GetMapping("/employee-list/{id}")
 	public String findEmployeesByDepartment(@PathVariable("id") Integer id, Model model) {
-		Department department = this.departmentService.findDepartmentById(id);
 		List<Department> departmentList = this.departmentService.findDepartmentList();
 		model.addAttribute("departmentList", departmentList);
-		List<Employee> employeeList = this.employeeService.findEmployeeList();
+		Department department =  this.departmentService.findDepartmentById(id);
+		List<Employee> employeeList = this.employeeService.findEmployeesByDepartment(department);
 		model.addAttribute("employeeList", employeeList);
 		return "employee/employee_list";
 	}

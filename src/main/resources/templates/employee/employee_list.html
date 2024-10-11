@@ -3,48 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>employee-list</title>
+    <title>employee-list/ITmaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/employee/style.css">
 </head>
 <body>
-    <h2>부서원</h2>
-    
-    <ul th:each="department, loop : ${departmentList}">
-        <li><a th:text="${department.department}" th:href="@{|/employee/employee-list/${department.id}|}"></a></li>
-    </ul>
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>부서원</th>
-                    <th>등록일시</th>
-                    <th>삭제</th>
-                    <th>수정</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="employee, loop : ${employeeList}">
-                    <td th:text="${loop.count}"></td>
-                    <td th:text="${employee.employee}"></td>
-                    <td th:text="${employee.createDate}"></td>
-                    <td><a th:href="@{|/employee/employee-delete/${employee.id}}|">삭제하기</a></td>
-                    <td><a th:href="@{|/employee/employee-detail/${employee.id}|}">수정하기</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <hr>
-    <div>
-        <form th:action="@{/employee/employee-create}" method="post">
-        	<label for="department">부서</label>
-            <select id="department" name="department">
-                <option th:each="department, loop : ${departmentList}" th:text="${department.department}" th:value="${department.department}"></option>
-            </select>
-            <label for="employee">부서원명</label>
-            <input type="text" id="employee" name="employee">
-            <input type="submit" value="등록하기">
-        </form>
-    </div>
+    <div class="wrap">
+        <!------------------------------------------- 사이드바// ------------------------------------------->
+        <button class="sidebar_button" id="sidebar_button" onclick="toggleSidebar()">
+            <i class="fa-solid fa-chevron-right" id="sidebar_right"></i>
+            <i class="fa-solid fa-xmark" id="sidebar_xmark" style="display: none;"></i>
+        </button>
+        <div class="sidebar" id="sidebar">
 
+            <div class="header">
+                <a class="home" th:href="@{/root}">
+                    <i class="fa-solid fa-house"></i>
+                    <h2>HOME</h2>
+                </a>
+            </div>
+
+            <div class="list">
+                <ul>
+                    <li>
+                        <a class="department" th:href="@{/department/department-list}">
+                            <i class="fa-solid fa-people-group"></i>
+                            부서
+                        </a>
+                    </li>
+                    <li>
+                        <a class="employee" th:href="@{/employee/employee-list}">
+                            <i class="fa-solid fa-address-card"></i>
+                            부서원
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="category" th:href="@{/category/category-list}">
+                            <i class="fa-solid fa-icons"></i>
+                            카테고리
+                        </a>
+                    </li>
+                    <li>
+                        <a class="maker" th:href="@{/maker/maker-list}">
+                            <i class="fa-solid fa-book-open"></i>
+                            제조사
+                        </a>
+                    </li>
+                    <li>
+                        <a class="product" th:href="@{/product/product-list}">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            제품
+                        </a>
+                    </li>
+                    <li>
+                        <a class="product-info" th:href="@{/product-info/product-info-list}">
+                            <i class="fa-solid fa-box-archive"></i>
+                            제품 정보
+                        </a>
+                    </li>
+                    <li>
+                        <a class="desktop" th:href="@{/desktop/desktop-list}">
+                            <i class="fa-solid fa-desktop"></i>
+                            데스크탑
+                        </a>
+                    </li>
+                </ul>
+            </div>      
+        </div>
+        <!------------------------------------------- //사이드바 ------------------------------------------->
+
+        <!-- container// -->
+        <div class="container">
+            <!-- header// -->
+            <div class="header">
+                <div class="title">
+                    <i class="fa-solid fa-address-card"></i>
+                    <h2>부서원</h2>
+                </div>
+
+                <div class="search">
+                    <form th:action="@{/employee/employee-list}" method="get">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input class="searchbox" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="   검색어를 입력하세요.">
+                        <input class="searchbutton" type="submit" value="검색하기">
+                    </form>
+                </div>
+
+                <div class="create_button">
+                    <a th:href="@{/employee/employee-create}"><button>등록하기</button></a>
+                </div>
+            </div>
+            <!-- //header -->
+
+            <!-- section// -->
+            <div class="section">
+                <!-- side// -->
+                <div class="side">
+                    <div class="list">
+                        <ul th:each="department, loop : ${departmentList}">
+                            <li><a th:href="@{|/employee/employee-list/${department.id}|}" th:text="${department.department}"></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- //side -->
+                <!-- content// -->
+                <div class="content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>부서원</th>
+                                <th>등록일자</th>
+                                <th>삭제</th>
+                                <th>수정</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="list" th:each="employee, loop : ${employeeList}">
+                                <td th:text="${loop.count}"></td>
+                                <td th:text="${employee.id}" style="display: none;"></td>
+                                <td th:text="${employee.employee}"></td>
+                                <td th:text="${employee.createDate}"></td>
+                                <td><a th:href="@{|/employee/employee-delete/${employee.id}|}" onclick="return confirmDelete();">삭제</a></td>
+                                <td>수정</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- //content -->
+            </div>
+            <!-- //section -->
+            <!-- footer// -->
+            <div class="footer">
+                <!-- 페이징// -->
+                <div class="paging">
+                    <a class="first_page" th:href="@{|?page=${first}|}" role="button">첫 페이지</a>
+                    <a class="previous" th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button"></a>
+                    <span class="previous" th:if="${!hasPrevious}"></span>
+                        
+                    <span class="paging_number" th:each="pageNumber : ${#numbers.sequence(currentPage >= 2 ? (currentPage - 2) : 0, currentPage >= 2 ? (currentPage + 2 < totalPages ? currentPage + 2 : totalPages - 1) : (totalPages > 5 ? 4 : totalPages - 1))}">
+                        <a class="paging_number" th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
+                    </span>
+                                            
+                    <a class="next" th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button"></a>
+                    <span class="next" th:if="${!hasNext}"></span>
+                        <a class="last_page" th:href="@{|?page=${totalPages - 1}|}" role="button">마지막 페이지</a>
+                </div>
+                <!-- //페이징 -->
+            </div>
+            <!-- //footer -->
+        </div>
+        <!-- //container -->
+        <hr>
+        <form th:action="@{/employee/employee-create}" method="post">
+            <select id="department" name="department">
+                <option th:each="department, loop : ${departmentList}" th:text="${department.department}"></option>
+            </select>
+            <input type="text" id="employee" name="employee">
+            <input type="submit" value="등록">
+        </form>
+
+    </div>
+    <!-- //wrap -->
+   
+
+<!------------------------------------------------------------- script// ------------------------------------------------------------->    
+    <!-- 사이드바 동작// -->
+    <script>
+        function toggleSidebar() {
+            let sidebar = document.getElementById("sidebar");
+            let sidebar_button = document.getElementById("sidebar_button");
+
+            // 초기 위치를 설정
+            if (!sidebar.style.left) {
+                sidebar.style.left = "-200px";
+            }
+
+            if (sidebar.style.left === "-200px") {
+                sidebar.style.left = "0"; 
+                sidebar_button.style.left = "210px";
+            } else {
+                sidebar.style.left = "-200px";
+                sidebar_button.style.left = "10px";
+            }
+
+            if (sidebar.style.left === "0px") {
+                document.getElementById('sidebar_xmark').style.display = 'block';
+                document.getElementById('sidebar_right').style.display = 'none';
+                console.log("동작 확인 : 오늘쪽 아이콘");
+            } else {
+                document.getElementById('sidebar_xmark').style.display = 'none';
+                document.getElementById('sidebar_right').style.display = 'block';
+                console.log("동작 확인 : 닫기 아이콘");
+            }
+        }
+    </script>
+    <!-- //사이드바 동작 -->
+
+    <!-- 삭제 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmDelete() {
+	        return confirm("정말 삭제를 하시겠습니까?");
+	    }
+	</script>
+    <!-- //삭제 버튼 알림 -->
+<!------------------------------------------------------------- //script -------------------------------------------------------------> 
 </body>
 </html>
