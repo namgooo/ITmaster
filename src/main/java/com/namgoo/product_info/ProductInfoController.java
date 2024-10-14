@@ -51,7 +51,7 @@ public class ProductInfoController {
 	
 	// 제품 정보 목록
 	@GetMapping("/product-info-list")
-	public String findProductInfoList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
+	public String findProductInfoPagingList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
 		List<Category> categoryList = this.categoryService.findCategoryList();
 		model.addAttribute("categoryList", categoryList);
 		List<Maker> makerList = this.makerService.findMakerList();
@@ -63,7 +63,7 @@ public class ProductInfoController {
 		List<Employee> employeeList = this.employeeService.findEmployeeList();
 		model.addAttribute("employeeList", employeeList);
 		
-		Page<ProductInfo> productInfoList = this.productInfoService.findProductInfoList(keyword, pageable);
+		Page<ProductInfo> productInfoList = this.productInfoService.findProductInfoPagingList(keyword, pageable);
 		model.addAttribute("productInfoList", productInfoList);
 		
 		

@@ -222,7 +222,7 @@ ul {
     height: 100%;
 }
 
-.section {
+.container .section {
     width: 100%;
     height: 550px;
     border-radius: 20px;
@@ -230,76 +230,94 @@ ul {
     justify-content: space-between;
 }
 
-.section .side {
+.container .section .side {
     background-color: #2F5D62;
     width: 250px;
     height: 100%;
 }
 
-.section .side .list {
+.container .section .side .list {
     width: 100%;
     height: 100%;
+    margin-top: 20px;
 }
 
-.section .side .list ul li {
-    margin-top: 10px;
-    margin-left: 50%;
-    transform: translate(-50%, 0px);
+.container .section .side .list ul li {
+    margin-top: 0px;
+    margin-left: 20px;
     font-size: 20px;
+    width: 175px;
+    height: 35px;
+    line-height: 40px;
+    border-bottom: 1px solid #dbdbdb;
 }
 
-.section .content {
+.container .section .side .list ul li a {
+    color: #000000;
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: 0.5s ease;
+}
+
+.container .section .side .list ul li a:hover {
+    background: #585858;
+    color: white;
+    box-shadow: inset 175px 0px 0 #424242;
+}
+
+.container .section .content {
     background-color: #DFEEEA;
     width: 100%;
     height: 550px;
 }
 
-/* table */
-.section .content table {
+/* table// */
+.container .section .content table {
     border-collapse: collapse;
     width: 100%;
     text-align: center;
 }
 
-.section .content table th {
+.container .section .content table th {
     background-color: #A7C4BC;
 }
 
-.section .content table tr {
+.container .section .content table tr {
     border-bottom: 5px solid #DFEEEA;
     background-color: #FFFFFF;
     height: 50px;
 }
 
-.section .content table tr:nth-child(even) {
+.container .section .content table tr:nth-child(even) {
     background-color: #F2F2F2;
 }
 
-.section .content table .list:hover {
+.container .section .content table .list:hover {
 	background-color: #BDBDBD;
     color: #ffffff;
 }
 
-.section .content table .delete_button {
+.container .section .content table .delete_button {
     cursor: pointer;
     color: #FE2E9A;
 }
 
-.section .content table .delete_button:hover {
+.container .section .content table .delete_button:hover {
     color: #ffffff;
 }
 
-.section .content table .update_button {
+.container .section .content table .update_button {
     cursor: pointer;
     color: #0000FF;
 }
 
-.section .content table .update_button:hover {
+.container .section .content table .update_button:hover {
     color: #ffffff;
 }
-/* table */
+/* //table */
 
-/* footer */
+/* footer// */
 .container .footer {
     background-color: #DFEEEA;
     width: 100%;
@@ -362,7 +380,137 @@ ul {
     font-weight: bold;
     color: #2F5D62;
 }
-/* footer */
+/* //footer */
+
+/* create_modal// */
+.create_modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 0;
+    background-color: #DFEEEA;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    width: 350px;
+    height: 400px;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+.create_modal_background {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은 배경 */
+    z-index: 1;
+}
+
+.create_modal hr {
+    margin-top: 15px;
+    border: 1px solid #A7C4BC;
+}
+
+.create_modal .header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.create_modal .header h3 {
+    margin-left: 50%;
+    transform: translate(-50%);
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.create_modal .header button {
+    border: none;
+    background: none;
+    outline: none;
+    margin-right: 15px;
+    color: #A7C4BC;
+}
+
+.create_modal .header button:hover {
+    color: #5E8B7E;
+}
+
+.create_modal .header button:after {
+    content: "\f057";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 100;
+    font-size: 30px;
+}
+
+.create_modal .section {
+    width: 100%;
+    height: 100%;
+    background-color: #BDBDBD;
+}
+
+.create_modal .section .department {
+    width: 100%;
+    margin-left: 50%;
+    transform: translate(-50px, 0px);
+    font-size: 25px;
+}
+
+.create_modal .section .employee {
+    width: 100%;
+    margin-left: 25px;
+    margin-top: 30px;
+    font-size: 25px;
+}
+
+.create_modal .section .create select {
+    width: 70px;
+    height: 25px;
+    border: none;
+    border-radius: 10px;
+}
+
+.create_modal .section input {
+    width: 300px;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+.create_modal .section .submit {
+    width: 97%;
+    height: 50px;
+    margin-top: 15px;
+    margin-left: 50%;
+    transform: translate(-50%, 0px);
+    border-radius: 10px;
+}
+
+.create_modal .section .submit input {
+    width: 100%;
+    height: 100%;
+    background-color: #A7C4BC;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    font-size: 25px;
+}
+
+.create_modal .section .submit input:hover {
+    background-color: #5E8B7E;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+
+
+
+/* //create_modal 퇴근 */
 
 
 

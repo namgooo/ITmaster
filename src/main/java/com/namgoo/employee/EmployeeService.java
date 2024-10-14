@@ -47,16 +47,16 @@ public class EmployeeService {
 		return employeeList;
 	}
 	
-	// 부서원 목록 - 페이징
+	// 부서원 목록(페이징)
 	public Page<Employee> findEmployeePagingList(String keyword, Pageable pageable) {
 		Specification<Employee> specification = search(keyword);
 		Page<Employee> employeePagingList = this.employeeRepository.findAll(specification, pageable);
  		return employeePagingList;
 	}
 	
-	// 부서별 부서원 목록 - 페이징
-	public List<Employee> findEmployeesByDepartment(Department departmnet) {
-		List<Employee> employeeList = this.employeeRepository.findByDepartment(departmnet);
+	// 부서별 부서원 목록(페이징)
+	public Page<Employee> findEmployeesByDepartmentPagingList(Department departmnet, String keyword, Pageable pageable) {
+		Page<Employee> employeeList = this.employeeRepository.findByDepartmentAndEmployee(departmnet, keyword, pageable);
 		return employeeList;
 	}
 	

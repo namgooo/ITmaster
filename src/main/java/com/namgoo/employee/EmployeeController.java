@@ -28,7 +28,7 @@ public class EmployeeController {
 	
 	// 부서 목록
 	@GetMapping("/employee-list")
-	public String findEmployeeList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
+	public String findEmployeePagingList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
 		List<Department> departmentList = this.departmentService.findDepartmentList();
 		model.addAttribute("departmentList", departmentList);
 		Page<Employee> employeeList = this.employeeService.findEmployeePagingList(keyword, pageable);
@@ -49,12 +49,24 @@ public class EmployeeController {
 
 	// 부서별 부서원 목록
 	@GetMapping("/employee-list/{id}")
-	public String findEmployeesByDepartment(@PathVariable("id") Integer id, Model model) {
+	public String findEmployeesByDepartmentPagingList(@PathVariable("id") Integer id, @PageableDefault(size=10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
 		List<Department> departmentList = this.departmentService.findDepartmentList();
 		model.addAttribute("departmentList", departmentList);
 		Department department =  this.departmentService.findDepartmentById(id);
-		List<Employee> employeeList = this.employeeService.findEmployeesByDepartment(department);
+		Page <Employee> employeeList = this.employeeService.findEmployeesByDepartmentPagingList(department, keyword, pageable);
 		model.addAttribute("employeeList", employeeList);
+		
+		// 페이징
+		model.addAttribute("previous", pageable.previousOrFirst().getPageNumber()); // 이전 페이지 번호
+		model.addAttribute("next", pageable.next().getPageNumber()); // 다음 페이지 번호
+		model.addAttribute("hasPrevious", employeeList.hasPrevious()); // 이전 페이지가 있는지 여부 확인 (boolean)
+		model.addAttribute("hasNext", employeeList.hasNext()); // 다음 페이지가 있는지 여부 확인 (boolean)
+		model.addAttribute("currentPage", employeeList.getNumber()); // 현재 페이지 번호 (0부터 시작)
+		model.addAttribute("totalPages", employeeList.getTotalPages()); // 총 페이지 수
+		model.addAttribute("keyword", keyword); // 검색 시 키워드
+		model.addAttribute("first", pageable.first().getPageNumber()); // 첫 페이지
+		model.addAttribute("totalPages", employeeList.getTotalPages()); // 마지막 페이지
+		
 		return "employee/employee_list";
 	}
 	
