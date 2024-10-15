@@ -117,6 +117,7 @@
                         <thead>
                             <tr>
                                 <th>번호</th>
+                                <th>부서</th>
                                 <th>부서원</th>
                                 <th>등록일자</th>
                                 <th>삭제</th>
@@ -127,10 +128,11 @@
                             <tr class="list" th:each="employee, loop : ${employeeList}">
                                 <td th:text="${loop.count}"></td>
                                 <td th:text="${employee.id}" style="display: none;"></td>
+                                <td th:text="${employee.department.department}"></td>
                                 <td th:text="${employee.employee}"></td>
                                 <td th:text="${employee.createDate}"></td>
-                                <td><a class="delete_button" th:href="@{|/employee/employee-delete/${employee.id}|}" onclick="return confirmDelete();">삭제</a></td>
-                                <td><a class="update_button" href="">수정</a></td>
+                                <td><a class="delete_button" th:href="@{|/employee/employee-delete/${employee.id}|}" onclick="return confirmDelete();">삭제하기</a></td>
+                                <td><a class="update_button" onclick="openUpdateModal(this)">수정하기</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -159,15 +161,6 @@
             <!-- //footer -->
         </div>
         <!-- //container -->
-        <hr>
-        <form th:action="@{/employee/employee-create}" method="post">
-            <select id="department" name="department">
-                <option th:each="department, loop : ${departmentList}" th:text="${department.department}"></option>
-            </select>
-            <input type="text" id="employee" name="employee">
-            <input type="submit" value="등록">
-        </form>
-
     </div>
     <!-- //wrap -->
     
@@ -200,8 +193,46 @@
             </form>
         </div>
     </div>
-
     <!-- //부서원 등록 모달 -->
+
+    <!-- 부서원 수정 모달// -->
+    <div class="update_modal_background" id="updateModalBackground" onclick="closeUpdateModal()"></div>
+    <div class="update_modal" id="updateModal">
+        <div class="container1">
+            <div class="header">
+                <h3>부서원 상세</h3>
+                <button type="button" class="update_modal_close" id="updateModalClose" onclick="closeUpdateModal()"></button>
+            </div>
+            <hr>
+            <div class="section">
+                <div class="department detail">
+                    <span>부서 :</span>
+                    <span id="modalDepartment"></span>
+                </div>
+                <div class="employee detail">
+                    <span>부서원 :</span>
+                    <span id="modalEmployee"></span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="medle_line"></div>
+
+        <div class="container2">
+            <div class="header">
+                <h3>부서원 수정</h3>
+            </div>
+        </div>
+        <hr>
+        <div class="section">
+            <form th:action="@{/employee/employee-update}" method="post">
+                <input type="hidden" id="modalId" name="id">
+            </form>
+        </div>
+
+    </div>
+    <!-- //부서원 수정 모달 -->
 
 <!------------------------------------------------------------- script// ------------------------------------------------------------->    
     <!-- 사이드바 동작// -->
@@ -244,7 +275,7 @@
 	</script>
     <!-- //삭제 버튼 알림 -->
 
-    <!-- 부서원 등록 모달 -->
+    <!-- 부서원 등록 모달// -->
     <script>
         // 등록 모달 열기
         function openCreateModal() {
@@ -258,6 +289,32 @@
             document.getElementById('createModalBackground').style.display = 'none';
         }
     </script>
-<!------------------------------------------------------------- //script -------------------------------------------------------------> 
+    <!-- //부서원 등록 모달 -->
+
+    <!-- 부서원 수정 모달// -->
+    <script>
+        function openUpdateModal(updateButton) {
+            let row = updateButton.closest('tr');
+            // id
+            let employeeId = row.querySelector('td:nth-child(2)').textContent;
+            document.getElementById('modalId').value = employeeId;
+            // 부서
+            let department = row.querySelector('td:nth-child(3)').textContent;
+            document.getElementById('modalId').textContent = department;
+            // 부서원
+            let employee = row.querySelector('td:nth-child(4)').textContent;
+            document.getElementById('modalEmployee').textContent = employee;
+
+            document.getElementById('updateModal').style.display = 'block';
+            document.getElementById('updateModalBackground').style.display = 'block';
+        }
+
+        function closeUpdateModal() {
+                document.getElementById('updateModal').style.display = 'none';
+                document.getElementById('updateModalBackground').style.display = 'none';
+        }
+    </script>
+    <!-- //부서원 수정 모달 -->
+<!------------------------------------------------------------- //script 2024-10-15 퇴근 -------------------------------------------------------------> 
 </body>
 </html>
