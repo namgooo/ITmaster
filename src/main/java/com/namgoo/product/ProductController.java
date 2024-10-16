@@ -19,6 +19,8 @@ import com.namgoo.maker.MakerService;
 @RequestMapping("/product")
 public class ProductController {
 	
+	// 2024-10-16 퇴근
+	
 	@Autowired
 	private ProductService productService;
 	@Autowired

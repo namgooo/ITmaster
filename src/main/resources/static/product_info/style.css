@@ -1,5 +1,5 @@
-/* ITmaster */
-/* product_info_list */
+/* ITmaster - product_info */
+/* product_info_list// */
 @charset "UTF-8";
 
 * {
@@ -34,7 +34,7 @@ ul {
     height: 100%
 }
 
-/* ------------------------ 사이드바 ------------------------ */
+/* ------------------------ 사이드바// ------------------------ */
 .sidebar {
     width: 200px;
     background-color: #6E6E6E;
@@ -120,7 +120,7 @@ ul {
 .sidebar .list li i {
     margin-left: 10px;
 }
-/* ------------------------ 사이드바 ------------------------ */
+/* ------------------------ //사이드바 ------------------------ */
 
 .sun i{
     position: absolute;
@@ -134,8 +134,6 @@ ul {
 .container {
     background-color: #5858FA;
     position: absolute;
-    display: flex;
-    justify-content: center;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -146,13 +144,7 @@ ul {
     box-shadow: 10px 10px 5px gray;
 }
 
-.section {
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-}
-
-.section .header {
+.container .header {
     background-color: #5E8B7E;
     display: flex;
     justify-content: space-between;
@@ -161,7 +153,7 @@ ul {
     border-radius: 15px 15px 0px 0px;
 }
 
-.section .header .title {
+.container .header .title {
     width: 150px;
     height: 50px;
     margin-top: 25px;
@@ -171,12 +163,12 @@ ul {
     justify-content: center;
 }
 
-.section .header .title i {
+.container .header .title i {
     font-size: 25px;
     margin-right: 10px;
 }
 
-.section .header .search {
+.container .header .search {
     background-color:#ffffff;
     margin-top: 20px;
     margin-left: 55%;
@@ -185,18 +177,19 @@ ul {
     border-radius: 5px;
 }
 
-.section .header .search input {
+.container .header .search input {
     border: none;
     outline: none;
+    font-size: 20px;
 }
 
-.section .header .search i {
+.container .header .search i {
     margin-top: 10px;
     margin-left: 10px;
     font-size: 20px;
 }
 
-.section .header .search .searchbox {
+.container .header .search .searchbox {
     position: absolute;
     margin-left: 10px;
     margin-top: 0px;
@@ -205,11 +198,11 @@ ul {
     border-radius: 5px;
 }
 
-.section .header .search .searchbutton {
+.container .header .search .searchbutton {
     display: none;
 }
 
-.section .header .create_button {
+.container .header .create_button {
     margin-top: 20px;
     margin-right: 20px;
     width: 120px;
@@ -218,7 +211,7 @@ ul {
     text-align: center;
 }
 
-.section .header .create_button button {
+.container .header .create_button button {
     background-color: #DFEEEA;
     width: 100%;
     height: 100%;
@@ -227,16 +220,22 @@ ul {
     border: none;
 }
 
-.section .header .create_button button:hover {
+.container .header .create_button button:hover {
     background-color: #A7C4BC;
     color: #ffffff;
     font-weight: bold;
 }
 
-.section .header .create_button a {
+.container .header .create_button a {
     display: block;
     width: 100%;
     height: 100%;
+}
+
+.container .section {
+    width: 100%;
+    height: 550px;
+    border-radius: 20px;
 }
 
 .section .content {
@@ -245,7 +244,7 @@ ul {
     height: 550px;
 }
 
-/* table */
+/* table// */
 .section .content table {
     border-collapse: collapse;
     width: 100%;
@@ -288,10 +287,10 @@ ul {
 .section .content table .update_button:hover {
     color: #ffffff;
 }
-/* table */
+/* //table */
 
-/* footer */
-.section .footer {
+/* footer// */
+.container .footer {
     background-color: #DFEEEA;
     width: 100%;
     height: 70px;
@@ -300,36 +299,36 @@ ul {
     border-radius: 0px 0px 15px 15px;
 }
 
-.section .footer .paging {
+.container .footer .paging {
     position: relative;
     top: 20px;
 }
 
-.section .footer .paging .first_page {
+.container .footer .paging .first_page {
     color: #2F5D62;
 }
 
-.section .footer .paging .first_page:hover {
+.container .footer .paging .first_page:hover {
     color: #ffffff;
 }
 
-.section .footer .paging .last_page {
+.container .footer .paging .last_page {
     color: #2F5D62;
 }
 
-.section .footer .paging .last_page:hover {
+.container .footer .paging .last_page:hover {
     color: #ffffff;
 }
 
-.section .footer .paging .previous {
+.container .footer .paging .previous {
     color: #2F5D62;
 }
 
-.section .footer .paging .next {
+.container .footer .paging .next {
     color: #2F5D62;
 }
 
-.section .footer .paging .previous:before {
+.container .footer .paging .previous:before {
     content: "\f0a5";
     font-family: "Font Awesome 5 Free";
     font-weight: 100;
@@ -337,7 +336,7 @@ ul {
     margin-right: 10px;
 }
 
-.section .footer .paging .next:after {
+.container .footer .paging .next:after {
     content: "\f0a4";
     font-family: "Font Awesome 5 Free";
     font-weight: 100;
@@ -345,7 +344,7 @@ ul {
 	margin-left: 10px;
 }
 
-.section .footer .paging .paging_number {
+.container .footer .paging .paging_number {
     font-size: 25px;
 }
 
@@ -353,8 +352,9 @@ ul {
     font-weight: bold;
     color: #2F5D62;
 }
-/* footer */
+/* //footer */
 
+/* create_modal// */
 .create_modal {
     display: none;
     position: fixed;
@@ -369,7 +369,6 @@ ul {
     width: 550px;
     height: 650px;
     border-radius: 5px;
-    font-size: 20px;
 }
 
 .create_modal_background {
@@ -448,7 +447,7 @@ ul {
 
 .create_modal .section .create {
     margin-top: 10px;
-    margin-left: 30px;
+    margin-left: 20px;
 }
 
 .create_modal .section select {
@@ -459,17 +458,19 @@ ul {
 }
 
 .create_modal .section input {
-    width: 490px;
+    width: 500px;
     height: 30px;
     border-radius: 10px;
     border: none;
     outline: none;
+    padding-left: 10px;
+    font-size: 15px;
 }
 
 .create_modal .section .submit {
-    width: 97%;
+    width: 530px;
     height: 50px;
-    margin-top: 15px;
+    margin-top: 40px;
     margin-left: 50%;
     transform: translate(-50%, 0px);
     border-radius: 10px;
@@ -490,8 +491,9 @@ ul {
     color: #ffffff;
     font-weight: bold;
 }
+/* //create_modal */
 
-/* 수정 모달 */
+/* update_modal// */
 .update_modal {
     display: none;
     position: fixed;
@@ -507,6 +509,17 @@ ul {
     height: 650px;
     border-radius: 5px;
     font-size: 20px;
+}
+
+.update_modal_background {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은 배경 */
+    z-index: 1;
 }
 
 .update_modal .container1 {
@@ -649,12 +662,14 @@ ul {
     border-radius: 10px;
     border: none;
     outline: none;
+    padding-left: 10px;
+    font-size: 15px;
 }
 
 .update_modal .container2 .section .submit {
-    width: 97%;
+    width: 530px;
     height: 50px;
-    margin-top: 15px;
+    margin-top: 25px;
     margin-left: 50%;
     transform: translate(-50%, 0px);
     border-radius: 10px;
@@ -675,17 +690,8 @@ ul {
     color: #ffffff;
     font-weight: bold;
 }
-
-.update_modal_background {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은 배경 */
-    z-index: 1;
-}
+/* //update_modal */
+/* //product_info_list */
 
 
 

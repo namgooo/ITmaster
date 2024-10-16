@@ -78,7 +78,7 @@ public class ProductInfoService {
 		};
 	}
 	
-	// 제품 정보 목록 - 페이징
+	// 제품 정보 검색 목록(페이징)
 	public Page<ProductInfo> findProductInfoPagingList(String keyword, Pageable pageable) {
 		Specification<ProductInfo> specification = search(keyword);
 		Page<ProductInfo> productInfoList = this.productInfoRepository.findAll(specification, pageable);

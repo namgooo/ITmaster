@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductInfoRepository extends JpaRepository<ProductInfo, Integer>, JpaSpecificationExecutor<ProductInfo> {
 		
-	// 제품 정보 검색 목록 - 페이징
+	// 제품 정보 검색 목록(페이징)
 	public Page<ProductInfo> findAll(Specification<ProductInfo> specification, Pageable pageable);
 	 
 	// 제품 정보 단일 조회

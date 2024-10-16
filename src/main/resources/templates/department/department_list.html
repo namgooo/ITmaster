@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>department/ITmaster</title>
+    <title>ITmaster-department_list</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,84 +11,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/department/style.css">
 
-    <!-- 사이드바 동작 -->
-    <script>
-        function toggleSidebar() {
-            let sidebar = document.getElementById("sidebar");
-            let sidebar_button = document.getElementById("sidebar_button");
-
-            // 초기 위치를 설정
-            if (!sidebar.style.left) {
-                sidebar.style.left = "-200px";
-            }
-
-            if (sidebar.style.left === "-200px") {
-                sidebar.style.left = "0"; 
-                sidebar_button.style.left = "210px";
-            } else {
-                sidebar.style.left = "-200px";
-                sidebar_button.style.left = "10px";
-            }
-
-            if (sidebar.style.left === "0px") {
-                document.getElementById('sidebar_xmark').style.display = 'block';
-                document.getElementById('sidebar_right').style.display = 'none';
-                console.log("동작 확인 : 오른쪽 아이콘");
-            } else {
-                document.getElementById('sidebar_xmark').style.display = 'none';
-                document.getElementById('sidebar_right').style.display = 'block';
-                console.log("동작 확인 : 닫기 아이콘");
-            }
-        }
-    </script>
-
-    <!-- 삭제 버튼 알림 -->
-	<script type="text/javascript">
-	    function confirmDelete() {
-	        return confirm("정말 삭제를 하시겠습니까?");
-	    }
-	</script>
-
-    <!-- 부서 등록 모달 -->
-    <script>
-        function openCreateModal() {
-        	console.log("진입확인");
-            document.getElementById('createModal').style.display = 'block';
-            document.getElementById('createModalBackground').style.display = 'block';
-        }
-        function closeCreateModal() {
-            document.getElementById('createModal').style.display = 'none';
-            document.getElementById('createModalBackground').style.display = 'none';
-        }   
-    </script>
-
-    <!-- 부서 수정 모달 -->
-    <script>
-        function openUpdateModal(updateButton) {
-            let row = updateButton.closest('tr');
-            // id
-            let departmentId = row.querySelector('td:nth-child(2)').textContent;
-            document.getElementById('modalId').value = departmentId;         
-            // 부서
-            let department = row.querySelector('td:nth-child(3)').textContent;
-            document.getElementById('modalDepartment').textContent = department;
-
-            document.getElementById('updateModal').style.display = 'block';
-            document.getElementById('updateModalBackground').style.display = 'block';
-        }
-
-        // 수정 모달 닫기
-        function closeUpdateModal() {
-            document.getElementById('updateModal').style.display = 'none';
-            document.getElementById('updateModalBackground').style.display = 'none';
-        }
-    </script>
-
 </head>
 <body>
+    <!-- wrap// -->
 	<div class="wrap">
-
-        <!------------------------------------------- 사이드바 ------------------------------------------->
+        <!------------------------------------------- 사이드바// ------------------------------------------->
         <button class="sidebar_button" id="sidebar_button" onclick="toggleSidebar()">
             <i class="fa-solid fa-chevron-right" id="sidebar_right"></i>
             <i class="fa-solid fa-xmark" id="sidebar_xmark" style="display: none;"></i>
@@ -150,37 +77,39 @@
                 </ul>
             </div>      
         </div>
-        <!------------------------------------------- 사이드바 ------------------------------------------->
+        <!------------------------------------------- //사이드바 ------------------------------------------->
 
-        <!-- container -->
+        <!-- icon// -->
+        <div class="sun">
+            <i class="sun fa-solid fa-sun"></i>
+        </div>
+        <!-- //icon -->
+
+        <!-- container// -->
 		<div class="container">
+            <!-- header// -->
+            <div class="header">
+                <div class="title">
+                    <i class="fa-solid fa-people-group"></i>
+                    <h2>부서</h2>
+                </div>
 
-			<!-- section -->
-			<div class="section">
+                <div class="search">
+                    <form th:action="@{/department/department-list}" method="get">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input class="searchbox" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="   검색어를 입력하세요.">
+                        <input class="searchbutton" type="submit" value="검색하기">
+                    </form>
+                </div>
 
-                <!-- header -->
-				<div class="header">
-
-					<div class="title">
-						<i class="fa-solid fa-people-group"></i>
-						<h2>부서</h2>
-					</div>
-
-					<div class="search">
-						<form th:action="@{/department/department-list}" method="get">
-							<i class="fa-solid fa-magnifying-glass"></i>
-							<input class="searchbox" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="   검색어를 입력하세요.">
-							<input class="searchbutton" type="submit" value="검색하기">
-						</form>
-					</div>
-
-					<div class="create_button">
-						<a onclick="openCreateModal()"><button>등록하기</button></a>
-					</div>
-
-				</div>
-				
-                <!-- content -->
+                <div class="create_button">
+                    <a onclick="openCreateModal()"><button>등록하기</button></a>
+                </div>
+            </div>
+            <!-- //header -->
+			<!-- section// -->
+			<div class="section">				
+                <!-- content// -->
 				<div class="content">
 					<table>
 						<thead>
@@ -198,37 +127,40 @@
                                 <td th:text="${department.id}" style="display: none;"></td>
 								<td th:text="${department.department}"></td>
                                 <td th:text="${#temporals.format(department.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-								<td><a class="delete_button" th:href="@{|/department/department-delete/${department.id}|}" onclick="return confirmDelete();">삭제하기</a></td>
-								<td><a class="update_button" onclick="openUpdateModal(this)">수정하기</a></td>
+								<td><a class="delete_button" th:href="@{|/department/department-delete/${department.id}|}" onclick="return confirmDelete();">삭제</a></td>
+								<td><a class="update_button" onclick="openUpdateModal(this)">수정</a></td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
-                <!-- footer -->
-                <div class="footer">
-                    <!-- 페이징 -->
-                    <div class="paging">
-                		<a class="first_page" th:href="@{|?page=${first}|}" role="button">첫 페이지</a>
-                        <a class="previous" th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button"></a>
-                        <span class="previous" th:if="${!hasPrevious}"></span>
-                       	
-					    <span class="paging_number" th:each="pageNumber : ${#numbers.sequence(currentPage >= 2 ? (currentPage - 2) : 0, currentPage >= 2 ? (currentPage + 2 < totalPages ? currentPage + 2 : totalPages - 1) : (totalPages > 5 ? 4 : totalPages - 1))}">
-					        <a class="paging_number" th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
-					    </span>
-					                           
-                        <a class="next" th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button"></a>
-                        <span class="next" th:if="${!hasNext}"></span>
-                       	<a class="last_page" th:href="@{|?page=${totalPages - 1}|}" role="button">마지막 페이지</a>
-                    </div>
-                    <!-- 페이징 -->
-                </div>
-                <!-- footer -->
+                <!-- //content -->
 			</div>
-
+            <!-- //section -->
+            <!-- footer// -->
+            <div class="footer">
+                <!-- 페이징// -->
+                <div class="paging">
+                    <a class="first_page" th:href="@{|?page=${first}|}" role="button">첫 페이지</a>
+                    <a class="previous" th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button"></a>
+                    <span class="previous" th:if="${!hasPrevious}"></span>
+                        
+                    <span class="paging_number" th:each="pageNumber : ${#numbers.sequence(currentPage >= 2 ? (currentPage - 2) : 0, currentPage >= 2 ? (currentPage + 2 < totalPages ? currentPage + 2 : totalPages - 1) : (totalPages > 5 ? 4 : totalPages - 1))}">
+                        <a class="paging_number" th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
+                    </span>
+                                            
+                    <a class="next" th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button"></a>
+                    <span class="next" th:if="${!hasNext}"></span>
+                        <a class="last_page" th:href="@{|?page=${totalPages - 1}|}" role="button">마지막 페이지</a>
+                </div>
+                <!-- //페이징 -->
+            </div>
+            <!-- //footer -->
 		</div>
+        <!-- //container -->
     </div>
+    <!-- //wrap -->
 
-    <!-- 부서 등록 모달 -->
+    <!-- 부서 등록 모달// -->
     <div class="create_modal_background" id="createModalBackground" onclick="closeCreateModal()"></div>
     <div class="create_modal" id="createModal">
         <div class="header">
@@ -244,13 +176,14 @@
                     <input type="text" id="department" name="department">
                 </div>
                 <div class="submit create">
-                    <input type="submit" value="등록하기">
+                    <input type="submit" value="등록하기" onclick="return confirmCreate();">
                 </div>
             </form>
         </div>
     </div>
+    <!-- //부서 등록 모달 -->
 
-    <!-- 부서 수정 모달 -->
+    <!-- 부서 수정 모달// -->
     <div class="update_modal_background" id="updateModalBackground" onclick="closeUpdateModal()"></div>
     <div class="update_modal" id="updateModal">
         <div class="container1">
@@ -282,13 +215,105 @@
                         <input class="department" type="text" id="department" name="department">
                     </div>
                     <div class="submit update">
-                        <input type="submit" value="등록하기">
+                        <input type="submit" value="수정하기" onclick="return confirmUpdate();">
                     </div>
                 </form>
             </div>
         </div>
-
     </div>
+    <!-- //부서 수정 모달 -->
+<!------------------------------------------------------------- script// ------------------------------------------------------------->
+    <!-- 사이드바 동작// -->
+    <script>
+        function toggleSidebar() {
+            let sidebar = document.getElementById("sidebar");
+            let sidebar_button = document.getElementById("sidebar_button");
 
+            // 초기 위치를 설정
+            if (!sidebar.style.left) {
+                sidebar.style.left = "-200px";
+            }
+
+            if (sidebar.style.left === "-200px") {
+                sidebar.style.left = "0"; 
+                sidebar_button.style.left = "210px";
+            } else {
+                sidebar.style.left = "-200px";
+                sidebar_button.style.left = "10px";
+            }
+
+            if (sidebar.style.left === "0px") {
+                document.getElementById('sidebar_xmark').style.display = 'block';
+                document.getElementById('sidebar_right').style.display = 'none';
+                console.log("동작 확인 : 오른쪽 아이콘");
+            } else {
+                document.getElementById('sidebar_xmark').style.display = 'none';
+                document.getElementById('sidebar_right').style.display = 'block';
+                console.log("동작 확인 : 닫기 아이콘");
+            }
+        }
+    </script>
+    <!-- //사이드바 동작 -->
+
+    <!-- 삭제 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmDelete() {
+	        return confirm("정말 삭제를 하시겠습니까?");
+	    }
+	</script>
+    <!-- //삭제 버튼 알림 -->
+
+    <!-- 등록 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmCreate() {
+	        return confirm("정말 등록을 하시겠습니까?");
+	    }
+	</script>
+    <!-- //등록 버튼 알림 -->
+
+    <!-- 수정 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmUpdate() {
+	        return confirm("정말 수정을 하시겠습니까?");
+	    }
+	</script>
+    <!-- //수정 버튼 알림 -->
+
+    <!-- 부서 등록 모달// -->
+    <script>
+        function openCreateModal() {
+            document.getElementById('createModal').style.display = 'block';
+            document.getElementById('createModalBackground').style.display = 'block';
+        }
+        function closeCreateModal() {
+            document.getElementById('createModal').style.display = 'none';
+            document.getElementById('createModalBackground').style.display = 'none';
+        }   
+    </script>
+    <!-- //부서 등록 모달 -->
+
+    <!-- 부서 수정 모달// -->
+    <script>
+        function openUpdateModal(updateButton) {
+            let row = updateButton.closest('tr');
+            // id
+            let departmentId = row.querySelector('td:nth-child(2)').textContent;
+            document.getElementById('modalId').value = departmentId;         
+            // 부서
+            let department = row.querySelector('td:nth-child(3)').textContent;
+            document.getElementById('modalDepartment').textContent = department;
+
+            document.getElementById('updateModal').style.display = 'block';
+            document.getElementById('updateModalBackground').style.display = 'block';
+        }
+
+        // 수정 모달 닫기
+        function closeUpdateModal() {
+            document.getElementById('updateModal').style.display = 'none';
+            document.getElementById('updateModalBackground').style.display = 'none';
+        }
+    </script>
+    <!-- //부서 수정 모달 -->
+<!------------------------------------------------------------- //script -------------------------------------------------------------> 
 </body>
 </html>

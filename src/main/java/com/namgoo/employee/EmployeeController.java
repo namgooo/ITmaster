@@ -26,7 +26,7 @@ public class EmployeeController {
 	@Autowired
 	private DepartmentService departmentService;
 	
-	// 부서 목록
+	// 부서 검색 목록(페이징)
 	@GetMapping("/employee-list")
 	public String findEmployeePagingList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
 		List<Department> departmentList = this.departmentService.findDepartmentList();
@@ -47,7 +47,7 @@ public class EmployeeController {
 		return "employee/employee_list";
 	}
 
-	// 부서별 부서원 목록
+	// 부서별 부서원 검색 목록(페이징)
 	@GetMapping("/employee-list/{id}")
 	public String findEmployeesByDepartmentPagingList(@PathVariable("id") Integer id, @PageableDefault(size=10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
 		List<Department> departmentList = this.departmentService.findDepartmentList();

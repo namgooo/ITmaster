@@ -3,41 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>maker_list</title>
+    <title>ITmaster-maker_list</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/maker/style.css">
+
 </head>
 <body>
-    <h2>제조사</h2>
+    <!-- wrap// -->
+    <div class="wrap">
+        <!------------------------------------------- 사이드바// ------------------------------------------->
+        <button class="sidebar_button" id="sidebar_button" onclick="toggleSidebar()">
+            <i class="fa-solid fa-chevron-right" id="sidebar_right"></i>
+            <i class="fa-solid fa-xmark" id="sidebar_xmark" style="display: none;"></i>
+        </button>
+        <div class="sidebar" id="sidebar">
 
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>카테고리</th>
-                    <th>제조사명</th>
-                    <th>등록일시</th>
-                    <th>삭제</th>
-                    <th>수정</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="maker, loop : ${makerList}">
-                    <td th:text="${loop.count}"></td>
-                    <td th:text="${maker.maker}"></td>
-                    <td th:text="${maker.createDate}"></td>
-                    <td><a th:href="@{|/maker/maker-delete/${maker.id}|}">삭제하기</a></td>
-                    <td><a th:href="@{|/maker/maker-detail/${maker.id}|}">수정하기</a></td>
-                </tr>
-            </tbody>
-        </table>
+            <div class="header">
+                <a class="home" th:href="@{/root}">
+                    <i class="fa-solid fa-house"></i>
+                    <h2>HOME</h2>
+                </a>
+            </div>
+
+            <div class="list">
+                <ul>
+                    <li>
+                        <a class="department" th:href="@{/department/department-list}">
+                            <i class="fa-solid fa-people-group"></i>
+                            부서
+                        </a>
+                    </li>
+                    <li>
+                        <a class="employee" th:href="@{/employee/employee-list}">
+                            <i class="fa-solid fa-address-card"></i>
+                            부서원
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="category" th:href="@{/category/category-list}">
+                            <i class="fa-solid fa-icons"></i>
+                            카테고리
+                        </a>
+                    </li>
+                    <li>
+                        <a class="maker" th:href="@{/maker/maker-list}">
+                            <i class="fa-solid fa-book-open"></i>
+                            제조사
+                        </a>
+                    </li>
+                    <li>
+                        <a class="product" th:href="@{/product/product-list}">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            제품
+                        </a>
+                    </li>
+                    <li>
+                        <a class="product-info" th:href="@{/product-info/product-info-list}">
+                            <i class="fa-solid fa-box-archive"></i>
+                            제품 정보
+                        </a>
+                    </li>
+                    <li>
+                        <a class="desktop" th:href="@{/desktop/desktop-list}">
+                            <i class="fa-solid fa-desktop"></i>
+                            데스크탑
+                        </a>
+                    </li>
+                </ul>
+            </div>      
+        </div>
+        <!------------------------------------------- //사이드바 ------------------------------------------->
+
+        <!-- icon// -->
+        <div class="sun">
+            <i class="sun fa-solid fa-sun"></i>
+        </div>
+        <!-- //icon -->
+
+        <!-- container// -->
+        <div class="container">
+            <!-- header// -->
+            <div class="header">
+                <div class="title">
+                    <i class="fa-solid fa-book-open"></i>
+                    <h2>제조사</h2>
+                </div>
+
+                <div class="search">
+                    <form th:action="@{/maker/maker-list}" method="get">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input class="searchbox" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="   검색어를 입력하세요.">
+                        <input class="searchbutton" type="submit" value="검색하기">
+                    </form>
+                </div>
+
+                <div class="create_button">
+                    <a onclick="openCreateModal()"><button>등록하기</button></a>
+                </div>
+            </div>
+            <!-- //header -->
+            <!-- section// -->
+            <div class="section">
+                <!-- content// -->
+                <div class="content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>제조사</th>
+                                <th>등록일시</th>
+                                <th>삭제</th>
+                                <th>수정</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="maker, loop : ${makerList}">
+                                <td th:text="${loop.count}"></td>
+                                <td th:text="${maker.id}" style="display: none;"></td>
+                                <td th:text="${maker.maker}"></td>
+                                <td th:text="${#temporals.format(maker.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td><a class="delete_button" th:href="@{|/maker/maker-delete/${maker.id}|}" onclick="return confirmDelete()">삭제</a></td>
+                                <td><a class="update_button" onclick="openUpdateModal(this)">수정</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- //content -->
+            </div>
+            <!-- //section -->
+            <!-- footer// -->
+            <div class="footer">
+                <!-- 페이징// -->
+                <div class="paging">
+                    <a class="first_page" th:href="@{|?page=${first}|}" role="button">첫 페이지</a>
+                    <a class="previous" th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button"></a>
+                    <span class="previous" th:if="${!hasPrevious}"></span>
+                        
+                    <span class="paging_number" th:each="pageNumber : ${#numbers.sequence(currentPage >= 2 ? (currentPage - 2) : 0, currentPage >= 2 ? (currentPage + 2 < totalPages ? currentPage + 2 : totalPages - 1) : (totalPages > 5 ? 4 : totalPages - 1))}">
+                        <a class="paging_number" th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
+                    </span>
+                                            
+                    <a class="next" th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button"></a>
+                    <span class="next" th:if="${!hasNext}"></span>
+                        <a class="last_page" th:href="@{|?page=${totalPages - 1}|}" role="button">마지막 페이지</a>
+                </div>
+                <!-- //페이징 -->
+            </div>
+            <!-- //footer -->
+        </div>
+        <!-- //container -->
     </div>
-    <hr>
-    <div>
-        <form th:action="@{/maker/maker-create}" method="post">
-            <label for="maker">제조사명</label>
-            <input type="text" id="maker" name="maker">
-            <input type="submit" value="등록하기">
-        </form>
+    <!-- //wrap -->
+
+    <!-- 제조사 등록 모달// -->
+    <div class="create_modal_background" id="createModalBackground" onclick="closeCreateModal()"></div>
+    <div class="create_modal" id="createModal">
+        <div class="header">
+            <h3>제조사 등록</h3>
+            <button type="button" class="create_modal_close" id="createModalClose" onclick="closeCreateModal()"></button>
+        </div>
+        <hr>
+        <div class="section">
+            <form th:action="@{/maker/maker-create}" method="post">
+                <div class="maker create">
+                    <label for="maker">제조사</label>
+                    <br>
+                    <input type="text" id="maker" name="maker">
+                </div>
+                <div class="submit create">
+                    <input type="submit" value="등록하기" onclick="return confirmCreate();">
+                </div>
+            </form>
+        </div>
     </div>
+    <!-- //제조사 등록 모달 -->
+
+    <!-- 제조사 수정 모달// -->
+    <div class="update_modal_background" id="updateModalBackground" onclick="closeUpdateModal()"></div>
+    <div class="update_modal" id="updateModal">
+        <div class="container1">
+            <div class="header">
+                <h3>제조사 상세</h3>
+                <button type="button" class="update_modal_close" id="updateModalClose" onclick="closeUpdateModal()"></button>
+            </div>
+            <hr>
+            <div class="section">
+                <div class="maker detail">
+                    <span>제조사 :</span>
+                    <span id="modalMaker"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="meddle_line"></div>
+
+        <div class="container2">
+            <div class="header">
+                <h3>제조사 수정</h3>
+            </div>
+            <hr>
+            <div class="section">
+                <form th:action="@{/maker/maker-update}" method="post">
+                    <input type="hidden" id="modalId" name="id">
+                    <div class="maker update">
+                        <label for="maker">제조사</label>
+                        <input class="maker" type="text" id="maker" name="maker">
+                    </div>
+                    <div class="submit update">
+                        <input type="submit" value="수정하기" onclick="return confirmUpdate();">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- //제조사 수정 모달 -->
+
+
+<!------------------------------------------------------------- script// ------------------------------------------------------------->
+    <!-- 사이드바 동작// -->
+    <script>
+        function toggleSidebar() {
+            let sidebar = document.getElementById("sidebar");
+            let sidebar_button = document.getElementById("sidebar_button");
+
+            // 초기 위치를 설정
+            if (!sidebar.style.left) {
+                sidebar.style.left = "-200px";
+            }
+
+            if (sidebar.style.left === "-200px") {
+                sidebar.style.left = "0"; 
+                sidebar_button.style.left = "210px";
+            } else {
+                sidebar.style.left = "-200px";
+                sidebar_button.style.left = "10px";
+            }
+
+            if (sidebar.style.left === "0px") {
+                document.getElementById('sidebar_xmark').style.display = 'block';
+                document.getElementById('sidebar_right').style.display = 'none';
+                console.log("동작 확인 : 오른쪽 아이콘");
+            } else {
+                document.getElementById('sidebar_xmark').style.display = 'none';
+                document.getElementById('sidebar_right').style.display = 'block';
+                console.log("동작 확인 : 닫기 아이콘");
+            }
+        }
+    </script>
+    <!-- //사이드바 동작 -->
+
+    <!-- 삭제 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmDelete() {
+	        return confirm("정말 삭제를 하시겠습니까?");
+	    }
+	</script>
+    <!-- //삭제 버튼 알림 -->
+
+    <!-- 등록 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmCreate() {
+	        return confirm("정말 등록을 하시겠습니까?");
+	    }
+	</script>
+    <!-- //등록 버튼 알림 -->
+
+    <!-- 수정 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmUpdate() {
+	        return confirm("정말 수정을 하시겠습니까?");
+	    }
+	</script>
+    <!-- //수정 버튼 알림 -->
+
+    <!-- 제조사 등록 모달// -->
+    <script>
+        function openCreateModal() {
+            document.getElementById('createModal').style.display = 'block';
+            document.getElementById('createModalBackground').style.display = 'block';
+        }
+        function closeCreateModal() {
+            document.getElementById('createModal').style.display = 'none';
+            document.getElementById('createModalBackground').style.display = 'none';
+        }   
+    </script>
+    <!-- //제조사 등록 모달 -->
+
+    <!-- 제조사 수정 모달// -->
+    <script>
+        function openUpdateModal(updateButton) {
+            console.log("진입 확인");
+            let row = updateButton.closest('tr');
+            // id
+            let makerId = row.querySelector('td:nth-child(2)').textContent;
+            document.getElementById('modalId').value = makerId;         
+            // 제조사
+            let maker = row.querySelector('td:nth-child(3)').textContent;
+            document.getElementById('modalMaker').textContent = maker;
+
+            document.getElementById('updateModal').style.display = 'block';
+            document.getElementById('updateModalBackground').style.display = 'block';
+        }
+
+        // 수정 모달 닫기
+        function closeUpdateModal() {
+            document.getElementById('updateModal').style.display = 'none';
+            document.getElementById('updateModalBackground').style.display = 'none';
+        }
+    </script>
+    <!-- //제조사 수정 모달 -->
+
+<!------------------------------------------------------------- //script ------------------------------------------------------------->
+
+
 </body>
 </html>

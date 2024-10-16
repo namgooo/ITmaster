@@ -1,0 +1,250 @@
+/* ITmaster - product */
+/* product_list// */
+@charset "UTF-8";
+
+* {
+	margin: 0px;
+	padding: 0px;
+    font-family: "Jua", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+html, body {
+	width: 100%;
+    height: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style-type: none;
+}
+
+@keyframes rotate{
+    0%{transform: rotate(0deg);}
+    100%{transform: rotate(360deg);}
+}
+
+.wrap {
+    background-color: #F5F5F5;
+    width: 100%;
+    height: 100%
+}
+
+/* ------------------------ 사이드바// ------------------------ */
+.sidebar {
+    width: 200px;
+    background-color: #6E6E6E;
+    color: white;
+    position: fixed;
+    height: 100%;
+    left: -200px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar a{
+    color: #ffffff;
+}
+
+.sidebar_button {
+    position: fixed;
+    left: 10px;
+    top: 50%;
+    transform: translate(0px, -50%);
+    background-color: transparent;
+    color: #000000;
+    border: none;
+    cursor: pointer;
+    transition: left 0.3s ease;
+    z-index: 1000;
+    font-size: 50px;
+}
+
+.sidebar .header .home {
+    width: 100%;
+    height: 40px;
+    font-size: 30px;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 20px;
+    color: #000000;
+}
+
+.sidebar .header .home:hover {
+    color: #ffffff;
+}
+
+.sidebar .header .home i {
+    margin-top: 1px;
+    margin-left: 15px;
+    margin-right: 5px;
+    font-size: 40px;
+}
+
+.sidebar .header .home h3 {
+    margin-left: 5px;
+}
+
+.sidebar .list {
+    width: 140px;
+    height: 400px;
+    margin-top: 50px;
+    margin-left: 12px;
+}
+
+.sidebar .list li {
+    width: 170px;
+    height: 40px;
+    line-height: 45px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.sidebar .list li a {
+    color: #000000;
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: 0.5s ease;
+}
+
+.sidebar .list li a:hover {
+    background: #585858;
+    color: white;
+    box-shadow: inset 170px 0px 0 #424242;
+}
+
+.sidebar .list li i {
+    margin-left: 10px;
+}
+/* ------------------------ //사이드바 ------------------------ */
+
+.sun i{
+    position: absolute;
+    top: 35px;
+    left: 35px;
+    color: #F7D358;
+    font-size: 500px;
+    animation: rotate 10s linear infinite;
+}
+
+.container {
+    background-color: #5858FA;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1600px;
+    height: 700px;
+    border-radius: 10px;
+    border-radius: 20px;
+    box-shadow: 10px 10px 5px gray;
+}
+
+.container .header {
+    background-color: #5E8B7E;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 80px;
+    border-radius: 15px 15px 0px 0px;
+}
+
+.container .header .title {
+    width: 150px;
+    height: 50px;
+    margin-top: 25px;
+    margin-left: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.container .header .title i {
+    font-size: 25px;
+    margin-right: 10px;
+}
+
+.container .header .search {
+    background-color:#ffffff;
+    margin-top: 20px;
+    margin-left: 55%;
+    width: 300px;
+    height: 40px;
+    border-radius: 5px;
+}
+
+.container .header .search input {
+    border: none;
+    outline: none;
+    font-size: 20px;
+}
+
+.container .header .search i {
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 20px;
+}
+
+.container .header .search .searchbox {
+    position: absolute;
+    margin-left: 10px;
+    margin-top: 0px;
+    width: 250px;
+    height: 40px;
+    border-radius: 5px;
+}
+
+.container .header .search .searchbutton {
+    display: none;
+}
+
+.container .header .create_button {
+    margin-top: 20px;
+    margin-right: 20px;
+    width: 120px;
+    height: 40px;
+    border: none;
+    text-align: center;
+}
+
+.container .header .create_button button {
+    background-color: #DFEEEA;
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    border-radius: 10px;
+    border: none;
+}
+
+.container .header .create_button button:hover {
+    background-color: #A7C4BC;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.container .header .create_button a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.container .section {
+    width: 100%;
+    height: 550px;
+    border-radius: 20px;
+}
+
+.section .content {
+    background-color: #DFEEEA;
+    width: 100%;
+    height: 550px;
+}
+
+
+
+
+/* //product_list */

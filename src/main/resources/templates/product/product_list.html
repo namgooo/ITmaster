@@ -3,9 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>product</title>
+    <title>ITmaster-product_list</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/product/style.css">
+
 </head>
 <body>
+    <!-- wrap// -->
+    <div class="wrap">
+        <!------------------------------------------- 사이드바// ------------------------------------------->
+        <button class="sidebar_button" id="sidebar_button" onclick="toggleSidebar()">
+            <i class="fa-solid fa-chevron-right" id="sidebar_right"></i>
+            <i class="fa-solid fa-xmark" id="sidebar_xmark" style="display: none;"></i>
+        </button>
+        <div class="sidebar" id="sidebar">
+
+            <div class="header">
+                <a class="home" th:href="@{/root}">
+                    <i class="fa-solid fa-house"></i>
+                    <h2>HOME</h2>
+                </a>
+            </div>
+
+            <div class="list">
+                <ul>
+                    <li>
+                        <a class="department" th:href="@{/department/department-list}">
+                            <i class="fa-solid fa-people-group"></i>
+                            부서
+                        </a>
+                    </li>
+                    <li>
+                        <a class="employee" th:href="@{/employee/employee-list}">
+                            <i class="fa-solid fa-address-card"></i>
+                            부서원
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="category" th:href="@{/category/category-list}">
+                            <i class="fa-solid fa-icons"></i>
+                            카테고리
+                        </a>
+                    </li>
+                    <li>
+                        <a class="maker" th:href="@{/maker/maker-list}">
+                            <i class="fa-solid fa-book-open"></i>
+                            제조사
+                        </a>
+                    </li>
+                    <li>
+                        <a class="product" th:href="@{/product/product-list}">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            제품
+                        </a>
+                    </li>
+                    <li>
+                        <a class="product-info" th:href="@{/product-info/product-info-list}">
+                            <i class="fa-solid fa-box-archive"></i>
+                            제품 정보
+                        </a>
+                    </li>
+                    <li>
+                        <a class="desktop" th:href="@{/desktop/desktop-list}">
+                            <i class="fa-solid fa-desktop"></i>
+                            데스크탑
+                        </a>
+                    </li>
+                </ul>
+            </div>      
+        </div>
+        <!------------------------------------------- //사이드바 ------------------------------------------->
+
+        <!-- icon// -->
+        <div class="sun">
+            <i class="sun fa-solid fa-sun"></i>
+        </div>
+        <!-- //icon -->
+
+        <!-- container// -->
+        <div>
+            <!-- header// -->
+            <div class="header">
+                <div class="title">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <h2>제품</h2>
+                </div>
+
+                <div class="search">
+                    <form th:action="@{/product/product-list}" method="get">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input class="searchbox" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="   검색어를 입력하세요.">
+                        <input class="searchbutton" type="submit" value="검색하기">
+                    </form>
+                </div>
+
+                <div class="create_button">
+                    <a onclick="openCreateModal()"><button>등록하기</button></a>
+                </div>
+            </div>
+            <!-- //header -->
+            <!-- section// -->
+            <div class="section">
+                <!-- content// -->
+                <div class="content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>카테고리</th>
+                                <th>제조사</th>
+                                <th>제품명</th>
+                                <th>등록일시</th>
+                                <th>삭제</th>
+                                <th>수정</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="product, loop : ${productList}">
+                                <td th:text="${loop.count}"></td>
+                                <td th:text="${product.category.category}"></td>
+                                <td th:text="${product.maker.maker}"></td>
+                                <td th:text="${product.product}"></td>
+                                <td th:text="${product.createDate}"></td>
+                                <td><a th:href="@{|/product/product-delete/${product.id}|}" onclick="">삭제하기</a></td>
+                                <td><a >수정하기</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- //content -->
+            </div>
+            <!-- //section -->
+        </div>
+        <!-- //container -->
+
+
+    </div>
+    <!-- //wrap -->
+
+<!------------------------------------------------------------- script// ------------------------------------------------------------->
+    <!-- 사이드바 동작// -->
+    <script>
+        function toggleSidebar() {
+            let sidebar = document.getElementById("sidebar");
+            let sidebar_button = document.getElementById("sidebar_button");
+
+            // 초기 위치를 설정
+            if (!sidebar.style.left) {
+                sidebar.style.left = "-200px";
+            }
+
+            if (sidebar.style.left === "-200px") {
+                sidebar.style.left = "0"; 
+                sidebar_button.style.left = "210px";
+            } else {
+                sidebar.style.left = "-200px";
+                sidebar_button.style.left = "10px";
+            }
+
+            if (sidebar.style.left === "0px") {
+                document.getElementById('sidebar_xmark').style.display = 'block';
+                document.getElementById('sidebar_right').style.display = 'none';
+                console.log("동작 확인 : 오른쪽 아이콘");
+            } else {
+                document.getElementById('sidebar_xmark').style.display = 'none';
+                document.getElementById('sidebar_right').style.display = 'block';
+                console.log("동작 확인 : 닫기 아이콘");
+            }
+        }
+    </script>
+    <!-- //사이드바 동작 -->
+
+    <!-- 삭제 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmDelete() {
+	        return confirm("정말 삭제를 하시겠습니까?");
+	    }
+	</script>
+    <!-- //삭제 버튼 알림 -->
+
+    <!-- 등록 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmCreate() {
+	        return confirm("정말 등록을 하시겠습니까?");
+	    }
+	</script>
+    <!-- //등록 버튼 알림 -->
+
+    <!-- 수정 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmUpdate() {
+	        return confirm("정말 수정을 하시겠습니까?");
+	    }
+	</script>
+    <!-- //수정 버튼 알림 -->
+
+
+<!------------------------------------------------------------- script// ------------------------------------------------------------->
+
+
+
     <h2>제품</h2>
 
     <div>

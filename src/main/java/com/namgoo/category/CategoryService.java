@@ -5,13 +5,52 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import com.namgoo.department.Department;
+import com.namgoo.employee.Employee;
+import com.namgoo.maker.Maker;
+import com.namgoo.product.Product;
+import com.namgoo.product_info.ProductInfo;
+
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 @Service
 public class CategoryService {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	// 카테고리 검색
+	private Specification<Category> search(String keyword) {
+		return new Specification<>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Predicate toPredicate(Root<Category> c, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				Predicate filterPredicate = cb.or(
+						cb.like(c.get("category"), "%" + keyword + "%")	
+				);
+				query.distinct(true);
+				query.orderBy(cb.desc(c.get("createDate")));
+				return filterPredicate;
+			}
+		};
+	}
+	
+	// 카테고리 검색 목록(페이징)
+	public Page<Category> findCategoryPagingList(String keyword, Pageable pageable) {
+		Specification<Category> specification = search(keyword);
+		Page<Category> categoryList = this.categoryRepository.findAll(specification, pageable);
+		return categoryList;
+	}
 	
 	// 카테고리 목록
 	public List<Category> findCategoryList () {

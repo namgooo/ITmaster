@@ -3,316 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>product-info-list/ITmaster</title>
+    <title>ITmaster-product_info_list</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/product_info/style.css">
-
-    <!-- 제품 정보 등록 모달 -->
-    <script>
-        // 등록 모달 열기
-        function openCreateModal() {
-            document.getElementById('createModal').style.display = 'block';
-            document.getElementById('createModalBackground').style.display = 'block';
-        }
-
-        // 모달 닫기
-        function closeCreateModal() {
-            document.getElementById('createModal').style.display = 'none';
-            document.getElementById('createModalBackground').style.display = 'none';
-        }
-    </script>
-
-    <!-- 제품 정보 수정 모달 -->
-    <script>
-        // 수정 모달 열기
-        function openUpdateModal(updateButton) {
-            let row = updateButton.closest('tr');
-            // id
-            let productInfoId = row.querySelector('td:nth-child(2)').textContent;
-            document.getElementById('modalId').value = productInfoId;         
-            // 카테고리
-            let category = row.querySelector('td:nth-child(3)').textContent;
-            document.getElementById('modalCategory').textContent = category;
-            // 제조사
-            let maker = row.querySelector('td:nth-child(4)').textContent;
-            document.getElementById('modalMaker').textContent = maker;
-            // 제품
-            let product = row.querySelector('td:nth-child(5)').textContent;
-            document.getElementById('modalProduct').textContent = product;
-            // 제품명
-            let simpleName = row.querySelector('td:nth-child(6)').textContent;
-            document.getElementById('modalSimpleName').textContent = simpleName;
-            // 사용상태
-            let useStatus = row.querySelector('td:nth-child(7)').textContent;
-            document.getElementById('modalUseStatus').textContent = useStatus;
-            // 제품상태
-            let itemStatus = row.querySelector('td:nth-child(8)').textContent;
-            document.getElementById('modalItemStatus').textContent = itemStatus;
-            // 현위치
-            let location = row.querySelector('td:nth-child(9)').textContent;
-            document.getElementById('modalLocation').textContent = location;
-            // 구매가격
-            let price = row.querySelector('td:nth-child(10)').textContent;
-            document.getElementById('modalPrice').textContent = price;
-            // 구매년도
-            let buyYear = row.querySelector('td:nth-child(11)').textContent;
-            document.getElementById('modalBuyYear').textContent = buyYear;
-            // 고유식별번호
-            let uniqueCode = row.querySelector('td:nth-child(12)').textContent;
-            document.getElementById('modalUniqueCode').textContent = uniqueCode;
-            // 부서
-            let department = row.querySelector('td:nth-child(13)').textContent;
-            document.getElementById('modalDepartment').textContent = department;
-            // 부서원
-            let employee = row.querySelector('td:nth-child(14)').textContent;
-            document.getElementById('modalEmployee').textContent = employee;
-            // 등록일자
-            let createDate = row.querySelector('td:nth-child(15)').textContent;
-            document.getElementById('modalCreateDate').textContent = createDate;
-            // 비고
-            let productComment = row.querySelector('td:nth-child(16)').textContent;
-            document.getElementById('modalProductComment').textContent = productComment;
-
-            document.getElementById('updateModal').style.display = 'block';
-            document.getElementById('updateModalBackground').style.display = 'block';
-        }
-
-        // 수정 모달 닫기
-        function closeUpdateModal() {
-            document.getElementById('updateModal').style.display = 'none';
-            document.getElementById('updateModalBackground').style.display = 'none';
-        }
-    </script>
-
-    <!-- 삭제 버튼 알림 -->
-	<script type="text/javascript">
-	    function confirmDelete() {
-	        return confirm("정말 삭제를 하시겠습니까?");
-	    }
-	</script>
-
-    <!-- 카테고리 선택 시 해당 제품 조회(등록) -->
-    <script>
-        function createCategoryFetchProducts() {
-            let createCategory = document.getElementById("createCategory").value;
-            if(createCategory !== "") {
-                fetch("/product-info/getProductsByCategory?category=" + encodeURIComponent(createCategory))
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(products) {
-                    let productSelect = document.getElementById("createProduct");
-                    productSelect.innerHTML = "<option value=''>선택하기</option>";
-                    products.forEach(function(product){
-                        let option = document.createElement("option");
-                        option.value = product;
-                        option.text = product;
-                        productSelect.appendChild(option);
-                    });
-                })
-                .catch(function(error){
-                });
-            }
-        }
-    </script>
-    
-    <!-- 제조사 선택 시 해당 제품 조회(등록) -->
-    <script>
-        function createMakerFetchProducts() {
-            let createMaker = document.getElementById("createMaker").value;
-            if(createMaker !== "") {
-                fetch("/product-info/getProductsByMaker?maker=" + encodeURIComponent(createMaker))
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(products) {
-                    let productSelect = document.getElementById("createProduct");
-                    productSelect.innerHTML = "<option value=''>선택하기</option>";
-                    products.forEach(function(product){
-                        let option = document.createElement("option");
-                        option.value = product;
-                        option.text = product;
-                        productSelect.appendChild(option);
-                    });
-                })
-                .catch(function(error){
-                });
-            }
-        }
-    </script>
-
-    <!-- 부서 선택 시 해당 부서원 조회(등록) -->
-    <script>
-        function createDepartmentFetchEmployees() {
-            let createDepartment = document.getElementById("createDepartment").value;
-            if(createDepartment !== "") {
-                fetch("/product-info/getEmployeesByDepartment?department=" + encodeURIComponent(createDepartment))
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(employees) {
-                    let employeeSelect = document.getElementById("createEmployee");
-                    employeeSelect.innerHTML = "<option value=''>선택하기</option>";
-                    employees.forEach(function(employee){
-                        let option = document.createElement("option");
-                        option.value = employee;
-                        option.text = employee;
-                        employeeSelect.appendChild(option);
-                    });
-                })
-                .catch(function(error){
-                });
-            }
-        }
-    </script>
 	
-    <!-- 카테고리 선택 시 해당 제품 조회(수정) -->
-    <script>
-        function updateCategoryFetchProducts() {
-            let updateCategory = document.getElementById("updateCategory").value;
-            if(updateCategory !== "") {
-                fetch("/product-info/getProductsByCategory?category=" + encodeURIComponent(updateCategory))
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(products) {
-                    let productSelect = document.getElementById("updateProduct");
-                    productSelect.innerHTML = "<option value=''>선택하기</option>";
-                    products.forEach(function(product){
-                        let option = document.createElement("option");
-                        option.value = product;
-                        option.text = product;
-                        productSelect.appendChild(option);
-                    });
-                })
-                .catch(function(error){
-                    console.log("필터링 실패");
-                });
-            }
-        }
-    </script>
-    
-    <!-- 제조사 선택 시 해당 제품 조회(수정) -->
-    <script>
-        function updateMakerFetchProducts() {
-            let updateMaker = document.getElementById("updateMaker").value;
-            if(updateMaker !== "") {
-                fetch("/product-info/getProductsByMaker?maker=" + encodeURIComponent(updateMaker))
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(products) {
-                    let productSelect = document.getElementById("updateProduct");
-                    productSelect.innerHTML = "<option value=''>선택하기</option>";
-                    products.forEach(function(product){
-                        let option = document.createElement("option");
-                        option.value = product;
-                        option.text = product;
-                        productSelect.appendChild(option);
-                    });
-                })
-                .catch(function(error){
-                    console.log("필터링 실패");
-                });
-            }
-        }
-    </script>
-
-    <!-- <script>
-        function updateCategoryAndMakerFetchProducts() {
-            let updateCategory = document.getElementById("updateCategory").value;
-            let updateMaker = document.getElementById("updateMaker").value;
-
-            if(updateCategory !== "" || updateMaker !== "") {
-                let url = "/product-info/getProducts?";
-                if(updateCategory !== "") {
-                    url += "category" + encodeURIComponent(updateCategory) + "&";
-                }
-                if(updateMaker !== "") {
-                    url += "maker" + encodeURIComponent(updateMaker);
-                }
-                
-                fetch(url)
-                .then(function(response){
-                    return response.json();
-                });
-                then(function(products){
-                    let productSelect = document.getElementById("updateProduct");
-                    productSelect.innerHTML = "<option value=''>선택하기</option>"
-                    products.forEach(function(product){
-                        let option = document.createElement("option");
-                        option.value = product;
-                        option.text = product;
-                        productSelect.appendChild(option);
-                    });
-                })
-                .catch(function(error){
-                    console.log("필터링 실패");
-                });
-            }
-        }
-    </script> -->
-
-    <!-- 부서 선택 시 해당 부서원 조회(수정) -->
-    <script>
-        function updateDepartmentFetchEmployees() {
-            let updateDepartment = document.getElementById("updateDepartment").value;
-            if(updateDepartment !== "") {
-                fetch("/product-info/getEmployeesByDepartment?department=" + encodeURIComponent(updateDepartment))
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(employees) {
-                    let employeeSelect = document.getElementById("updateEmployee");
-                    employeeSelect.innerHTML = "<option value=''>선택하기</option>";
-                    employees.forEach(function(employee){
-                        let option = document.createElement("option");
-                        option.value = employee;
-                        option.text = employee;
-                        employeeSelect.appendChild(option);
-                    });
-                })
-                .catch(function(error){
-                });
-            }
-        }
-    </script>
-
-    <!-- 사이드바 동작// -->
-    <script>
-        function toggleSidebar() {
-            let sidebar = document.getElementById("sidebar");
-            let sidebar_button = document.getElementById("sidebar_button");
-
-            // 초기 위치를 설정
-            if (!sidebar.style.left) {
-                sidebar.style.left = "-200px";
-            }
-
-            if (sidebar.style.left === "-200px") {
-                sidebar.style.left = "0"; 
-                sidebar_button.style.left = "210px";
-            } else {
-                sidebar.style.left = "-200px";
-                sidebar_button.style.left = "10px";
-            }
-
-            if (sidebar.style.left === "0px") {
-                document.getElementById('sidebar_xmark').style.display = 'block';
-                document.getElementById('sidebar_right').style.display = 'none';
-                console.log("동작 확인 : 오늘쪽 아이콘");
-            } else {
-                document.getElementById('sidebar_xmark').style.display = 'none';
-                document.getElementById('sidebar_right').style.display = 'block';
-                console.log("동작 확인 : 닫기 아이콘");
-            }
-        }
-    </script>
-    <!-- //사이드바 동작 -->
 </head>
 <body>
     <div class="wrap">
@@ -380,39 +78,36 @@
         </div>
     <!------------------------------------------- //사이드바 ------------------------------------------->
 
+        <!-- icon// -->
         <div class="sun">
             <i class="sun fa-solid fa-sun"></i>
         </div>
+        <!-- //icon -->
 
         <!-- container// -->
         <div class="container">
+            <!-- header// -->
+            <div class="header">
+                <div class="title">
+                    <i class="fa-solid fa-box-archive"></i>
+                    <h2>제품 정보</h2>
+                </div>
 
+                <div class="search">
+                    <form th:action="@{/product-info/product-info-list}" method="get">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input class="searchbox" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="   검색어를 입력하세요.">
+                        <input class="searchbutton" type="submit" value="검색하기">
+                    </form>
+                </div>
+
+                <div class="create_button">
+                    <a onclick="openCreateModal()"><button>등록하기</button></a>
+                </div>
+            </div>
+            <!-- //header -->
             <!-- section// -->
             <div class="section">
-
-                <!-- header// -->
-                <div class="header">
-
-                    <div class="title">
-                        <i class="fa-solid fa-box-archive"></i>
-                        <h2>제품 정보</h2>
-                    </div>
-
-                    <div class="search">
-                        <form th:action="@{/product-info/product-info-list}" method="get">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <input class="searchbox" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="   검색어를 입력하세요.">
-                            <input class="searchbutton" type="submit" value="검색하기">
-                        </form>
-                    </div>
-
-                    <div class="create_button">
-                        <a onclick="openCreateModal()"><button>등록하기</button></a>
-                    </div>
-
-                </div>
-                <!-- //header -->
-
                 <!-- content// -->
                 <div class="content">
                     <table>
@@ -461,34 +156,33 @@
                     </table>
                 </div>
                 <!-- //content -->
-
-                <!-- footer// -->
-                <div class="footer">
-                    <!-- 페이징// -->
-                    <div class="paging">
-                		<a class="first_page" th:href="@{|?page=${first}|}" role="button">첫 페이지</a>
-                        <a class="previous" th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button"></a>
-                        <span class="previous" th:if="${!hasPrevious}"></span>
-                       	
-					    <span class="paging_number" th:each="pageNumber : ${#numbers.sequence(currentPage >= 2 ? (currentPage - 2) : 0, currentPage >= 2 ? (currentPage + 2 < totalPages ? currentPage + 2 : totalPages - 1) : (totalPages > 5 ? 4 : totalPages - 1))}">
-					        <a class="paging_number" th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
-					    </span>
-					                           
-                        <a class="next" th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button"></a>
-                        <span class="next" th:if="${!hasNext}"></span>
-                       	<a class="last_page" th:href="@{|?page=${totalPages - 1}|}" role="button">마지막 페이지</a>
-                    </div>
-                    <!-- //페이징 -->
-                </div>
-                <!-- //footer -->
             </div>
             <!-- //section -->
+            <!-- footer// -->
+            <div class="footer">
+                <!-- 페이징// -->
+                <div class="paging">
+                    <a class="first_page" th:href="@{|?page=${first}|}" role="button">첫 페이지</a>
+                    <a class="previous" th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button"></a>
+                    <span class="previous" th:if="${!hasPrevious}"></span>
+                        
+                    <span class="paging_number" th:each="pageNumber : ${#numbers.sequence(currentPage >= 2 ? (currentPage - 2) : 0, currentPage >= 2 ? (currentPage + 2 < totalPages ? currentPage + 2 : totalPages - 1) : (totalPages > 5 ? 4 : totalPages - 1))}">
+                        <a class="paging_number" th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
+                    </span>
+                                            
+                    <a class="next" th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button"></a>
+                    <span class="next" th:if="${!hasNext}"></span>
+                        <a class="last_page" th:href="@{|?page=${totalPages - 1}|}" role="button">마지막 페이지</a>
+                </div>
+                <!-- //페이징 -->
+            </div>
+            <!-- //footer -->
         </div>
         <!-- //container -->
     </div>
+    <!-- //wrap -->
     
-    <!-- 제품 정보 등록 모달 -->
-    <!-- 제품 정보 등록 모달 백그라운드 -->
+    <!-- 제품 정보 등록 모달// -->
     <div class="create_modal_background" id="createModalBackground" onclick="closeCreateModal()"></div>
     <div class="create_modal" id="createModal">
         <div class="header">
@@ -590,15 +284,14 @@
                     <input type="text" id="uniqueCode" name="uniqueCode">
                 </div>
                 <div class="submit create">
-                    <input type="submit" value="등록하기">
+                    <input type="submit" value="등록하기" onclick="return confirmCreate();">
                 </div>
             </form>
         </div>
     </div>
-    <!-- 제품 정보 등록 모달 -->
+    <!-- //제품 정보 등록 모달 -->
 
-    <!-- 제품 정보 수정 모달 -->
-    <!-- 제품 정보 수정 모달 백그라운드 -->
+    <!-- 제품 정보 수정 모달// -->
     <div class="update_modal_background" id="updateModalBackground" onclick="closeUpdateModal()"></div>
 
     <div class="update_modal" id="updateModal">
@@ -784,16 +477,309 @@
                         <input type="text" id="uniqueCode" name="uniqueCode">
                     </div>
                     <div class="submit update">
-                        <input type="submit" value="등록하기">
+                        <input type="submit" value="수정하기" onclick="return confirmUpdate();">
                     </div>
                 </form>
             </div>
             
         </div>
     </div>
-    <!-- 제품 정보 수정 모달 -->
-    
+    <!-- //제품 정보 수정 모달 -->
 
+<!------------------------------------------------------------- script// ------------------------------------------------------------->
+    <!-- 사이드바 동작// -->
+    <script>
+        function toggleSidebar() {
+            let sidebar = document.getElementById("sidebar");
+            let sidebar_button = document.getElementById("sidebar_button");
+
+            // 초기 위치를 설정
+            if (!sidebar.style.left) {
+                sidebar.style.left = "-200px";
+            }
+
+            if (sidebar.style.left === "-200px") {
+                sidebar.style.left = "0"; 
+                sidebar_button.style.left = "210px";
+            } else {
+                sidebar.style.left = "-200px";
+                sidebar_button.style.left = "10px";
+            }
+
+            if (sidebar.style.left === "0px") {
+                document.getElementById('sidebar_xmark').style.display = 'block';
+                document.getElementById('sidebar_right').style.display = 'none';
+                console.log("동작 확인 : 오늘쪽 아이콘");
+            } else {
+                document.getElementById('sidebar_xmark').style.display = 'none';
+                document.getElementById('sidebar_right').style.display = 'block';
+                console.log("동작 확인 : 닫기 아이콘");
+            }
+        }
+    </script>
+    <!-- //사이드바 동작 -->
+
+    <!-- 삭제 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmDelete() {
+	        return confirm("정말 삭제를 하시겠습니까?");
+	    }
+	</script>
+    <!-- //삭제 버튼 알림 -->
+
+    <!-- 등록 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmCreate() {
+	        return confirm("정말 등록을 하시겠습니까?");
+	    }
+	</script>
+    <!-- //등록 버튼 알림 -->
+
+    <!-- 수정 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmUpdate() {
+	        return confirm("정말 수정을 하시겠습니까?");
+	    }
+	</script>
+    <!-- //수정 버튼 알림 -->
+
+    <!-- 제품 정보 등록 모달// -->
+    <script>
+        // 등록 모달 열기
+        function openCreateModal() {
+            document.getElementById('createModal').style.display = 'block';
+            document.getElementById('createModalBackground').style.display = 'block';
+        }
+
+        // 모달 닫기
+        function closeCreateModal() {
+            document.getElementById('createModal').style.display = 'none';
+            document.getElementById('createModalBackground').style.display = 'none';
+        }
+    </script>
+    <!-- //제품 정보 등록 모달 -->
+
+    <!-- 제품 정보 수정 모달// -->
+    <script>
+        // 수정 모달 열기
+        function openUpdateModal(updateButton) {
+            let row = updateButton.closest('tr');
+            // id
+            let productInfoId = row.querySelector('td:nth-child(2)').textContent;
+            document.getElementById('modalId').value = productInfoId;         
+            // 카테고리
+            let category = row.querySelector('td:nth-child(3)').textContent;
+            document.getElementById('modalCategory').textContent = category;
+            // 제조사
+            let maker = row.querySelector('td:nth-child(4)').textContent;
+            document.getElementById('modalMaker').textContent = maker;
+            // 제품
+            let product = row.querySelector('td:nth-child(5)').textContent;
+            document.getElementById('modalProduct').textContent = product;
+            // 제품명
+            let simpleName = row.querySelector('td:nth-child(6)').textContent;
+            document.getElementById('modalSimpleName').textContent = simpleName;
+            // 사용상태
+            let useStatus = row.querySelector('td:nth-child(7)').textContent;
+            document.getElementById('modalUseStatus').textContent = useStatus;
+            // 제품상태
+            let itemStatus = row.querySelector('td:nth-child(8)').textContent;
+            document.getElementById('modalItemStatus').textContent = itemStatus;
+            // 현위치
+            let location = row.querySelector('td:nth-child(9)').textContent;
+            document.getElementById('modalLocation').textContent = location;
+            // 구매가격
+            let price = row.querySelector('td:nth-child(10)').textContent;
+            document.getElementById('modalPrice').textContent = price;
+            // 구매년도
+            let buyYear = row.querySelector('td:nth-child(11)').textContent;
+            document.getElementById('modalBuyYear').textContent = buyYear;
+            // 고유식별번호
+            let uniqueCode = row.querySelector('td:nth-child(12)').textContent;
+            document.getElementById('modalUniqueCode').textContent = uniqueCode;
+            // 부서
+            let department = row.querySelector('td:nth-child(13)').textContent;
+            document.getElementById('modalDepartment').textContent = department;
+            // 부서원
+            let employee = row.querySelector('td:nth-child(14)').textContent;
+            document.getElementById('modalEmployee').textContent = employee;
+            // 등록일자
+            let createDate = row.querySelector('td:nth-child(15)').textContent;
+            document.getElementById('modalCreateDate').textContent = createDate;
+            // 비고
+            let productComment = row.querySelector('td:nth-child(16)').textContent;
+            document.getElementById('modalProductComment').textContent = productComment;
+
+            document.getElementById('updateModal').style.display = 'block';
+            document.getElementById('updateModalBackground').style.display = 'block';
+        }
+
+        // 수정 모달 닫기
+        function closeUpdateModal() {
+            document.getElementById('updateModal').style.display = 'none';
+            document.getElementById('updateModalBackground').style.display = 'none';
+        }
+    </script>
+    <!-- //제품 정보 수정 모달 -->
+
+    <!-- 카테고리 선택 시 해당 제품 조회(등록)// -->
+    <script>
+        function createCategoryFetchProducts() {
+            let createCategory = document.getElementById("createCategory").value;
+            if(createCategory !== "") {
+                fetch("/product-info/getProductsByCategory?category=" + encodeURIComponent(createCategory))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(products) {
+                    let productSelect = document.getElementById("createProduct");
+                    productSelect.innerHTML = "<option value=''>선택하기</option>";
+                    products.forEach(function(product){
+                        let option = document.createElement("option");
+                        option.value = product;
+                        option.text = product;
+                        productSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                });
+            }
+        }
+    </script>
+    <!-- //카테고리 선택 시 해당 제품 조회(등록) -->
     
+    <!-- 제조사 선택 시 해당 제품 조회(등록)// -->
+    <script>
+        function createMakerFetchProducts() {
+            let createMaker = document.getElementById("createMaker").value;
+            if(createMaker !== "") {
+                fetch("/product-info/getProductsByMaker?maker=" + encodeURIComponent(createMaker))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(products) {
+                    let productSelect = document.getElementById("createProduct");
+                    productSelect.innerHTML = "<option value=''>선택하기</option>";
+                    products.forEach(function(product){
+                        let option = document.createElement("option");
+                        option.value = product;
+                        option.text = product;
+                        productSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                });
+            }
+        }
+    </script>
+    <!-- //제조사 선택 시 해당 제품 조회(등록) -->
+
+    <!-- 부서 선택 시 해당 부서원 조회(등록)// -->
+    <script>
+        function createDepartmentFetchEmployees() {
+            let createDepartment = document.getElementById("createDepartment").value;
+            if(createDepartment !== "") {
+                fetch("/product-info/getEmployeesByDepartment?department=" + encodeURIComponent(createDepartment))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(employees) {
+                    let employeeSelect = document.getElementById("createEmployee");
+                    employeeSelect.innerHTML = "<option value=''>선택하기</option>";
+                    employees.forEach(function(employee){
+                        let option = document.createElement("option");
+                        option.value = employee;
+                        option.text = employee;
+                        employeeSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                });
+            }
+        }
+    </script>
+    <!-- //부서 선택 시 해당 부서원 조회(등록) -->
+
+    <!-- 카테고리 선택 시 해당 제품 조회(수정)// -->
+    <script>
+        function updateCategoryFetchProducts() {
+            let updateCategory = document.getElementById("updateCategory").value;
+            if(updateCategory !== "") {
+                fetch("/product-info/getProductsByCategory?category=" + encodeURIComponent(updateCategory))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(products) {
+                    let productSelect = document.getElementById("updateProduct");
+                    productSelect.innerHTML = "<option value=''>선택하기</option>";
+                    products.forEach(function(product){
+                        let option = document.createElement("option");
+                        option.value = product;
+                        option.text = product;
+                        productSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                    console.log("필터링 실패");
+                });
+            }
+        }
+    </script>
+    <!-- //카테고리 선택 시 해당 제품 조회(수정) -->
+
+    <!-- 제조사 선택 시 해당 제품 조회(수정)// -->
+    <script>
+        function updateMakerFetchProducts() {
+            let updateMaker = document.getElementById("updateMaker").value;
+            if(updateMaker !== "") {
+                fetch("/product-info/getProductsByMaker?maker=" + encodeURIComponent(updateMaker))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(products) {
+                    let productSelect = document.getElementById("updateProduct");
+                    productSelect.innerHTML = "<option value=''>선택하기</option>";
+                    products.forEach(function(product){
+                        let option = document.createElement("option");
+                        option.value = product;
+                        option.text = product;
+                        productSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                    console.log("필터링 실패");
+                });
+            }
+        }
+    </script>
+    <!-- //제조사 선택 시 해당 제품 조회(수정) -->
+
+    <!-- 부서 선택 시 해당 부서원 조회(수정)// -->
+    <script>
+        function updateDepartmentFetchEmployees() {
+            let updateDepartment = document.getElementById("updateDepartment").value;
+            if(updateDepartment !== "") {
+                fetch("/product-info/getEmployeesByDepartment?department=" + encodeURIComponent(updateDepartment))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(employees) {
+                    let employeeSelect = document.getElementById("updateEmployee");
+                    employeeSelect.innerHTML = "<option value=''>선택하기</option>";
+                    employees.forEach(function(employee){
+                        let option = document.createElement("option");
+                        option.value = employee;
+                        option.text = employee;
+                        employeeSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error){
+                });
+            }
+        }
+    </script>
+    <!-- //부서 선택 시 해당 부서원 조회(수정) -->
+<!------------------------------------------------------------- //script -------------------------------------------------------------> 
+
 </body>
 </html>

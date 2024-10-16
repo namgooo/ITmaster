@@ -1,5 +1,5 @@
-/* ITmaster - employee */
-/* employee-list// */
+/* ITmaster - category */
+/* category_list// */
 @charset "UTF-8";
 
 * {
@@ -122,6 +122,15 @@ ul {
 }
 /* ------------------------ //사이드바 ------------------------ */
 
+.sun i{
+    position: absolute;
+    top: 35px;
+    left: 35px;
+    color: #F7D358;
+    font-size: 500px;
+    animation: rotate 10s linear infinite;
+}
+
 .container {
     background-color: #5858FA;
     position: absolute;
@@ -227,93 +236,55 @@ ul {
     width: 100%;
     height: 550px;
     border-radius: 20px;
-    display: flex;
-    justify-content: space-between;
 }
 
-.container .section .side {
-    background-color: #2F5D62;
-    width: 250px;
-    height: 100%;
-}
-
-.container .section .side .list {
-    width: 100%;
-    height: 100%;
-    margin-top: 20px;
-}
-
-.container .section .side .list ul li {
-    margin-top: 0px;
-    margin-left: 20px;
-    font-size: 20px;
-    width: 175px;
-    height: 35px;
-    line-height: 40px;
-    border-bottom: 1px solid #dbdbdb;
-}
-
-.container .section .side .list ul li a {
-    color: #000000;
-    display: block;
-    width: 100%;
-    height: 100%;
-    transition: 0.5s ease;
-}
-
-.container .section .side .list ul li a:hover {
-    background: #585858;
-    color: white;
-    box-shadow: inset 175px 0px 0 #424242;
-}
-
-.container .section .content {
+.section .content {
     background-color: #DFEEEA;
     width: 100%;
     height: 550px;
 }
 
 /* table// */
-.container .section .content table {
+.section .content table {
     border-collapse: collapse;
     width: 100%;
     text-align: center;
 }
 
-.container .section .content table th {
+.section .content table th {
     background-color: #A7C4BC;
 }
 
-.container .section .content table tr {
+.section .content table tr {
     border-bottom: 5px solid #DFEEEA;
     background-color: #FFFFFF;
     height: 50px;
 }
 
-.container .section .content table tr:nth-child(even) {
+.section .content table tr:nth-child(even) {
     background-color: #F2F2F2;
 }
 
-.container .section .content table .list:hover {
+.section .content table .list:hover {
 	background-color: #BDBDBD;
     color: #ffffff;
 }
 
-.container .section .content table .delete_button {
+.section .content table .delete_button {
     cursor: pointer;
     color: #FE2E9A;
 }
 
-.container .section .content table .delete_button:hover {
+.section .content table .delete_button:hover {
     color: #ffffff;
 }
 
-.container .section .content table .update_button {
+.section .content table .update_button {
     cursor: pointer;
     color: #0000FF;
 }
 
-.container .section .content table .update_button:hover {
+.section .content table .update_button:hover {
     color: #ffffff;
 }
 /* //table */
@@ -396,7 +367,7 @@ ul {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 100;
     width: 350px;
-    height: 300px;
+    height: 250px;
     border-radius: 5px;
 }
 
@@ -451,26 +422,10 @@ ul {
     height: 100%;
 }
 
-.create_modal .section .department {
-    width: 100%;
-    margin-left: 11px;
-    margin-top: 20px;
-    font-size: 25px;
-
-}
-
-.create_modal .section .employee {
-    width: 100%;
-    margin-left: 11px;
+.create_modal .section .category {
     margin-top: 30px;
+    margin-left: 10px;
     font-size: 25px;
-}
-
-.create_modal .section .create select {
-    width: 120px;
-    height: 30px;
-    border: none;
-    border-radius: 10px;
 }
 
 .create_modal .section input {
@@ -486,7 +441,7 @@ ul {
 .create_modal .section .submit {
     width: 330px;
     height: 50px;
-    margin-top: 35px;
+    margin-top: 55px;
     margin-left: 50%;
     transform: translate(-50%, 0px);
     border-radius: 10px;
@@ -507,7 +462,6 @@ ul {
     color: #ffffff;
     font-weight: bold;
 }
-
 /* //create_modal */
 
 /* update_modal// */
@@ -523,9 +477,8 @@ ul {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 100;
     width: 350px;
-    height: 400px;
+    height: 380px;
     border-radius: 5px;
-    font-size: 20px;
 }
 
 .update_modal_background {
@@ -586,16 +539,17 @@ ul {
 .update_modal .container1 .section .detail {
     width: 100%;
     height: 30px;
-    margin-top: 25px;
+    margin-top: 40px;
     margin-left: 10px;
     font-size: 25px;
 }
 
 .update_modal .meddle_line {
     background-color: #2F5D62;
+    position: absolute;
     width: 98%;
     height: 3px;
-    margin-left: 50%;
+    left: 50%;
     transform: translate(-50%, 0px);
 }
 
@@ -622,13 +576,14 @@ ul {
 
 .update_modal .container2 .section {
     width: 100%;
-    height: 140px;
+    height: 50px;
+    margin-top: 20px;
     margin-left: 50%;
     transform: translate(-50%, 0px);
 }
 
 .update_modal .container2 .section .update {
-    margin-top: 15px;
+    margin-top: 0px;
     margin-left: 10px;
     font-size: 25px;
 }
@@ -646,7 +601,7 @@ ul {
 .update_modal .container2 .section .submit {
     width: 330px;
     height: 50px;
-    margin-top: 25px;
+    margin-top: 15px;
     margin-left: 50%;
     transform: translate(-50%, 0px);
     border-radius: 10px;
@@ -668,13 +623,4 @@ ul {
     font-weight: bold;
 }
 /* //update_modal */
-/* //employee-list */
-
-
-
-
-
-
-
-
-
+/* //category_list */

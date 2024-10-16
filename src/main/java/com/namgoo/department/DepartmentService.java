@@ -45,7 +45,7 @@ public class DepartmentService {
 		};
 	}
 	
-	// 부서 목록 - 페이징
+	// 부서 검색 목록(페이징)
 	public Page<Department> findDepartmentPagingList(String keyword, Pageable pageable) {
 		Specification<Department> specification = search(keyword);
 		Page<Department> departmentPagingList = this.departmentRepository.findAll(specification, pageable);

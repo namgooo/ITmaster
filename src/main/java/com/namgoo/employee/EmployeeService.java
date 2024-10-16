@@ -47,7 +47,7 @@ public class EmployeeService {
 		return employeeList;
 	}
 	
-	// 부서원 목록(페이징)
+	// 부서원 검색 목록(페이징)
 	public Page<Employee> findEmployeePagingList(String keyword, Pageable pageable) {
 		Specification<Employee> specification = search(keyword);
 		Page<Employee> employeePagingList = this.employeeRepository.findAll(specification, pageable);

@@ -21,7 +21,7 @@ public class DepartmentController {
 	@Autowired
 	private DepartmentService departmentService;
 	
-	// 부서 목록
+	// 부서 검색 목록(페이징)
 	@GetMapping("/department-list")
 	public String department(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
 		Page<Department> departmentList = this.departmentService.findDepartmentPagingList(keyword, pageable);
