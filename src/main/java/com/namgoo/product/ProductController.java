@@ -3,12 +3,16 @@ package com.namgoo.product;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.namgoo.category.Category;
 import com.namgoo.category.CategoryService;
@@ -19,7 +23,7 @@ import com.namgoo.maker.MakerService;
 @RequestMapping("/product")
 public class ProductController {
 	
-	// 2024-10-16 퇴근
+	// 2024-10-17 퇴근
 	
 	@Autowired
 	private ProductService productService;
@@ -30,13 +34,26 @@ public class ProductController {
 	
 	// 제품 목록
 	@GetMapping("/product-list")
-	public String findProductList(Model model) {
-		List<Product> productList = this.productService.findProductList();
-		model.addAttribute("productList", productList);
+	public String findProductList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
 		List<Category> categoryList = this.categoryService.findCategoryList();
 		model.addAttribute("categoryList", categoryList);
 		List<Maker> makerList = this.makerService.findMakerList();
 		model.addAttribute("makerList", makerList);
+		
+		Page<Product> productList = this.productService.findProductPagingList(keyword, pageable);
+		model.addAttribute("productList", productList);
+		
+		// 페이징
+		model.addAttribute("previous", pageable.previousOrFirst().getPageNumber()); // 이전 페이지 번호
+		model.addAttribute("next", pageable.next().getPageNumber()); // 다음 페이지 번호
+		model.addAttribute("hasPrevious", productList.hasPrevious()); // 이전 페이지가 있는지 여부 확인 (boolean)
+		model.addAttribute("hasNext", productList.hasNext()); // 다음 페이지가 있는지 여부 확인 (boolean)
+		model.addAttribute("currentPage", productList.getNumber()); // 현재 페이지 번호 (0부터 시작)
+		model.addAttribute("totalPages", productList.getTotalPages()); // 총 페이지 수
+		model.addAttribute("keyword", keyword); // 검색 시 키워드
+		model.addAttribute("first", pageable.first().getPageNumber()); // 첫 페이지
+		model.addAttribute("totalPages", productList.getTotalPages()); // 마지막 페이지
+		
 		return "product/product_list";
 	}
 	

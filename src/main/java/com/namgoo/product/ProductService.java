@@ -5,12 +5,25 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.namgoo.category.Category;
 import com.namgoo.category.CategoryRepository;
+import com.namgoo.department.Department;
+import com.namgoo.employee.Employee;
 import com.namgoo.maker.Maker;
 import com.namgoo.maker.MakerRepository;
+import com.namgoo.product_info.ProductInfo;
+
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 @Service
 public class ProductService {
@@ -21,6 +34,30 @@ public class ProductService {
 	private CategoryRepository categoryRepository;
 	@Autowired
 	private MakerRepository makerRepository;
+	
+	// 제품 검색
+	private Specification<Product> search(String keyword) {
+		return new Specification<>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Predicate toPredicate(Root<Product> p, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				
+				Predicate filterPredicate = cb.or(
+						cb.like(p.get("product"), "%" + keyword + "%")	
+				);
+				query.distinct(true);
+				query.orderBy(cb.desc(p.get("createDate")));
+				return filterPredicate;
+			}
+		};
+	}
+	
+	// 제품 검색 목록(페이징)
+	public Page<Product> findProductPagingList(String keyword, Pageable pageable) {
+		Specification<Product> specification = search(keyword);
+		Page<Product> productList = this.productRepository.findAll(specification, pageable);
+		return productList;
+	}
 	
 	// 제품 목록
 	public List<Product> findProductList() {
