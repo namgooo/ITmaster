@@ -6,7 +6,6 @@ import java.util.List;
 import com.namgoo.desktop.Desktop;
 import com.namgoo.product.Product;
 import com.namgoo.product_info.ProductInfo;
-import com.namgoo.product_pc_info.ProductPcInfo;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -33,8 +32,6 @@ public class Category {
 	// OneToMany
 	@OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
 	private List<ProductInfo> productInfoList;
-	@OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
-	private List<ProductPcInfo> productPcInfoList;
 	@OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
 	private List<Product> ProductList;
 	

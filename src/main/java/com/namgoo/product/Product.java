@@ -6,7 +6,6 @@ import java.util.List;
 import com.namgoo.category.Category;
 import com.namgoo.maker.Maker;
 import com.namgoo.product_info.ProductInfo;
-import com.namgoo.product_pc_info.ProductPcInfo;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -34,8 +33,6 @@ public class Product {
 	// OneToOne
 	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
 	private List<ProductInfo> productInfoList;
-	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-	private List<ProductPcInfo> productPcInfoList;
 	
 	// ManyToOne
 	@ManyToOne

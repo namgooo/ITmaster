@@ -7,7 +7,6 @@ import java.util.Optional;
 import com.namgoo.department.Department;
 import com.namgoo.desktop.Desktop;
 import com.namgoo.product_info.ProductInfo;
-import com.namgoo.product_pc_info.ProductPcInfo;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -35,8 +34,6 @@ public class Employee {
 	private List<Desktop> desktopList;
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE)
 	private List<ProductInfo> productInfoList;
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE)
-	private List<ProductPcInfo> productPcInfoList;
 	
 	// ManyToOne
 	@ManyToOne

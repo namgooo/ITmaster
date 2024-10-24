@@ -54,7 +54,7 @@ public class EmployeeService {
  		return employeePagingList;
 	}
 	
-	// 부서별 부서원 목록(페이징)
+	// 부서별 부서원 검색 목록(페이징)
 	public Page<Employee> findEmployeesByDepartmentPagingList(Department departmnet, String keyword, Pageable pageable) {
 		Page<Employee> employeeList = this.employeeRepository.findByDepartmentAndEmployee(departmnet, keyword, pageable);
 		return employeeList;

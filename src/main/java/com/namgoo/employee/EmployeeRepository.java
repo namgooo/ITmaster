@@ -22,7 +22,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer>{
 	// 부서원 목록
 	public List<Employee> findAll();
 		
-	// 부서별 부서원 목록(페이징)
+	// 부서별 부서원 검색 목록(페이징)
 	@Query("SELECT e FROM Employee e WHERE e.department = :department AND e.employee LIKE %:keyword%")
 	Page<Employee> findByDepartmentAndEmployee(@Param("department") Department department, @Param("keyword") String keyword, Pageable pageable);
 	

@@ -6,7 +6,6 @@ import java.util.List;
 import com.namgoo.category.Category;
 import com.namgoo.department.Department;
 import com.namgoo.employee.Employee;
-import com.namgoo.product_pc_info.ProductPcInfo;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
