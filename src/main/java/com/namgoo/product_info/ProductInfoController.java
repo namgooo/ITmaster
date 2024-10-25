@@ -131,7 +131,6 @@ public class ProductInfoController {
 	// 제품 정보 수정
 	@PostMapping("/product-info-update")
 	public String updateProductInfo(ProductInfoDTO dto) {
-		System.out.println("진입확인: " + dto.getId());
 		this.productInfoService.updateProductInfo(dto);
 		return "redirect:/product-info/product-info-list";
 	}
@@ -156,27 +155,5 @@ public class ProductInfoController {
 	public List<String> getProductsByMaker(@RequestParam("maker") String maker) {
 		return this.productService.findProductsByMaker(maker);
 	}
-	
-//	@GetMapping("/product-info/getProducts")
-//	public ResponseEntity<List<String>> getProducts(
-//			@RequestParam(required = false) String category,
-//			@RequestParam(required = false) String maker) {
-//		
-//		List<String> products = null;
-//		
-//		if(category != null && maker != null) {
-//			products = this.productService.findProductsByCategoryAndMaker(category, maker);
-//		}
-//		else if(category != null) {
-//			products = this.productService.findProductsByCategory(category);
-//		}
-//		else if(maker != null) {
-//			products = this.productService.findProductsByMaker(maker);
-//		}
-//
-//		return ResponseEntity.ok(products);
-//	}
-	
-	
-	
+		
 }

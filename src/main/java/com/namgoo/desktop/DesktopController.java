@@ -3,6 +3,9 @@ package com.namgoo.desktop;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,15 +39,50 @@ public class DesktopController {
 	@Autowired
 	private EmployeeService employeeService;
 	
-	// 데스크탑 목록
+	// 데스크탑 검색 목록(페이징)
 	@GetMapping("/desktop-list")
-	public String findDesktopList(Model model) {
-		List<Desktop> desktopList = this.desktopService.finddesktopList();
-		model.addAttribute("desktopList", desktopList);
+	public String findDesktopPagingList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
 		List<Department> departmentList = this.departmentService.findDepartmentList();
 		model.addAttribute("departmentList", departmentList);
 		List<Employee> employeeList = this.employeeService.findEmployeeList();
 		model.addAttribute("employeeList", employeeList);
+		Page<Desktop> desktopList = this.desktopService.findDesktopPagingList(keyword, pageable);
+		model.addAttribute("desktopList", desktopList);
+		
+		// 페이징
+		model.addAttribute("previous", pageable.previousOrFirst().getPageNumber()); // 이전 페이지 번호
+		model.addAttribute("next", pageable.next().getPageNumber()); // 다음 페이지 번호
+		model.addAttribute("hasPrevious", desktopList.hasPrevious()); // 이전 페이지가 있는지 여부 확인 (boolean)
+		model.addAttribute("hasNext", desktopList.hasNext()); // 다음 페이지가 있는지 여부 확인 (boolean)
+		model.addAttribute("currentPage", desktopList.getNumber()); // 현재 페이지 번호 (0부터 시작)
+		model.addAttribute("totalPages", desktopList.getTotalPages()); // 총 페이지 수
+		model.addAttribute("keyword", keyword); // 검색 시 키워드
+		model.addAttribute("first", pageable.first().getPageNumber()); // 첫 페이지
+		model.addAttribute("totalPages", desktopList.getTotalPages()); // 마지막 페이지
+		return "desktop/desktop_list";
+	}
+	
+	// 부서별 데스크탑 검색 목록(페이징)
+	@GetMapping("/desktop-list/{id}")
+	public String findDesktopsByDepartmentPagingList(@PathVariable("id") Integer id, @PageableDefault(size=10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
+		List<Department> departmentList = this.departmentService.findDepartmentList();
+		model.addAttribute("departmentList", departmentList);
+		List<Employee> employeeList = this.employeeService.findEmployeeList();
+		model.addAttribute("employeeList", employeeList);
+		Department department = this.departmentService.findDepartmentById(id);
+		Page<Desktop> desktopList = this.desktopService.findDesktopsByDepartmentPagingList(department, keyword, pageable);
+		model.addAttribute("desktopList", desktopList);
+		
+		// 페이징
+		model.addAttribute("previous", pageable.previousOrFirst().getPageNumber()); // 이전 페이지 번호
+		model.addAttribute("next", pageable.next().getPageNumber()); // 다음 페이지 번호
+		model.addAttribute("hasPrevious", desktopList.hasPrevious()); // 이전 페이지가 있는지 여부 확인 (boolean)
+		model.addAttribute("hasNext", desktopList.hasNext()); // 다음 페이지가 있는지 여부 확인 (boolean)
+		model.addAttribute("currentPage", desktopList.getNumber()); // 현재 페이지 번호 (0부터 시작)
+		model.addAttribute("totalPages", desktopList.getTotalPages()); // 총 페이지 수
+		model.addAttribute("keyword", keyword); // 검색 시 키워드
+		model.addAttribute("first", pageable.first().getPageNumber()); // 첫 페이지
+		model.addAttribute("totalPages", desktopList.getTotalPages()); // 마지막 페이지
 		return "desktop/desktop_list";
 	}
 	

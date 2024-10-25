@@ -90,13 +90,13 @@ public class ProductService {
 	
 	// 제품 수정
 	public Product updateProduct(ProductDTO dto) {
-		Optional<Category> category = this.categoryRepository.findByCategory(dto.getCategory());
-		Optional<Maker> maker = this.makerRepository.findByMaker(dto.getMaker());
+		Category category = this.categoryRepository.findByCategory(dto.getCategory()).get();
+		Maker maker = this.makerRepository.findByMaker(dto.getMaker()).get();
 		Product product = this.productRepository.findById(dto.getId()).orElse(null);
 		product.setProduct(dto.getProduct());
 		product.setCreateDate(LocalDateTime.now());
-		product.setCategory(category.get());
-		product.setMaker(maker.get());
+		product.setCategory(category);
+		product.setMaker(maker);
 		this.productRepository.save(product);
 		return product;
 	}
@@ -112,11 +112,5 @@ public class ProductService {
 		List<String> makerList = this.productRepository.findProductsByMaker(Maker);
 		return makerList;
 	}
-	
-//	// 카테고리/제조사 모두 선택 시 해당 제품 조회
-//	public List<String> findProductsByCategoryAndMaker(String category, String maker) {
-//			List<String> productList = this.productRepository.findProductsByCategoryAndMaker(category, maker);
-//		return productList;
-//	}
 	
 }

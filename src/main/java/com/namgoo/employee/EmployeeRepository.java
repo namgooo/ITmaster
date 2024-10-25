@@ -24,7 +24,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer>{
 		
 	// 부서별 부서원 검색 목록(페이징)
 	@Query("SELECT e FROM Employee e WHERE e.department = :department AND e.employee LIKE %:keyword%")
-	Page<Employee> findByDepartmentAndEmployee(@Param("department") Department department, @Param("keyword") String keyword, Pageable pageable);
+	public Page<Employee> findByDepartmentAndEmployee(@Param("department") Department department, @Param("keyword") String keyword, Pageable pageable);
 	
 	// 부서원 단일 조회
 	public Optional<Employee> findById(Integer id);

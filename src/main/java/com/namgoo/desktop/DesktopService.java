@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.namgoo.category.CategoryRepository;
@@ -12,6 +15,11 @@ import com.namgoo.department.Department;
 import com.namgoo.department.DepartmentRepository;
 import com.namgoo.employee.Employee;
 import com.namgoo.employee.EmployeeRepository;
+
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 @Service
 public class DesktopService {
@@ -23,9 +31,32 @@ public class DesktopService {
 	@Autowired
 	private EmployeeRepository employeeRepository;
 	
-	// 데스크탑 목록
-	public List<Desktop> finddesktopList() {
-		List<Desktop> desktopList = this.desktopRepository.findAll();
+	// 데스크탑 검색
+	private Specification<Desktop> search(String keyword) {
+		return new Specification<>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Predicate toPredicate(Root<Desktop> em, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				Predicate filterPredicate = cb.or(						
+						cb.like(em.get("desktop"), "%" + keyword + "%")
+				);
+				query.distinct(true);
+				query.orderBy(cb.desc(em.get("createDate")));
+				return filterPredicate;
+			}
+		};
+	}
+	
+	// 데스크탑 검색 목록(페이징)
+	public Page<Desktop> findDesktopPagingList(String keyword, Pageable pageable) {		
+		Specification<Desktop> specification = search(keyword);
+		Page<Desktop> desktopPagingList = this.desktopRepository.findAll(specification, pageable);
+		return desktopPagingList;
+	}
+	
+	// 부서별 데스크탑 검색 목록(페이징)
+	public Page<Desktop> findDesktopsByDepartmentPagingList(Department department, String keyword, Pageable pageable) {
+		Page<Desktop> desktopList = this.desktopRepository.findByDepartmentAndDesktop(department, keyword, pageable);
 		return desktopList;
 	}
 	

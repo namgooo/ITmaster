@@ -44,5 +44,7 @@ public class Desktop {
 	private Department department;
 	@ManyToOne
 	private Employee employee;
+	
+	// 2024-10-25 퇴근
 
 }

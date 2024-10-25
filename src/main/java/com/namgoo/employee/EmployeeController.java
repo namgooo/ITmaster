@@ -50,6 +50,7 @@ public class EmployeeController {
 	// 부서별 부서원 검색 목록(페이징)
 	@GetMapping("/employee-list/{id}")
 	public String findEmployeesByDepartmentPagingList(@PathVariable("id") Integer id, @PageableDefault(size=10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
+		System.out.println("진입 확인--------------------------------------------");
 		List<Department> departmentList = this.departmentService.findDepartmentList();
 		model.addAttribute("departmentList", departmentList);
 		Department department =  this.departmentService.findDepartmentById(id);

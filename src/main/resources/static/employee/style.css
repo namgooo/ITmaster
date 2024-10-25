@@ -122,6 +122,15 @@ ul {
 }
 /* ------------------------ //사이드바 ------------------------ */
 
+.sun i{
+    position: absolute;
+    top: 35px;
+    left: 35px;
+    color: #F7D358;
+    font-size: 500px;
+    animation: rotate 10s linear infinite;
+}
+
 .container {
     background-color: #5858FA;
     position: absolute;
@@ -523,7 +532,7 @@ ul {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 100;
     width: 350px;
-    height: 400px;
+    height: 500px;
     border-radius: 5px;
     font-size: 20px;
 }
@@ -583,6 +592,10 @@ ul {
     border: 1px solid #A7C4BC;
 }
 
+.update_modal .container1 .section {
+    margin-top: 45px;
+}
+
 .update_modal .container1 .section .detail {
     width: 100%;
     height: 30px;
@@ -627,10 +640,20 @@ ul {
     transform: translate(-50%, 0px);
 }
 
+.update_modal .container2 .section .department {
+    margin-bottom: 15px;
+} 
+
 .update_modal .container2 .section .update {
     margin-top: 15px;
     margin-left: 10px;
-    font-size: 25px;
+}
+
+.update_modal .section select {
+	width: 90px;
+    height: 25px;
+    border: none;
+    border-radius: 10px;
 }
 
 .update_modal .container2 .section .update input {

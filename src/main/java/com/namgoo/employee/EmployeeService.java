@@ -84,8 +84,11 @@ public class EmployeeService {
 	// 부서원 수정
 	public void updateEmployee(EmployeeDTO dto) {
 		Employee employee = this.employeeRepository.findById(dto.getId()).orElse(null);
+		Department department = this.departmentRepository.findByDepartment(dto.getDepartment()).get();
 		employee.setEmployee(dto.getEmployee());
 		employee.setCreateDate(LocalDateTime.now());
+		
+		employee.setDepartment(department);
 		this.employeeRepository.save(employee);
 	}
 	

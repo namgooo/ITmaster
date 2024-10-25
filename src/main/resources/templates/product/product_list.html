@@ -74,6 +74,12 @@
                             데스크탑
                         </a>
                     </li>
+                    <li>
+                        <a class="question_and_answer" th:href="@{/question/question-list}">
+                            <i class="fa-solid fa-circle-question"></i>
+                            Q&A
+                        </a>
+                    </li>
                 </ul>
             </div>      
         </div>
@@ -125,7 +131,7 @@
                         </thead>
                         <tbody>
                             <tr class="list" th:each="product, loop : ${productList}">
-                                <td th:text="${loop.count}"></td>
+                                <td th:text="${productList.getTotalElements - (productList.number * productList.size) - loop.index}"></td>
                                 <td th:text="${product.id}" style="display: none;"></td>
                                 <td th:text="${product.category.category}"></td>
                                 <td th:text="${product.maker.maker}"></td>

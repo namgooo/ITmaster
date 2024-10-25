@@ -3,62 +3,311 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>desktop-list</title>
+    <title>ITmaster-desktop_list</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/desktop/style.css">
+
 </head>
 
-<script>
-    // 부서 선택 시 해당 부서원 조회
-    function fetchEmployees() {
-        let department = document.getElementById("department").value;
-        if(department !== "") {
-            fetch("/desktop/getEmployeesByDepartment?department=" + encodeURIComponent(department))
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(employees) {
-                let employeeSelect = document.getElementById("employee");
-                employeeSelect.innerHTML = "<option value=''>선택하기</option>";
-                employees.forEach(function(employee) {
-                    let option = document.createElement("option");
-                    option.value = employee;
-                    option.text = employee;
-                    employeeSelect.appendChild(option);
-                });
-            })
-            .catch(function(error) {
-            });
-        }
-    }
-</script>
-
 <body>
-    <h2>데스크탑</h2>
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>데스크탑명</th>
-                    <th>부서</th>
-                    <th>부서원</th>
-                    <th>등록일시</th>
-                    <th>삭제</th>
-                    <th>수정</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="desktop, loop : ${desktopList}">
-                    <td th:text="${loop.count}"></td>
-                    <td th:text="${desktop.desktop}"></td>
-                    <td th:text="${desktop.department.department}"></td>
-                    <td th:text="${desktop.employee.employee}"></td>
-                    <td th:text="${desktop.createDate}"></td>
-                    <td><a th:href="@{|/desktop/desktop-delete/${desktop.id}|}">삭제하기</a></td>
-                    <td><a th:href="@{|/desktop/desktop-detail/${desktop.id}|}">수정하기</a></td>
-                </tr>
-            </tbody>
-        </table>
+    <!-- wrap// -->
+    <div class="wrap">
+        <!------------------------------------------- 사이드바// ------------------------------------------->
+        <button class="sidebar_button" id="sidebar_button" onclick="toggleSidebar()">
+            <i class="fa-solid fa-chevron-right" id="sidebar_right"></i>
+            <i class="fa-solid fa-xmark" id="sidebar_xmark" style="display: none;"></i>
+        </button>
+        <div class="sidebar" id="sidebar">
+
+            <div class="header">
+                <a class="home" th:href="@{/root}">
+                    <i class="fa-solid fa-house"></i>
+                    <h2>HOME</h2>
+                </a>
+            </div>
+
+            <div class="list">
+                <ul>
+                    <li>
+                        <a class="department" th:href="@{/department/department-list}">
+                            <i class="fa-solid fa-people-group"></i>
+                            부서
+                        </a>
+                    </li>
+                    <li>
+                        <a class="employee" th:href="@{/employee/employee-list}">
+                            <i class="fa-solid fa-address-card"></i>
+                            부서원
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="category" th:href="@{/category/category-list}">
+                            <i class="fa-solid fa-icons"></i>
+                            카테고리
+                        </a>
+                    </li>
+                    <li>
+                        <a class="maker" th:href="@{/maker/maker-list}">
+                            <i class="fa-solid fa-book-open"></i>
+                            제조사
+                        </a>
+                    </li>
+                    <li>
+                        <a class="product" th:href="@{/product/product-list}">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            제품
+                        </a>
+                    </li>
+                    <li>
+                        <a class="product-info" th:href="@{/product-info/product-info-list}">
+                            <i class="fa-solid fa-box-archive"></i>
+                            제품 정보
+                        </a>
+                    </li>
+                    <li>
+                        <a class="desktop" th:href="@{/desktop/desktop-list}">
+                            <i class="fa-solid fa-desktop"></i>
+                            데스크탑
+                        </a>
+                    </li>
+                    <li>
+                        <a class="question_and_answer" th:href="@{/question/question-list}">
+                            <i class="fa-solid fa-circle-question"></i>
+                            Q&A
+                        </a>
+                    </li>
+                </ul>
+            </div>      
+        </div>
+        <!------------------------------------------- //사이드바 ------------------------------------------->
+
+        <!-- icon// -->
+        <div class="sun">
+            <i class="sun fa-solid fa-sun"></i>
+        </div>
+        <!-- //icon -->
+
+        <!-- container// -->
+        <div class="container">
+            <!-- header// -->
+            <div class="header">
+                <div class="title">
+                    <i class="fa-solid fa-desktop"></i>
+                    <h2>데스크탑</h2>
+                </div>
+
+                <div class="search">
+                    <form th:action="@{/desktop/desktop-list}" method="get">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input class="searchbox" type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="   검색어를 입력하세요.">
+                        <input class="searchbutton" type="submit" value="검색하기">
+                    </form>
+                </div>
+
+                <div class="create_button">
+                    <a onclick="openCreateModal()"><button>등록하기</button></a>
+                </div>
+            </div>
+            <!-- //header -->
+
+            <!-- section// -->
+            <div class="section">
+                <!-- side// -->
+                <div class="side">
+                    <div class="list">
+                        <ul th:each="department, loop : ${departmentList}">
+                            <li><a th:href="@{|/desktop/desktop-list/${department.id}|}" th:text="${department.department}"></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- //side -->
+                <!-- content// -->
+                <div class="content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>데스크탑명</th>
+                                <th>부서</th>
+                                <th>부서원</th>
+                                <th>등록일시</th>
+                                <th>삭제</th>
+                                <th>수정</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="list" th:each="desktop, loop : ${desktopList}">
+                                <td th:text="${loop.count}"></td>
+                                <td th:text="${desktop.desktop}"></td>
+                                <td th:text="${desktop.department.department}"></td>
+                                <td th:text="${desktop.employee.employee}"></td>
+                                <td th:text="${desktop.createDate}"></td>
+                                <td><a class="delete_button" th:href="@{|/desktop/desktop-delete/${desktop.id}|}">삭제하기</a></td>
+                                <td><a class="update_button" th:href="@{|/desktop/desktop-detail/${desktop.id}|}">수정하기</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- //content -->
+            </div>
+            <!-- //section -->
+            <!-- footer// -->
+            <div class="footer">
+                <!-- 페이징// -->
+                <div class="paging">
+                    <a class="first_page" th:href="@{|?page=${first}|}" role="button">첫 페이지</a>
+                    <a class="previous" th:href="@{|?page=${previous}&keyword=${keyword}|}" th:if="${hasPrevious}" role="button"></a>
+                    <span class="previous" th:if="${!hasPrevious}"></span>
+                        
+                    <span class="paging_number" th:each="pageNumber : ${#numbers.sequence(currentPage >= 2 ? (currentPage - 2) : 0, currentPage >= 2 ? (currentPage + 2 < totalPages ? currentPage + 2 : totalPages - 1) : (totalPages > 5 ? 4 : totalPages - 1))}">
+                        <a class="paging_number" th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
+                    </span>
+                                            
+                    <a class="next" th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button"></a>
+                    <span class="next" th:if="${!hasNext}"></span>
+                        <a class="last_page" th:href="@{|?page=${totalPages - 1}|}" role="button">마지막 페이지</a>
+                </div>
+                <!-- //페이징 -->
+            </div>
+            <!-- //footer -->
+        </div>
+        <!-- //container -->
     </div>
+    <!-- //wrap -->
+
+    <!-- 데스크탑 등록 모달// -->
+    <div class="create_modal_background" id="createModalBackground" onclick="closeCreateModal()"></div>
+    <div class="create_modal" id="createModal">
+        <div class="header">
+            <h3>데스크탑 등록</h3>
+            <button type="button" class="create_modal_close" id="createModalClose" onclick="closeCreateModal()"></button>
+        </div>
+        <hr>
+        <div class="section">
+            <form th:action="@{/desktop/desktop-create}" method="post">
+                <div class="grop1">
+                    <label for="">부서</label>
+                    <select id="createDepartment" name="department">
+                        <option value="">선택하기</option>
+                        <option value=""></option>
+                    </select>
+                </div>
+
+                <div class="submit create">
+                    <input type="submit" value="등록하기" onclick="return confirmCreate()">
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- //데스크탑 등록 모달 -->
+
+<!------------------------------------------------------------- script// ------------------------------------------------------------->
+    <!-- 사이드바 동작// -->
+    <script>
+        function toggleSidebar() {
+            let sidebar = document.getElementById("sidebar");
+            let sidebar_button = document.getElementById("sidebar_button");
+
+            // 초기 위치를 설정
+            if (!sidebar.style.left) {
+                sidebar.style.left = "-200px";
+            }
+
+            if (sidebar.style.left === "-200px") {
+                sidebar.style.left = "0"; 
+                sidebar_button.style.left = "210px";
+            } else {
+                sidebar.style.left = "-200px";
+                sidebar_button.style.left = "10px";
+            }
+
+            if (sidebar.style.left === "0px") {
+                document.getElementById('sidebar_xmark').style.display = 'block';
+                document.getElementById('sidebar_right').style.display = 'none';
+                console.log("동작 확인 : 오른쪽 아이콘");
+            } else {
+                document.getElementById('sidebar_xmark').style.display = 'none';
+                document.getElementById('sidebar_right').style.display = 'block';
+                console.log("동작 확인 : 닫기 아이콘");
+            }
+        }
+    </script>
+    <!-- //사이드바 동작 -->
+
+    <!-- 삭제 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmDelete() {
+	        return confirm("정말 삭제를 하시겠습니까?");
+	    }
+	</script>
+    <!-- //삭제 버튼 알림 -->
+
+    <!-- 등록 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmCreate() {
+	        return confirm("정말 등록을 하시겠습니까?");
+	    }
+	</script>
+    <!-- //등록 버튼 알림 -->
+
+    <!-- 수정 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmUpdate() {
+	        return confirm("정말 수정을 하시겠습니까?");
+	    }
+	</script>
+    <!-- //수정 버튼 알림 -->
+
+    <!-- 데스크탑 등록 모달// -->
+    <script>
+        // 등록 모달 열기
+        function openCreateModal() {
+            document.getElementById('createModal').style.display = 'block';
+            document.getElementById('createModalBackground').style.display = 'block';
+        }
+
+        // 모달 닫기
+        function closeCreateModal() {
+            document.getElementById('createModal').style.display = 'none';
+            document.getElementById('createModalBackground').style.display = 'none';
+        }
+    </script>
+    <!-- //데스크탑 등록 모달 -->
+
+
+
+    <!-- 부서 선택 시 해당 부서원 조회// -->
+    <script>
+        function fetchEmployees() {
+            let department = document.getElementById("department").value;
+            if(department !== "") {
+                fetch("/desktop/getEmployeesByDepartment?department=" + encodeURIComponent(department))
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(employees) {
+                    let employeeSelect = document.getElementById("employee");
+                    employeeSelect.innerHTML = "<option value=''>선택하기</option>";
+                    employees.forEach(function(employee) {
+                        let option = document.createElement("option");
+                        option.value = employee;
+                        option.text = employee;
+                        employeeSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error) {
+                });
+            }
+        }
+    </script>
+    <!-- //부서 선택 시 해당 부서원 조회 -->
+<!------------------------------------------------------------- script// ------------------------------------------------------------->
+
     <hr>
     <div>
         <form th:action="@{/desktop/desktop-create}" method="post">

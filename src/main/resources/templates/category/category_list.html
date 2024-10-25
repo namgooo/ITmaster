@@ -119,7 +119,7 @@
 						</thead>
 						<tbody>
 							<tr th:each="category, loop : ${categoryList}">
-								<td th:text="${loop.count}"></td>
+								<td th:text="${categoryList.getTotalElements - (categoryList.number * categoryList.size) - loop.index}"></td>
 								<td th:text="${category.id}" style="display: none;"></td>
 								<td th:text="${category.category}"></td>								
 								<td th:text="${#temporals.format(category.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>

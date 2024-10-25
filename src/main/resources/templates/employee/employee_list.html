@@ -13,6 +13,7 @@
 
 </head>
 <body>
+    <!-- wrap// -->
     <div class="wrap">
         <!------------------------------------------- 사이드바// ------------------------------------------->
         <button class="sidebar_button" id="sidebar_button" onclick="toggleSidebar()">
@@ -78,6 +79,12 @@
         </div>
         <!------------------------------------------- //사이드바 ------------------------------------------->
 
+        <!-- icon// -->
+        <div class="sun">
+            <i class="sun fa-solid fa-sun"></i>
+        </div>
+        <!-- //icon -->
+
         <!-- container// -->
         <div class="container">
             <!-- header// -->
@@ -127,11 +134,11 @@
                         </thead>
                         <tbody>
                             <tr class="list" th:each="employee, loop : ${employeeList}">
-                                <td th:text="${loop.count}"></td>
+                                <td th:text="${employeeList.getTotalElements - (employeeList.number * employeeList.size) - loop.index}"></td>
                                 <td th:text="${employee.id}" style="display: none;"></td>
                                 <td th:text="${employee.department.department}"></td>
                                 <td th:text="${employee.employee}"></td>
-                                <td th:text="${employee.createDate}"></td>
+                                <td th:text="${#temporals.format(employee.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                 <td><a class="delete_button" th:href="@{|/employee/employee-delete/${employee.id}|}" onclick="return confirmDelete();">삭제</a></td>
                                 <td><a class="update_button" onclick="openUpdateModal(this)">수정</a></td>
                             </tr>
@@ -228,6 +235,14 @@
             <div class="section">
                 <form th:action="@{/employee/employee-update}" method="post">
                     <input type="hidden" id="modalId" name="id">
+                    <div class="department update">
+                        <label for="updateDepartment">부서</label>
+                        <select id="updateDepartment" name="department">
+                            <option value="">선택하기</option>
+                            <option th:each="department, loop : ${departmentList}" th:text="${department.department}" th:value="${department.department}"></option>
+                        </select>
+                    </div>
+                    <hr>
                     <div class="employee update">
                         <label for="employee">부서원</label>
                         <input class="employee" type="text" id="employee" name="employee">
