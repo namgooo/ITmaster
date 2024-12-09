@@ -1,16 +1,13 @@
-package com.namgoo.question;
+package com.namgoo.answer;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class QuestionDTO {
+public class AnswerDTO {
 	
 	private Integer id;
-	private String subject;
-	private String content;
 	private String reply;
-	
 
 }

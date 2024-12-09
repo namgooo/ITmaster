@@ -2,6 +2,7 @@ package com.namgoo.desktop;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import com.namgoo.category.Category;
 import com.namgoo.department.Department;
@@ -44,7 +45,5 @@ public class Desktop {
 	private Department department;
 	@ManyToOne
 	private Employee employee;
-	
-	// 2024-10-25 퇴근
 
 }

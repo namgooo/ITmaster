@@ -126,5 +126,4 @@ public class DesktopController {
 		return this.employeeService.findEmployeesByDepartment(department);
 	}
 	
-	
 }

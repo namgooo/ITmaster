@@ -2,6 +2,7 @@ package com.namgoo.main;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class MainController {
@@ -11,9 +12,4 @@ public class MainController {
 		return "main/main";
 	}
 	
-	@GetMapping("/test")
-	public String test() {
-		return "product_info/product_info_test";
-	}
-
 }

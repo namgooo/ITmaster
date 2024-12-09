@@ -73,6 +73,12 @@
                             데스크탑
                         </a>
                     </li>
+                    <li>
+                        <a class="question_and_answer" th:href="@{/question/question-list}">
+                            <i class="fa-solid fa-circle-question"></i>
+                            Q&A
+                        </a>
+                    </li>
                 </ul>
             </div>      
         </div>
@@ -386,7 +392,7 @@
                     <input type="hidden" id="modalId" name="id">
                     <div class="grop1">
                         <div class="category update">
-                        <label for="updateCategory">카테고리</label>
+                            <label for="updateCategory">카테고리</label>
                             <select id="updateCategory" name="category" onchange="updateCategoryFetchProducts()">
                                 <option value="">선택하기</option>
                                 <option th:each="category, loop : ${categoryList}" th:text="${category.category}" th:value="${category.category}"></option>

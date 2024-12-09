@@ -1,5 +1,6 @@
 package com.namgoo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -20,6 +21,8 @@ import com.namgoo.product.Product;
 import com.namgoo.product.ProductRepository;
 import com.namgoo.product_info.ProductInfo;
 import com.namgoo.product_info.ProductInfoRepository;
+import com.namgoo.question.Question;
+import com.namgoo.question.QuestionRepository;
 
 @SpringBootTest
 class ITmasterApplicationTests {
@@ -36,20 +39,20 @@ class ITmasterApplicationTests {
 	private MakerRepository makerRepository;
 	@Autowired
 	private ProductRepository productRepository;
+	@Autowired
+	private QuestionRepository questionRepository;
 	
-//	@Test
-//	void testEmployeeSave() {
-//		
-//		for(int i = 0; i < 30; i++) {
-//			Employee e = new Employee();
-//			Optional<Department> d = this.departmentRepository.findById(2);
-//			e.setEmployee("테스트" + i);
-//			e.setCreateDate(LocalDateTime.now());
-//			e.setDepartment(d.orElseGet(null));
-//			this.employeeRepository.save(e);
-//			
-//		}
-//		
-//	}
+	@Test
+	void testQuestionSave() {
+		
+		for(int i = 1; i < 30; i++) {
+			Question question = new Question();
+			question.setSubject("질문 테스트" + i);
+			question.setContent("내용 테스트" + i);
+			question.setCreateDate(LocalDateTime.now());
+			this.questionRepository.save(question);
+		}
+		
+	}
 	
 }

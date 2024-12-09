@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main</title>
+    <title>ITmaster-main</title>
 </head>
 <body>
     <h2>전산 관리</h2>
@@ -18,6 +18,19 @@
             <a th:href="@{/product-info/product-info-list}"><li>제품정보</li></a>
             <a th:href="@{/desktop/desktop-list}"><li>PC</li></a>
         </ul>
+    </div>
+    
+    <div>
+    	<h3>엑셀 업로드</h3>
+	    <form th:action="@{/excel}" method="Post" enctype="multipart/form-data">
+	      <input type="file" th:name="file">
+	      <input th:type="submit" value="파일업로드하기">
+	    </form>
+    </div>
+    
+    <div>
+    	<h3>Q&A</h3>
+    	<a th:href="@{/question/question-list}">전산민원목록</a>
     </div>
     
 </body>

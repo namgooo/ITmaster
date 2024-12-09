@@ -23,5 +23,5 @@ public interface DepartmentRepository extends JpaRepository<Department, Integer>
 	
 	// 부서명으로 단일 조회
 	public Optional<Department> findByDepartment(String department);
-
+	
 }
