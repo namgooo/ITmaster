@@ -1,6 +1,7 @@
 package com.namgoo.employee;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.namgoo.department.Department;
 import com.namgoo.department.DepartmentService;
+import com.namgoo.product_info.ProductInfo;
+import com.namgoo.product_info.ProductInfoService;
 
 @Controller
 @RequestMapping("/employee")
@@ -25,6 +28,8 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 	@Autowired
 	private DepartmentService departmentService;
+	@Autowired
+	private ProductInfoService productInfoService;
 	
 	// 부서 검색 목록(페이징)
 	@GetMapping("/employee-list")
@@ -33,6 +38,10 @@ public class EmployeeController {
 		model.addAttribute("departmentList", departmentList);
 		Page<Employee> employeeList = this.employeeService.findEmployeePagingList(keyword, pageable);
 		model.addAttribute("employeeList", employeeList);
+		
+		List<ProductInfo> productInfoList = this.productInfoService.findProductInfoList();
+		model.addAttribute("productInfoList", productInfoList);
+		// 여기서 시작
 		
 		// 페이징
 		model.addAttribute("previous", pageable.previousOrFirst().getPageNumber()); // 이전 페이지 번호
@@ -50,7 +59,6 @@ public class EmployeeController {
 	// 부서별 부서원 검색 목록(페이징)
 	@GetMapping("/employee-list/{id}")
 	public String findEmployeesByDepartmentPagingList(@PathVariable("id") Integer id, @PageableDefault(size=10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
-		System.out.println("진입 확인--------------------------------------------");
 		List<Department> departmentList = this.departmentService.findDepartmentList();
 		model.addAttribute("departmentList", departmentList);
 		Department department =  this.departmentService.findDepartmentById(id);

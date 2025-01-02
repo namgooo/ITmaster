@@ -24,6 +24,9 @@ public class Question {
 	private Integer id;
 	private String subject;
 	private String content;
+	
+	private String upload;
+	
 	private LocalDateTime createDate;
 	
 	@OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)

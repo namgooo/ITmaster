@@ -133,6 +133,7 @@
                                 <th>번호</th>
                                 <th>부서</th>
                                 <th>부서원</th>
+                                <th>전산물품</th>
                                 <th>등록일자</th>
                                 <th>삭제</th>
                                 <th>수정</th>
@@ -144,6 +145,9 @@
                                 <td th:text="${employee.id}" style="display: none;"></td>
                                 <td th:text="${employee.department.department}"></td>
                                 <td th:text="${employee.employee}"></td>
+
+                                <td th:text="${employee}">여기</td>
+
                                 <td th:text="${#temporals.format(employee.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                 <td><a class="delete_button" th:href="@{|/employee/employee-delete/${employee.id}|}" onclick="return confirmDelete();">삭제</a></td>
                                 <td><a class="update_button" onclick="openUpdateModal(this)">수정</a></td>

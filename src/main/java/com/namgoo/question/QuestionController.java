@@ -1,24 +1,34 @@
 package com.namgoo.question;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/question")
 public class QuestionController {
 
-	// 2024-12-09 퇴근 전 커밋
+	private static final String UPLOAD_DIR = "uploads/";
 	
 	@Autowired
 	private QuestionService questionService;
@@ -27,6 +37,8 @@ public class QuestionController {
 	@GetMapping("/question-list")
 	public String findQuestionPagingList(@PageableDefault(size = 10) Pageable pageable, Model model) {
 		Page<Question> questionList = this.questionService.findQuestionPagingList(pageable);
+		
+		
  		model.addAttribute("questionList", questionList);
  		
 		// 페이징
@@ -43,6 +55,13 @@ public class QuestionController {
 	}
 	
 	// 질문 등록
+	@GetMapping("/question-create")
+	public String createQuestion() {
+		
+		return "question/question_create";
+	}
+	
+	// 질문 등록
 	@PostMapping("/question-create")
 	public String createQuestion(QuestionDTO dto) {
 		this.questionService.createQuestion(dto);
@@ -55,6 +74,34 @@ public class QuestionController {
 		Question question = this.questionService.detailQuestion(id);
 		model.addAttribute("question", question);
 		return "question/question_detail";
+	}
+	
+	// 파일 업로드
+	@PostMapping("/upload")
+	@ResponseBody
+	public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+		
+		try {
+			// 파일 이름 처리
+			String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
+			String filePath = UPLOAD_DIR + originalFileName;
+			
+            // 파일 저장 디렉토리 생성
+            Path uploadPath = Paths.get(UPLOAD_DIR);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            
+            // 파일 저장
+            File dest = new File(filePath);
+            file.transferTo(dest);
+            
+            return ResponseEntity.ok("/uploads/" + originalFileName);
+		} catch(IOException e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 업로드 실패");
+		}
+	
 	}
 	
 

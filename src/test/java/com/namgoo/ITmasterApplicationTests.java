@@ -45,7 +45,7 @@ class ITmasterApplicationTests {
 	@Test
 	void testQuestionSave() {
 		
-		for(int i = 1; i < 30; i++) {
+		for(int i = 1; i < 300; i++) {
 			Question question = new Question();
 			question.setSubject("질문 테스트" + i);
 			question.setContent("내용 테스트" + i);

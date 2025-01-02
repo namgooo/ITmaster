@@ -84,6 +84,12 @@ public class ProductInfoService {
 		Page<ProductInfo> productInfoList = this.productInfoRepository.findAll(specification, pageable);
 		return productInfoList;
 	}
+	
+	// 제품 정보 목록
+	public List<ProductInfo> findProductInfoList() {
+		List<ProductInfo> productInfoList = this.productInfoRepository.findAll();
+		return productInfoList;
+	}
 		
 	// 제품 정보 등록
 	public void createProductInfo(ProductInfoDTO dto) {
