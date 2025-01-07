@@ -325,6 +325,29 @@ ul {
 .container .section .content table .update_button:hover {
     color: #ffffff;
 }
+
+.uniquecode_list {
+	display: flex;
+	justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    height: 100%;
+    margin-top: 12px;
+}
+
+.text_box {
+    display: none;
+    position: absolute;
+    width: 130px;
+    padding: 10px;
+  	border-radius: 10px;
+  	background: #333;
+  	color: #fff;
+}
+
+.uniquecode_list i:hover + .text_box {
+    display: block;
+  }
 /* //table */
 
 /* footer// */
@@ -692,10 +715,6 @@ ul {
 }
 /* //update_modal */
 /* //employee-list */
-
-
-
-
 
 
 

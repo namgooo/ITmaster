@@ -2,6 +2,7 @@ package com.namgoo.employee;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -53,7 +54,7 @@ public class EmployeeService {
 		Page<Employee> employeePagingList = this.employeeRepository.findAll(specification, pageable);
  		return employeePagingList;
 	}
-	
+		
 	// 부서별 부서원 검색 목록(페이징)
 	public Page<Employee> findEmployeesByDepartmentPagingList(Department departmnet, String keyword, Pageable pageable) {
 		Page<Employee> employeeList = this.employeeRepository.findByDepartmentAndEmployee(departmnet, keyword, pageable);

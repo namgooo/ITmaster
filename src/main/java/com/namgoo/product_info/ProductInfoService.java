@@ -2,6 +2,7 @@ package com.namgoo.product_info;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -84,13 +85,7 @@ public class ProductInfoService {
 		Page<ProductInfo> productInfoList = this.productInfoRepository.findAll(specification, pageable);
 		return productInfoList;
 	}
-	
-	// 제품 정보 목록
-	public List<ProductInfo> findProductInfoList() {
-		List<ProductInfo> productInfoList = this.productInfoRepository.findAll();
-		return productInfoList;
-	}
-		
+			
 	// 제품 정보 등록
 	public void createProductInfo(ProductInfoDTO dto) {
 		Category category = this.categoryRepository.findByCategory(dto.getCategory()).orElse(null);
@@ -131,7 +126,7 @@ public class ProductInfoService {
 		this.productInfoRepository.deleteById(id);
 	}
 	
-	// 제품 정보 수정
+	// 제품 정보 수정(페이지)
 	public ProductInfo getProductInfoDetail(Integer id) {
 		ProductInfo productInfo = this.productInfoRepository.findById(id).orElse(null);
 		return productInfo;

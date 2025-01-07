@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -16,13 +17,8 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, Intege
 		
 	// 제품 정보 검색 목록(페이징)
 	public Page<ProductInfo> findAll(Specification<ProductInfo> specification, Pageable pageable);
-	
-	// 제품 정보 목록
-	public List<ProductInfo> findAll();
-	 
+		 
 	// 제품 정보 단일 조회
 	public Optional<ProductInfo> findById(Integer id);
-	
-	
-			
+
 }
