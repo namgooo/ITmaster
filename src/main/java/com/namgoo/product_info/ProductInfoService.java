@@ -2,11 +2,9 @@ package com.namgoo.product_info;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -46,7 +44,7 @@ public class ProductInfoService {
 	private EmployeeRepository employeeRepository;
 	
 	// 제품 정보 검색
-	private Specification<ProductInfo> search(String keyword) {
+	private Specification<ProductInfo> search(String keyword, String filter) {
 		return new Specification<>() {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -80,12 +78,12 @@ public class ProductInfoService {
 	}
 	
 	// 제품 정보 검색 목록(페이징)
-	public Page<ProductInfo> findProductInfoPagingList(String keyword, Pageable pageable) {
-		Specification<ProductInfo> specification = search(keyword);
+	public Page<ProductInfo> findProductInfoPagingList(String keyword, Pageable pageable, String filter) {
+		Specification<ProductInfo> specification = search(keyword, filter);
 		Page<ProductInfo> productInfoList = this.productInfoRepository.findAll(specification, pageable);
 		return productInfoList;
 	}
-			
+	
 	// 제품 정보 등록
 	public void createProductInfo(ProductInfoDTO dto) {
 		Category category = this.categoryRepository.findByCategory(dto.getCategory()).orElse(null);
@@ -166,5 +164,30 @@ public class ProductInfoService {
 		productInfo.setEmployee(employee);
 		this.productInfoRepository.save(productInfo);
 	}
+	
+	// 제품 정보 목록
+	public List<ProductInfo> findProductInfoList() {
+		List<ProductInfo> productInfoList = this.productInfoRepository.findAll();
+		return productInfoList;
+	}
+	
+	// 제품 정보 '키보드' 총합 조회
+	public Integer countProductInfoKeyboard() {
+		Integer countProductInfoKeyboard = this.productInfoRepository.countProductInfoKeyboard();
+		return countProductInfoKeyboard;
+	}
+	
+	// 제품 정보 '마우스' 총합 조회
+	public Integer countProductInfoMouse() {
+		Integer countProductInfoMouse = this.productInfoRepository.countProductInfoMouse();
+		return countProductInfoMouse;
+	}
+	
+	// 제품 정보 '모니터' 총합 조회
+	public Integer countProductInfoMonitor() {
+		Integer countProductInfoMonitor = this.productInfoRepository.countProductInfoMonitor();
+		return countProductInfoMonitor;
+	}
+		
 	
 }

@@ -1,0 +1,41 @@
+/* ITmaster - main */
+/* main// */
+@charset "UTF-8";
+
+* {
+	margin: 0px;
+	padding: 0px;
+    font-family: "Jua", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+html, body {
+	width: 100%;
+    height: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.wrap {
+    background-color: #F5F5F5;
+    width: 100%;
+    height: 100%
+}
+
+.nam {
+    width: 50%;
+    transform: translate();
+}
+
+.charts {
+    display: flex;
+}
+
+

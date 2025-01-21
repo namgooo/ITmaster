@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/desktop/style.css">
-
 </head>
 
 <body>
@@ -135,6 +134,7 @@
                                 <th class="department">부서</th>
                                 <th class="employee">부서원</th>
                                 <th>데스크탑명</th>
+                                <th>구분</th>
                                 <th class="create_date">등록일시</th>
                                 <th>삭제</th>
                                 <th>수정</th>
@@ -147,6 +147,7 @@
                                 <td class="department" th:text="${desktop.department.department}"></td>
                                 <td class="employee" th:text="${desktop.employee.employee}"></td>
                                 <td th:text="${desktop.desktop}"></td>
+                                <td th:text="${desktop.desktopType.type}"></td>
                                 <td th:text="${desktop.mainboard}" style="display: none;"></td>
                                 <td th:text="${desktop.cpu}" style="display: none;"></td>
                                 <td th:text="${desktop.gpu}" style="display: none;"></td>
@@ -156,6 +157,8 @@
                                 <td th:text="${desktop.memory2}" style="display: none;"></td>
                                 <td th:text="${desktop.memory3}" style="display: none;"></td>
                                 <td th:text="${desktop.memory4}" style="display: none;"></td>
+                                <td th:text="${desktop.cpuScore}" style="display: none;"></td>
+                                <td th:text="${desktop.gpuScore}" style="display: none;"></td>
                                 <td class="create_date" th:text="${#temporals.format(desktop.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                 <td><a class="delete_button" th:href="@{|/desktop/desktop-delete/${desktop.id}|}" onclick="return confirmDelete();">삭제하기</a></td>
                                 <td><a class="update_button" onclick="openUpdateModal(this)">수정하기</a></td>
@@ -209,6 +212,13 @@
                 </div>
                 <hr>
                 <div class="grop2">
+                    <div class="desktop_type create">
+                        <label for="createDesktopType">구분</label>
+                        <select id="createDesktopType" name="desktopType">
+                            <option value="">선택하기</option>
+                            <option th:each="desktopType, loop : ${desktopTypeList}" th:text="${desktopType.type}" th:value="${desktopType.type}"></option>
+                        </select>
+                    </div>
                     <div class="department create">
                         <label for="createDepartment">부서</label>
                         <select id="createDepartment" name="department" onchange="createDepartmentFetchEmployees()">
@@ -317,7 +327,15 @@
                                 <option value="DDR4 32GB">DDR4 32GB</option>
                             </select>
                         </div>
-                    </div>         
+                    </div>
+                    <div class="cpu_score create">
+                        <label for="cpuScore">CPU점수</label><br>
+                        <input type="text" id="cpuScore" name="cpuScore">
+                    </div>
+                    <div class="gpu_score create">
+                        <label for="gpuScore">GPU점수</label><br>
+                        <input type="text" id="gpuScore" name="gpuScore">
+                    </div>    
                 </div>
 
                 <div class="submit create">
@@ -350,6 +368,11 @@
                 <div class="desktop detail">
                     <span>데스크탑명 :</span>
                     <span id="modalDesktop"></span>
+                    <hr>
+                </div>
+                <div class="desktop_type detail">
+                    <span>구분 :</span>
+                    <span id="modalDesktopType"></span>
                     <hr>
                 </div>
                 <div class="mainboard detail">
@@ -397,7 +420,17 @@
                     <span id="modalMemory4"></span>
                     <hr>
                 </div>
-                <div class="createDate detail">
+                <div class="cpu_score detail">
+                    <span>CPU점수 :</span>
+                    <span id="modalCpuScore"></span>
+                    <hr>
+                </div>
+                <div class="gpu_score detail">
+                    <span>GPU점수 :</span>
+                    <span id="modalGpuScore"></span>
+                    <hr>
+                </div>
+                <div class="create_date detail">
                     <span>등록일시 :</span>
                     <span id="modalCreateDate"></span>
                     <hr>
@@ -425,6 +458,13 @@
                     </div>
                     <hr>
                     <div class="grop2">
+                        <div class="desktop_type update">
+                            <label for="updateDesktopType">구분</label>
+                            <select id="updateDesktopType" name="desktopType">
+                                <option value="">선택하기</option>
+                                <option th:each="desktopType, loop : ${desktopTypeList}" th:text="${desktopType.type}" th:value="${desktopType.type}"></option>
+                            </select>
+                        </div>
                         <div class="department update">
                             <label for="updateDepartment">부서</label>
                             <select id="updateDepartment" name="department" onchange="updateDepartmentFetchEmployees()">
@@ -533,7 +573,15 @@
                                     <option value="DDR4 32GB">DDR4 32GB</option>
                                 </select>
                             </div>
-                        </div>         
+                        </div>
+                        <div class="cpu_score update">
+                            <label for="cpuScore">CPU점수</label><br>
+                            <input type="text" id="cpuScore" name="cpuScore">
+                        </div>
+                        <div class="gpu_score update">
+                            <label for="gpuScore">GPU점수</label><br>
+                            <input type="text" id="gpuScore" name="gpuScore">
+                        </div>  
                     </div>
     
                     <div class="submit update">
@@ -635,35 +683,44 @@
             // 데스크탑
             let desktop = row.querySelector('td:nth-child(5)').textContent;
             document.getElementById('modalDesktop').textContent = desktop;
+            // 데스크탑타입
+            let desktopType = row.querySelector('td:nth-child(6)').textContent;
+            document.getElementById('modalDesktopType').textContent = desktopType;
             // mainboard
-            let mainboard = row.querySelector('td:nth-child(6)').textContent;
+            let mainboard = row.querySelector('td:nth-child(7)').textContent;
             document.getElementById('modalMainboard').textContent = mainboard;
             // cpu
-            let cpu = row.querySelector('td:nth-child(7)').textContent;
+            let cpu = row.querySelector('td:nth-child(8)').textContent;
             document.getElementById('modalCpu').textContent = cpu;
             // gpu
-            let gpu = row.querySelector('td:nth-child(8)').textContent;
+            let gpu = row.querySelector('td:nth-child(9)').textContent;
             document.getElementById('modalGpu').textContent = gpu;
             // ssd
-            let ssd = row.querySelector('td:nth-child(9)').textContent;
+            let ssd = row.querySelector('td:nth-child(10)').textContent;
             document.getElementById('modalSsd').textContent = ssd;
             // power
-            let power = row.querySelector('td:nth-child(10)').textContent;
+            let power = row.querySelector('td:nth-child(11)').textContent;
             document.getElementById('modalPower').textContent = power;
             // memory1
-            let memory1 = row.querySelector('td:nth-child(11)').textContent;
+            let memory1 = row.querySelector('td:nth-child(12)').textContent;
             document.getElementById('modalMemory1').textContent = memory1;
             // memory2
-            let memory2 = row.querySelector('td:nth-child(12)').textContent;
+            let memory2 = row.querySelector('td:nth-child(13)').textContent;
             document.getElementById('modalMemory2').textContent = memory2;
             // memory3
-            let memory3 = row.querySelector('td:nth-child(13)').textContent;
+            let memory3 = row.querySelector('td:nth-child(14)').textContent;
             document.getElementById('modalMemory3').textContent = memory3;
             // memory4
-            let memory4 = row.querySelector('td:nth-child(14)').textContent;
+            let memory4 = row.querySelector('td:nth-child(15)').textContent;
             document.getElementById('modalMemory4').textContent = memory4;
+            // cpuScore
+            let cpuScore = row.querySelector('td:nth-child(16)').textContent;
+            document.getElementById('modalCpuScore').textContent = cpuScore;
+            // gpuScoer
+            let gpuScore = row.querySelector('td:nth-child(17)').textContent;
+            document.getElementById('modalGpuScore').textContent = gpuScore;
             // 등록일자
-            let createDate = row.querySelector('td:nth-child(15)').textContent;
+            let createDate = row.querySelector('td:nth-child(18)').textContent;
             document.getElementById('modalCreateDate').textContent = createDate;
 
             document.getElementById('updateModal').style.display = 'block';

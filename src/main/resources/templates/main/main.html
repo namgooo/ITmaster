@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ITmaster-main</title>
+    <link rel="stylesheet" type="text/css" href="/main/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 </head>
 <body>
     <h2>전산 관리</h2>
@@ -17,21 +20,41 @@
             <a th:href="@{/product/product-list}"><li>제품</li></a>
             <a th:href="@{/product-info/product-info-list}"><li>제품정보</li></a>
             <a th:href="@{/desktop/desktop-list}"><li>PC</li></a>
+            <a th:href="@{/admin}"><li>관리자</li></a>
         </ul>
     </div>
-    
+    <hr>
     <div>
-    	<h3>엑셀 업로드</h3>
+    	<h3>엑셀 파일 업로드</h3>
 	    <form th:action="@{/excel}" method="Post" enctype="multipart/form-data">
-	      <input type="file" th:name="file">
-	      <input th:type="submit" value="파일업로드하기">
+	      <input type="file" th:name="excelFile">
+	      <input th:type="submit" value="업로드하기">
 	    </form>
     </div>
-    
+    <hr>
+    <div>
+    	<h3>파일 업로드</h3>
+	    <form th:action="@{/upload}" method="Post" enctype="multipart/form-data">
+	      <span>단일 파일 업로드</span>
+	      <input type="file" th:name="file">
+	      <input th:type="submit" value="업로드하기">
+	      <br>
+	      <span>다중 파일 업로드</span>
+	      <input type="file" multiple="multiple" th:name="files">
+	      <input th:type="submit" value="업로드하기">
+	    </form>
+    </div>
+    <hr>
+    	<h3>이미지 출력</h3>
+		<div th:each="imageFile : ${all} ">
+			<img  th:src="|/images/${imageFile.id}|" width="150" height="150">
+			<p th:text="${imageFile.orgNm}"></p>
+		</div>
+    <hr>
     <div>
     	<h3>Q&A</h3>
     	<a th:href="@{/question/question-list}">전산민원목록</a>
     </div>
-    
+  
 </body>
 </html>

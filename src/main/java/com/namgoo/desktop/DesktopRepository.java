@@ -29,4 +29,10 @@ public interface DesktopRepository extends JpaRepository<Desktop, Integer>{
 	
 	// 데스크탑명으로 단일 조회
 	public Optional<Desktop> findByDesktop(String desktop);
+	
+	// 부서원으로 단일 조회
+	public Optional<Desktop> findByEmployee(Employee employee);
+	
+	// 데스크탑 목록 조회
+	public List<Desktop> findAll();
 }

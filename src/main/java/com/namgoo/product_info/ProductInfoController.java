@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +26,6 @@ import com.namgoo.maker.MakerService;
 import com.namgoo.product.Product;
 import com.namgoo.product.ProductService;
 
-import net.bytebuddy.matcher.MethodSortMatcher.Sort;
 
 @Controller
 @RequestMapping("/product-info")
@@ -49,7 +46,7 @@ public class ProductInfoController {
 	
 	// 제품 정보 검색 목록(페이징)
 	@GetMapping("/product-info-list")
-	public String findProductInfoPagingList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
+	public String findProductInfoPagingList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, @RequestParam(value = "filter", defaultValue="") String filter, Model model) {
 		List<Category> categoryList = this.categoryService.findCategoryList();
 		model.addAttribute("categoryList", categoryList);
 		List<Maker> makerList = this.makerService.findMakerList();
@@ -61,7 +58,7 @@ public class ProductInfoController {
 		List<Employee> employeeList = this.employeeService.findEmployeeList();
 		model.addAttribute("employeeList", employeeList);
 		
-		Page<ProductInfo> productInfoList = this.productInfoService.findProductInfoPagingList(keyword, pageable);
+		Page<ProductInfo> productInfoList = this.productInfoService.findProductInfoPagingList(keyword, pageable, filter);
 		model.addAttribute("productInfoList", productInfoList);
 		
 		// 페이징
@@ -76,6 +73,7 @@ public class ProductInfoController {
 		model.addAttribute("totalPages", productInfoList.getTotalPages()); // 마지막 페이지
 		
 		return "product_info/product_info_list";
+		
 	}
 	
 	// 제품 정보 등록

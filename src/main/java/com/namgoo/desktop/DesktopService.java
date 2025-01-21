@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import com.namgoo.category.CategoryRepository;
 import com.namgoo.department.Department;
 import com.namgoo.department.DepartmentRepository;
+import com.namgoo.desktop_type.DesktopType;
+import com.namgoo.desktop_type.DesktopTypeRepository;
 import com.namgoo.employee.Employee;
 import com.namgoo.employee.EmployeeRepository;
 
@@ -30,6 +32,8 @@ public class DesktopService {
 	private DepartmentRepository departmentRepository;
 	@Autowired
 	private EmployeeRepository employeeRepository;
+	@Autowired
+	private DesktopTypeRepository desktopTypeRepository;
 	
 	// 데스크탑 검색
 	private Specification<Desktop> search(String keyword) {
@@ -64,6 +68,7 @@ public class DesktopService {
 	public void createDesktop(DesktopDTO dto) {
 		Department departemnt = this.departmentRepository.findByDepartment(dto.getDepartment()).orElse(null);
 		Employee employee = this.employeeRepository.findByEmployee(dto.getEmployee()).orElse(null);
+		DesktopType desktopType = this.desktopTypeRepository.findByType(dto.getDesktopType()).orElse(null);
 		
 		Desktop desktop = new Desktop();
 		desktop.setDesktop(dto.getDesktop());
@@ -76,10 +81,13 @@ public class DesktopService {
 		desktop.setMemory2(dto.getMemory2());
 		desktop.setMemory3(dto.getMemory3());
 		desktop.setMemory4(dto.getMemory4());
+		desktop.setCpuScore(dto.getCpuScore());
+		desktop.setGpuScore(dto.getGpuScore());
 		desktop.setCreateDate(LocalDateTime.now());
 		
 		desktop.setDepartment(departemnt);
 		desktop.setEmployee(employee);
+		desktop.setDesktopType(desktopType);
 		this.desktopRepository.save(desktop);
 	}
 	
@@ -99,6 +107,7 @@ public class DesktopService {
 		Desktop desktop = this.desktopRepository.findById(dto.getId()).orElse(null);
 		Department department = this.departmentRepository.findByDepartment(dto.getDepartment()).orElse(null);
 		Employee employee = this.employeeRepository.findByEmployee(dto.getEmployee()).orElse(null);
+		DesktopType desktopType = this.desktopTypeRepository.findByType(dto.getDesktopType()).orElse(null);
 		
 		desktop.setDesktop(dto.getDesktop());
 		desktop.setMainboard(dto.getMainboard());
@@ -110,11 +119,19 @@ public class DesktopService {
 		desktop.setMemory2(dto.getMemory2());
 		desktop.setMemory3(dto.getMemory3());
 		desktop.setMemory4(dto.getMemory4());
+		desktop.setCpuScore(dto.getCpuScore());
+		desktop.setGpuScore(dto.getGpuScore());
 		desktop.setCreateDate(LocalDateTime.now());
 		
 		desktop.setDepartment(department);
 		desktop.setEmployee(employee);
+		desktop.setDesktopType(desktopType);
 		this.desktopRepository.save(desktop);
 	}
 	
+	// 데스크탑 목록 조회
+	public List<Desktop> findDesktopList() {
+		List<Desktop> desktopList = this.desktopRepository.findAll();
+		return desktopList;
+	}
 }

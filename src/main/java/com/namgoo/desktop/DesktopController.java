@@ -19,6 +19,8 @@ import com.namgoo.category.Category;
 import com.namgoo.category.CategoryService;
 import com.namgoo.department.Department;
 import com.namgoo.department.DepartmentService;
+import com.namgoo.desktop_type.DesktopType;
+import com.namgoo.desktop_type.DesktopTypeService;
 import com.namgoo.employee.Employee;
 import com.namgoo.employee.EmployeeService;
 import com.namgoo.maker.Maker;
@@ -38,6 +40,8 @@ public class DesktopController {
 	private DepartmentService departmentService;
 	@Autowired
 	private EmployeeService employeeService;
+	@Autowired
+	private DesktopTypeService desktopTypeService;
 	
 	// 데스크탑 검색 목록(페이징)
 	@GetMapping("/desktop-list")
@@ -46,6 +50,8 @@ public class DesktopController {
 		model.addAttribute("departmentList", departmentList);
 		List<Employee> employeeList = this.employeeService.findEmployeeList();
 		model.addAttribute("employeeList", employeeList);
+		List<DesktopType> desktopTypeList = this.desktopTypeService.findDesktopTypeList();
+		model.addAttribute("desktopTypeList", desktopTypeList);
 		Page<Desktop> desktopList = this.desktopService.findDesktopPagingList(keyword, pageable);
 		model.addAttribute("desktopList", desktopList);
 		

@@ -2,8 +2,8 @@ package com.namgoo.product_info;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,8 +17,24 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, Intege
 		
 	// 제품 정보 검색 목록(페이징)
 	public Page<ProductInfo> findAll(Specification<ProductInfo> specification, Pageable pageable);
-		 
+	
+	// 제품 정보 목록
+	public List<ProductInfo> findAll();
+	
 	// 제품 정보 단일 조회
 	public Optional<ProductInfo> findById(Integer id);
-
+	
+	// 제품 정보 '키보드' 총합 조회
+	@Query(value = "SELECT COUNT(*) FROM product_info p JOIN category c ON p.category_id = c.id WHERE c.category = '키보드'", nativeQuery = true)
+	public Integer countProductInfoKeyboard();
+	
+	// 제품 정보 '마우스' 총합 조회
+	@Query(value = "SELECT COUNT(*) FROM product_info p JOIN category c ON p.category_id = c.id WHERE c.category = '마우스'", nativeQuery = true)
+	public Integer countProductInfoMouse();
+	
+	// 제품 정보 '모니터' 총합 조회
+	@Query(value = "SELECT COUNT(*) FROM product_info p JOIN category c ON p.category_id = c.id WHERE c.category = '모니터'", nativeQuery = true)
+	public Integer countProductInfoMonitor();
+	
+	
 }

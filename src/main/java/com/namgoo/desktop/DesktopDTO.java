@@ -20,9 +20,12 @@ public class DesktopDTO {
 	private String memory2;
 	private String memory3;
 	private String memory4;
+	private Integer cpuScore;
+	private Integer gpuScore;
 	private LocalDateTime createDate;
 	
 	private String department;
 	private String employee;
+	private String desktopType;
 	
 }

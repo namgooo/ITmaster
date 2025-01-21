@@ -14,17 +14,13 @@ public class ExcelController {
 	private ExcelService excelService; 
 	
 	@PostMapping("/excel")
-	public String excelData(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
-		
-		// System.out.println("진입확인");
+	public String excelData(@RequestParam("excelFile") MultipartFile excelFile, RedirectAttributes redirectAttributes) {
         try {
-            excelService.saveExcelData(file);
+            excelService.updateExcelData(excelFile);
             redirectAttributes.addFlashAttribute("message", "File uploaded and data saved successfully!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", "An error occurred: " + e.getMessage());
         }
-        		
 		return "redirect:/root";
 	}
-
 }

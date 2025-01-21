@@ -1,42 +1,33 @@
-package com.namgoo.employee;
+package com.namgoo.desktop_type;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
-import com.namgoo.department.Department;
 import com.namgoo.desktop.Desktop;
-import com.namgoo.product_info.ProductInfo;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-public class Employee {
+public class DesktopType {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-	private String employee;
+	private String type;
 	private LocalDateTime createDate;
 	
 	// OneToMany
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "desktopType", cascade = CascadeType.REMOVE)
 	private List<Desktop> desktopList;
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE)
-	private List<ProductInfo> productInfoList;
-	
-	// ManyToOne
-	@ManyToOne
-	private Department department;
-
 }

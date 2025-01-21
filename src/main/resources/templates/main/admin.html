@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="/main/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+	<div>
+		<h3>전산 차트</h3>
+		<div class="charts">
+			<div style="position: relative; width: 700px; height: 200px">
+				<canvas id="barChart"></canvas>
+			</div>
+			<hr>
+			<div style="position: relative; width: 500px; height: 500px">
+				<canvas class="nam" id="doughnutChart"></canvas>
+			</div>
+			<div>
+				<canvas></canvas>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		const countKeyboard = parseInt("[[${countProductInfoKeyboard}]]", 10);
+		const countMouse = parseInt("[[${countProductInfoMouse}]]", 10);
+		const countMonitor = parseInt("[[${countProductInfoMonitor}]]", 10);
+		const countDesktop = parseInt("[[${countDesktop}]]", 10);
+		const totals = countKeyboard + countMouse + countMonitor;
+
+		// bar 차트(전산 재고 물품 현황)
+		// 차트 데이터
+		const barData = {
+			labels: ['키보드', '마우스', '모니터', 'PC'],
+			datasets: [
+				{
+					label: "'중고' 전산 물품",
+					data: [countKeyboard, countMouse, countMonitor, countDesktop],
+				},
+				{
+					label: "'신규' 전산 물품",
+					data: [countKeyboard, countMouse, countMonitor, countDesktop],
+				}
+			]
+		};
+		// 차트 구성
+		const barConfig = {
+			type: 'bar',
+			data: barData,
+			options: {
+				indexAxis: 'y',
+				plugins: {
+					title: {
+						display: true,
+						text: '전산 물품 재고 현황'
+					}
+				}
+			}
+		};
+
+		// 차트 그리기
+		const barCtx = document.getElementById('barChart').getContext('2d');
+		new Chart(barCtx, barConfig);
+
+		// doughnut 차트(포지션별 PC 개수)
+		// 차트 데이터
+		const doughnutData = {
+			labels: ['사무용PC', '설계용PC', '디자인용PC'],
+			datasets: [{
+				label: 'PC 포지션 비율',
+				data: [countKeyboard, countMouse, countMonitor],
+			}]
+		};
+		// 차트 구성
+		const doughnutConfig = {
+			type: 'pie',
+			data: doughnutData,
+			options: {
+				plugins: {
+					title: {
+						display: true,
+						text: 'PC 포지션 비율'
+					},
+					tooltip: {
+						callbacks: {
+							label: function (tooltipItem) {
+								const value = tooltipItem.raw;
+								const total = parseInt(countKeyboard) + parseInt(countMouse) + parseInt(countMonitor);
+								const percentage = ((value / total) * 100).toFixed(0) + '%';
+								console.log(`Raw value: ${value}, Percentage: ${percentage}`);
+								return tooltipItem.label + ': ' + percentage;
+							}
+						}
+					}
+				}
+			}
+		};
+		// 차트 그리기
+		const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+		new Chart(doughnutCtx, doughnutConfig);
+	</script>
+
+</body>
+
+</html>
+
+

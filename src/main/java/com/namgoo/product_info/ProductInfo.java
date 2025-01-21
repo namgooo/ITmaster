@@ -55,5 +55,3 @@ public class ProductInfo {
 	private Disposal disposal;
 	
 }
-
-

@@ -569,7 +569,7 @@ ul {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 100;
     width: 450px;
-    height: 600px;
+    height: 725px;
     border-radius: 5px;
 }
 
@@ -647,6 +647,10 @@ ul {
     margin-right: 50px;
 }
 
+.create_modal .section .desktop_type {
+    width: 100%;
+}
+
 .create_modal .section .department {
     width: 100%;
 }
@@ -661,7 +665,7 @@ ul {
 }
 
 .create_modal .section select {
-    width: 100px;
+    width: 80px;
     height: 25px;
     border: none;
     border-radius: 10px;
@@ -680,7 +684,7 @@ ul {
 .create_modal .section .submit {
     width: 430px;
     height: 50px;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-left: 50%;
     transform: translate(-50%, 0px);
     border-radius: 10px;
@@ -716,7 +720,7 @@ ul {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 100;
     width: 1100px;
-    height: 650px;
+    height: 770px;
     border-radius: 5px;
     font-size: 20px;
 }
@@ -776,7 +780,7 @@ ul {
     background-color: #2F5D62;
     position: absolute;
     width: 2px;
-    height: 650px;
+    height: 770px;
     left: 50%;
     bottom: 20px;
     transform: translate(-50%, 0px);
@@ -854,6 +858,10 @@ ul {
     margin-right: 50px;
 }
 
+.update_modal .container2 .section .desktop_type {
+    width: 100%;
+}
+
 .update_modal .container2 .section .department {
     width: 100%;
 }
@@ -868,7 +876,7 @@ ul {
 }
 
 .update_modal .container2 .section select {
-    width: 100px;
+    width: 80px;
     height: 25px;
     border: none;
     border-radius: 10px;
@@ -884,9 +892,9 @@ ul {
 }
 
 .update_modal .container2 .section .submit {
-    width: 525px;
+    width: 530px;
     height: 50px;
-    margin-top: 25px;
+    margin-top: 15px;
     margin-left: 50%;
     transform: translate(-50%, 0px);
     border-radius: 10px;
