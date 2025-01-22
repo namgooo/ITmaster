@@ -20,6 +20,8 @@ import com.namgoo.employee.EmployeeRepository;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
@@ -40,12 +42,19 @@ public class DesktopService {
 		return new Specification<>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public Predicate toPredicate(Root<Desktop> em, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				Predicate filterPredicate = cb.or(						
-						cb.like(em.get("desktop"), "%" + keyword + "%")
+			public Predicate toPredicate(Root<Desktop> dk, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				Join<DesktopType, Desktop> dd = dk.join("desktopType", JoinType.LEFT);
+				Join<Department, Desktop> mdd = dk.join("department", JoinType.LEFT);
+				Join<Employee, Desktop> ed = dk.join("employee", JoinType.LEFT);
+				
+				Predicate filterPredicate = cb.or(
+						cb.like(dd.get("type"), "%" + keyword + "%"),
+						cb.like(mdd.get("department"), "%" + keyword + "%"),
+						cb.like(ed.get("employee"), "%" + keyword + "%"),
+						cb.like(dk.get("desktop"), "%" + keyword + "%")
 				);
 				query.distinct(true);
-				query.orderBy(cb.desc(em.get("createDate")));
+				query.orderBy(cb.desc(dk.get("createDate")));
 				return filterPredicate;
 			}
 		};
@@ -134,4 +143,44 @@ public class DesktopService {
 		List<Desktop> desktopList = this.desktopRepository.findAll();
 		return desktopList;
 	}
+	
+	// 데스크탑 '사무용' 총합 조회
+	public Integer countDesktopOffice() {
+		Integer countDesktopOffice = this.desktopRepository.countDesktopOffice();
+		return countDesktopOffice;
+	}
+	// 데스크탑 '설계용' 총합 조회
+	public Integer countDesktopCad() {
+		Integer countDesktopCad = this.desktopRepository.countDesktopCad();
+		return countDesktopCad;
+	}
+	// 데스크탑 '디자인용' 총합 조회
+	public Integer countDesktopDesign() {
+		Integer countDesktopDesign = this.desktopRepository.countDesktopDesign();
+		return countDesktopDesign;
+	}
+	// 데스크탑 '기타' 총합 조회
+	public Integer countDesktopOther() {
+		Integer countDesktopOther = this.desktopRepository.countDesktopOther();
+		return countDesktopOther;
+	}
+	// 데스크탑 '미달' 총합 조회
+	public Integer countDesktopLack() {
+		Integer countDesktopLack = this.desktopRepository.countDesktopLack();
+		return countDesktopLack;
+	}
+	
+	// 데스크탑 ICT사업부 타입 별, 총합 조회
+	public List<DesktopDTO> countDesktopType() {
+		List<DesktopDTO> countDesktopType = this.desktopRepository.countDesktopType();
+		DesktopDTO i = countDesktopType.get(0);
+		System.out.println("값 확인 : " + i.getCountDesktopOffice());
+		System.out.println("값 확인 : " + i.getCountDesktopCad());
+		System.out.println("값 확인 : " + i.getCountDesktopDesign());
+		System.out.println("값 확인 : " + i.getCountDesktopOther());
+		System.out.println("값 확인 : " + i.getCountDesktopLack());
+		return countDesktopType;
+	}
+	
+	
 }

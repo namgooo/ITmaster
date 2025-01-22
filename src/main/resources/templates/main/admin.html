@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<title>ITmaster-admin</title>
 	<link rel="stylesheet" type="text/css" href="/main/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -14,66 +14,174 @@
 		<h3>전산 차트</h3>
 		<div class="charts">
 			<div style="position: relative; width: 700px; height: 200px">
-				<canvas id="barChart"></canvas>
+				<canvas id="itInventoryBarChart"></canvas>
 			</div>
 			<hr>
-			<div style="position: relative; width: 500px; height: 500px">
-				<canvas class="nam" id="doughnutChart"></canvas>
+			<div style="position: relative; width: 1000px; height: 300px">
+				<canvas id="itInventoryStatusBarChart"></canvas>
 			</div>
-			<div>
-				<canvas></canvas>
+			<hr>
+			<div style="position: relative; width: 1000px; height: 300px">
+				<canvas id="countDesktopBarChart"></canvas>
+			</div>
+			<hr>
+			<div style="position: relative; width: 400px; height: 400px">
+				<canvas class="nam" id="doughnutChart"></canvas>
 			</div>
 		</div>
 	</div>
 
 	<script>
-		const countKeyboard = parseInt("[[${countProductInfoKeyboard}]]", 10);
-		const countMouse = parseInt("[[${countProductInfoMouse}]]", 10);
-		const countMonitor = parseInt("[[${countProductInfoMonitor}]]", 10);
-		const countDesktop = parseInt("[[${countDesktop}]]", 10);
-		const totals = countKeyboard + countMouse + countMonitor;
+		// 제품 정보 '키보드' 총합
+		const countProductInfoKeyboard = "[[${countProductInfoKeyboard}]]";
+		// 제품 정보 '마우스' 총합
+		const countProductInfoMouse = "[[${countProductInfoMouse}]]";
+		// 제품 정보 '모니터' 총합
+		const countProductInfoMonitor = "[[${countProductInfoMonitor}]]";
+		// 데스크탑 총합
+		const countDesktop = "[[${countDesktop}]]";
 
-		// bar 차트(전산 재고 물품 현황)
+		// 제품 정보(키보드) 상태 - '정상' 총합 조회
+		const countProductInfoKeyboardNormal = "[[${countProductInfoKeyboardNormal}]]";
+		// 제품 정보(키보드) 상태 - '결함' 총합 조회
+		const countProductInfoKeyboardDefective = "[[${countProductInfoKeyboardDefective}]]"
+		// 제품 정보(키보드) 상태 - '고장' 총합 조회
+		const countProductInfoKeyboardFaulty = "[[${countProductInfoKeyboardFaulty}]]";
+
+		// 제품 정보(마우스) 상태 - '정상' 총합 조회
+		const countProductInfoMouseNormal = "[[${countProductInfoMouseNormal}]]";
+		// 제품 정보(마우스) 상태 - '결함' 총합 조회
+		const countProductInfoMouseDefective = "[[${countProductInfoMouseDefective}]]";
+		// 제품 정보(마우스) 상태 - '고장' 총합 조회
+		const countProductInfoMouseFaulty = "[[${countProductInfoMouseFaulty}]]";
+
+		// 제품 정보(모니터) 상태 - '정상' 총합 조회
+		const countProductInfoMonitorNormal = "[[${countProductInfoMonitorNormal}]]";
+		// 제품 정보(모니터) 상태 - '결함' 총합 조회
+		const countProductInfoMonitorDefective = "[[${countProductInfoMonitorDefective}]]";
+		// 제품 정보(모니터) 상태 - '고장' 총합 조회
+		const countProductInfoMonitorFaulty = "[[${countProductInfoMonitorFaulty}]]";
+
+		// 데스크탑 '사무용' 총합 조회
+		const countDesktopOffice = "[[${countDesktopOffice}]]";
+		// 데스크탑 '설계용' 총합 조회
+		const countDesktopCad = "[[${countDesktopCad}]]";
+		// 데스크탑 '디자인용' 총합 조회
+		const countDesktopDesign = "[[${countDesktopDesign}]]";
+		// 데스크탑 '기타' 총합 조회
+		const countDesktopOther = "[[${countDesktopOther}]]";
+		// 데스크탑 '미달' 총합 조회
+		const countDesktopLack = "[[${countDesktopLack}]]";
+
+		// 데스크탑 ICT사업부 타입 별, 총합 조회
+		// const countDesktopType = JSON.parse('[[${countDesktopType}]]');
+
+		const total = countProductInfoKeyboard + countProductInfoMouse + countProductInfoMonitor;
+
+		// --------------------------------------------------------------------------------------------------------------------
+		// 전산 물품 현황
 		// 차트 데이터
-		const barData = {
+		const itInventoryBarData = {
 			labels: ['키보드', '마우스', '모니터', 'PC'],
 			datasets: [
 				{
-					label: "'중고' 전산 물품",
-					data: [countKeyboard, countMouse, countMonitor, countDesktop],
-				},
-				{
-					label: "'신규' 전산 물품",
-					data: [countKeyboard, countMouse, countMonitor, countDesktop],
+					label: "전산 물품 별, 수량",
+					data: [countProductInfoKeyboard, countProductInfoMouse, countProductInfoMonitor, countDesktop],
 				}
 			]
 		};
 		// 차트 구성
-		const barConfig = {
+		const itInventoryBarConfig = {
 			type: 'bar',
-			data: barData,
+			data: itInventoryBarData,
+			options: {
+				indexAxis: 'x',
+				plugins: {
+					title: {
+						display: true,
+						text: '전산 물품 현황'
+					}
+				}
+			}
+		};
+		// 차트 그리기
+		const itInventoryBarCtx = document.getElementById('itInventoryBarChart').getContext('2d');
+		new Chart(itInventoryBarCtx, itInventoryBarConfig);
+		// --------------------------------------------------------------------------------------------------------------------
+
+		// 전산 물품 상태 별, 수량
+		// 차트 데이터
+		const itInventoryStatusBarData = {
+			labels: ['키보드', '마우스', '모니터'],
+			datasets: [
+				{
+					label: "정상",
+					data: [countProductInfoKeyboardNormal, countProductInfoMouseNormal, countProductInfoMonitorNormal]
+				},
+				{
+					label: "결함",
+					data: [countProductInfoKeyboardDefective, countProductInfoMouseDefective, countProductInfoMonitorDefective]
+				},
+				{
+					label: "고장",
+					data: [countProductInfoKeyboardFaulty, countProductInfoMouseFaulty, countProductInfoMonitorFaulty]
+				}
+			]
+		};
+		// 차트 구성
+		const itInventoryStatusBarConfig = {
+			type: 'bar',
+			data: itInventoryStatusBarData,
+			options: {
+				indexAxis: 'x',
+				plugins: {
+					title: {
+						display: true,
+						text: '전산 물품 상태 별, 수량'
+					}
+				}
+			}
+		};
+		// 차트 그리기
+		const itInventoryStatusBarCtx = document.getElementById('itInventoryStatusBarChart').getContext('2d');
+		new Chart(itInventoryStatusBarCtx, itInventoryStatusBarConfig);
+		// --------------------------------------------------------------------------------------------------------------------
+		// 데스크탑 전체 수량
+		// 차트 데이터
+		const countDesktopBarData = {
+			labels: ['사무용', '설계용', '디자인용', '기타', '미달'],
+			datasets: [
+				{
+					label: "타입 별, 수량",
+					data: [countDesktopOffice, countDesktopCad, countDesktopDesign, countDesktopOther, countDesktopLack]
+				}
+			]
+		};
+		// 차트 구성
+		const countDesktopBarConfig = {
+			type: 'bar',
+			data: countDesktopBarData,
 			options: {
 				indexAxis: 'y',
 				plugins: {
 					title: {
 						display: true,
-						text: '전산 물품 재고 현황'
+						text: '데스크탑 현황'
 					}
 				}
 			}
-		};
-
+		}
 		// 차트 그리기
-		const barCtx = document.getElementById('barChart').getContext('2d');
-		new Chart(barCtx, barConfig);
-
+		const countDesktopBarCtx = document.getElementById('countDesktopBarChart').getContext('2d');
+		new Chart(countDesktopBarCtx, countDesktopBarConfig);
+		// --------------------------------------------------------------------------------------------------------------------
 		// doughnut 차트(포지션별 PC 개수)
 		// 차트 데이터
 		const doughnutData = {
-			labels: ['사무용PC', '설계용PC', '디자인용PC'],
+			labels: ['사무용', '설계용', '디자인용', '기타', '미달'],
 			datasets: [{
-				label: 'PC 포지션 비율',
-				data: [countKeyboard, countMouse, countMonitor],
+				label: '데스크탑 비율',
+				data: [countDesktopOffice, countDesktopCad, countDesktopDesign, countDesktopOther, countDesktopLack],
 			}]
 		};
 		// 차트 구성
@@ -84,14 +192,18 @@
 				plugins: {
 					title: {
 						display: true,
-						text: 'PC 포지션 비율'
+						text: '데스크탑 비율'
 					},
 					tooltip: {
 						callbacks: {
 							label: function (tooltipItem) {
 								const value = tooltipItem.raw;
-								const total = parseInt(countKeyboard) + parseInt(countMouse) + parseInt(countMonitor);
-								const percentage = ((value / total) * 100).toFixed(0) + '%';
+								const sum = parseInt(countDesktopOffice, 10) +
+											parseInt(countDesktopCad, 10) +
+											parseInt(countDesktopDesign, 10) +
+											parseInt(countDesktopOther, 10) +
+											parseInt(countDesktopLack, 10);
+								const percentage = ((value / sum) * 100).toFixed(0) + '%';
 								console.log(`Raw value: ${value}, Percentage: ${percentage}`);
 								return tooltipItem.label + ': ' + percentage;
 							}
@@ -103,6 +215,11 @@
 		// 차트 그리기
 		const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
 		new Chart(doughnutCtx, doughnutConfig);
+		// --------------------------------------------------------------------------------------------------------------------
+		// 데스크탑 ICT사업부 타입 별, 총합 조회
+		// const countDesktopType = JSON.parse('${countDesktopType}');
+
+		// --------------------------------------------------------------------------------------------------------------------
 	</script>
 
 </body>
