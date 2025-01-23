@@ -171,16 +171,9 @@ public class DesktopService {
 	}
 	
 	// 데스크탑 ICT사업부 타입 별, 총합 조회
-	public List<DesktopDTO> countDesktopType() {
-		List<DesktopDTO> countDesktopType = this.desktopRepository.countDesktopType();
-		DesktopDTO i = countDesktopType.get(0);
-		System.out.println("값 확인 : " + i.getCountDesktopOffice());
-		System.out.println("값 확인 : " + i.getCountDesktopCad());
-		System.out.println("값 확인 : " + i.getCountDesktopDesign());
-		System.out.println("값 확인 : " + i.getCountDesktopOther());
-		System.out.println("값 확인 : " + i.getCountDesktopLack());
-		return countDesktopType;
+	public List<DesktopDTO> DesktopTypeAllDTO() {
+		List<DesktopDTO> DesktopDTO = this.desktopRepository.countDesktopType();
+		return DesktopDTO;
 	}
-	
 	
 }

@@ -96,10 +96,12 @@ public class MainController {
 		model.addAttribute("countDesktopLack", countDesktopLack);
 
 		// 데스크탑 ICT사업부 타입 별, 총합 조회
-		List<DesktopDTO> countDesktopType = this.desktopService.countDesktopType();
-		model.addAttribute("countDesktopType", countDesktopType);
+		List<DesktopDTO> DesktopTypeAllDTO = this.desktopService.DesktopTypeAllDTO();
+		System.out.println("값 확인 : " + DesktopTypeAllDTO.get(0).getDesktopOffice());
+		model.addAttribute("DesktopTypeAllDTO", DesktopTypeAllDTO);
 		
-		// 2025-01-22 퇴근 커밋
+		// 2025-01-23 퇴근
+		
 		
 		return "main/admin";
 	}

@@ -74,7 +74,20 @@
 		const countDesktopLack = "[[${countDesktopLack}]]";
 
 		// 데스크탑 ICT사업부 타입 별, 총합 조회
-		// const countDesktopType = JSON.parse('[[${countDesktopType}]]');
+		const countDesktopType = /*[[${DesktopTypeAllDTO}]]*/ '[]'; // Thymeleaf 데이터 삽입
+		console.log("countDesktopType 원본 데이터:", countDesktopType);
+
+		try {
+			const desktopData = JSON.parse(countDesktopType); // JSON 문자열을 파싱
+			if (desktopData && desktopData.length > 0) {
+				console.log("값이 있음");
+				console.log("값 확인:", desktopData[0]);
+			} else {
+				console.log("데이터가 비어 있음");
+			}
+		} catch (error) {
+			console.error("JSON 파싱 에러:", error);
+		}
 
 		const total = countProductInfoKeyboard + countProductInfoMouse + countProductInfoMonitor;
 
@@ -217,7 +230,6 @@
 		new Chart(doughnutCtx, doughnutConfig);
 		// --------------------------------------------------------------------------------------------------------------------
 		// 데스크탑 ICT사업부 타입 별, 총합 조회
-		// const countDesktopType = JSON.parse('${countDesktopType}');
 
 		// --------------------------------------------------------------------------------------------------------------------
 	</script>
