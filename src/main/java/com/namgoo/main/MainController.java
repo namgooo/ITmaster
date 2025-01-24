@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.namgoo.desktop.Desktop;
 import com.namgoo.desktop.DesktopDTO;
 import com.namgoo.desktop.DesktopService;
+import com.namgoo.desktop.DesktopTypeAllDTO;
 import com.namgoo.product_info.ProductInfo;
 import com.namgoo.product_info.ProductInfoService;
 
@@ -96,17 +97,19 @@ public class MainController {
 		model.addAttribute("countDesktopLack", countDesktopLack);
 
 		// 데스크탑 ICT사업부 타입 별, 총합 조회
-		List<DesktopDTO> DesktopTypeAllDTO = this.desktopService.DesktopTypeAllDTO();
-		System.out.println("값 확인 : " + DesktopTypeAllDTO.get(0).getDesktopOffice());
-		model.addAttribute("DesktopTypeAllDTO", DesktopTypeAllDTO);
-		
-		// 2025-01-23 퇴근
-		
-		
+		List<DesktopTypeAllDTO> countDesktopTypeList = this.desktopService.countDesktopTypeList();
+		model.addAttribute("countDesktopTypeList", countDesktopTypeList);
+		System.out.println("부서 : " + countDesktopTypeList.get(1).getDepartment());
+		System.out.println("사무용 : " + countDesktopTypeList.get(1).getCountDesktopOffice());
+		System.out.println("설계용 : " + countDesktopTypeList.get(1).getCountDesktopCad());
+		System.out.println("디자인 : " + countDesktopTypeList.get(1).getCountDesktopDesign());
+		System.out.println("기타 : " + countDesktopTypeList.get(1).getCountDesktopOther());
+		System.out.println("미달 : " + countDesktopTypeList.get(1).getCountDesktopLack());
 		return "main/admin";
+		
 	}
 	
-
+	// 2025-01-24 퇴근
 	
 
 }

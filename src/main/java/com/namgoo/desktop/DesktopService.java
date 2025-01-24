@@ -171,9 +171,11 @@ public class DesktopService {
 	}
 	
 	// 데스크탑 ICT사업부 타입 별, 총합 조회
-	public List<DesktopDTO> DesktopTypeAllDTO() {
-		List<DesktopDTO> DesktopDTO = this.desktopRepository.countDesktopType();
-		return DesktopDTO;
+	public List<DesktopTypeAllDTO> countDesktopTypeList() {
+		List<DesktopTypeAllDTO> countDesktopTypeList = this.desktopRepository.countDesktopTypeList();
+		return countDesktopTypeList;
 	}
+	
+	
 	
 }

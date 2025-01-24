@@ -36,12 +36,5 @@ public class DesktopDTO {
 	private Long desktopOther;
 	private Long desktopLack;
 	
-	public DesktopDTO(Long 사무용, Long 설계용, Long 디자인용, Long 기타, Long 미달) {
-		this.desktopOffice = 사무용;
-		this.desktopCad = 설계용;
-		this.desttopDesign = 디자인용;
-		this.desktopOther = 기타;
-		this.desktopLack = 미달;
-	}
 			
 }

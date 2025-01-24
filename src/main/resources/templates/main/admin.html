@@ -13,25 +13,30 @@
 	<div>
 		<h3>전산 차트</h3>
 		<div class="charts">
-			<div style="position: relative; width: 700px; height: 200px">
-				<canvas id="itInventoryBarChart"></canvas>
+			<div class="chart1">
+				<div style="position: relative; width: 700px; height: 200px">
+					<canvas id="itInventoryBarChart"></canvas>
+				</div>
+				<div style="position: relative; width: 1000px; height: 300px">
+					<canvas id="itInventoryStatusBarChart"></canvas>
+				</div>
 			</div>
 			<hr>
-			<div style="position: relative; width: 1000px; height: 300px">
-				<canvas id="itInventoryStatusBarChart"></canvas>
+			<div class="chart2">
+				<div style="position: relative; width: 1000px; height: 300px">
+					<canvas id="countDesktopBarChart"></canvas>
+				</div>
+				<div style="position: relative; width: 400px; height: 400px">
+					<canvas id="doughnutChart"></canvas>
+				</div>
 			</div>
-			<hr>
-			<div style="position: relative; width: 1000px; height: 300px">
-				<canvas id="countDesktopBarChart"></canvas>
-			</div>
-			<hr>
-			<div style="position: relative; width: 400px; height: 400px">
-				<canvas class="nam" id="doughnutChart"></canvas>
+			<div style="position: relative; width: 2000px; height: 400px">
+				<canvas id="countDesktopTypeBarChart"></canvas>
 			</div>
 		</div>
 	</div>
 
-	<script>
+	<script th:inline="JavaScript">
 		// 제품 정보 '키보드' 총합
 		const countProductInfoKeyboard = "[[${countProductInfoKeyboard}]]";
 		// 제품 정보 '마우스' 총합
@@ -73,21 +78,6 @@
 		// 데스크탑 '미달' 총합 조회
 		const countDesktopLack = "[[${countDesktopLack}]]";
 
-		// 데스크탑 ICT사업부 타입 별, 총합 조회
-		const countDesktopType = /*[[${DesktopTypeAllDTO}]]*/ '[]'; // Thymeleaf 데이터 삽입
-		console.log("countDesktopType 원본 데이터:", countDesktopType);
-
-		try {
-			const desktopData = JSON.parse(countDesktopType); // JSON 문자열을 파싱
-			if (desktopData && desktopData.length > 0) {
-				console.log("값이 있음");
-				console.log("값 확인:", desktopData[0]);
-			} else {
-				console.log("데이터가 비어 있음");
-			}
-		} catch (error) {
-			console.error("JSON 파싱 에러:", error);
-		}
 
 		const total = countProductInfoKeyboard + countProductInfoMouse + countProductInfoMonitor;
 
@@ -230,7 +220,78 @@
 		new Chart(doughnutCtx, doughnutConfig);
 		// --------------------------------------------------------------------------------------------------------------------
 		// 데스크탑 ICT사업부 타입 별, 총합 조회
-
+		let countDesktopTypeList = /*[[${countDesktopTypeList}]]*/ [];
+		
+		// 차트 데이터
+		const countDesktopTypeBarData = {
+			labels: ['사무용', '설계용', '디자인용', '기타', '미달'],
+			datasets: [
+				{
+					label: "ICT사업부",
+					data: [countDesktopTypeList[0].countDesktopOffice, countDesktopTypeList[0].countDesktopCad, countDesktopTypeList[0].countDesktopDesign, countDesktopTypeList[0].countDesktopOther, countDesktopTypeList[0].countDesktopLack]
+				},
+				{
+					label: "건축설계",
+					data: [countDesktopTypeList[1].countDesktopOffice, countDesktopTypeList[1].countDesktopCad, countDesktopTypeList[1].countDesktopDesign, countDesktopTypeList[1].countDesktopOther, countDesktopTypeList[1].countDesktopLack]
+				},
+				{
+					label: "토목설계",
+					data: [countDesktopTypeList[2].countDesktopOffice, countDesktopTypeList[2].countDesktopCad, countDesktopTypeList[2].countDesktopDesign, countDesktopTypeList[2].countDesktopOther, countDesktopTypeList[2].countDesktopLack]
+				},
+				{
+					label: "전기설계",
+					data: [countDesktopTypeList[3].countDesktopOffice, countDesktopTypeList[3].countDesktopCad, countDesktopTypeList[3].countDesktopDesign, countDesktopTypeList[3].countDesktopOther, countDesktopTypeList[3].countDesktopLack]
+				},
+				{
+					label: "PM",
+					data: [countDesktopTypeList[4].countDesktopOffice, countDesktopTypeList[4].countDesktopCad, countDesktopTypeList[4].countDesktopDesign, countDesktopTypeList[4].countDesktopOther, countDesktopTypeList[4].countDesktopLack]
+				},
+				{
+					label: "O&M",
+					data: [countDesktopTypeList[5].countDesktopOffice, countDesktopTypeList[5].countDesktopCad, countDesktopTypeList[5].countDesktopDesign, countDesktopTypeList[5].countDesktopOther, countDesktopTypeList[5].countDesktopLack]
+				},
+				{
+					label: "R&D",
+					data: [countDesktopTypeList[6].countDesktopOffice, countDesktopTypeList[6].countDesktopCad, countDesktopTypeList[6].countDesktopDesign, countDesktopTypeList[6].countDesktopOther, countDesktopTypeList[6].countDesktopLack]
+				},
+				{
+					label: "업무지원",
+					data: [countDesktopTypeList[7].countDesktopOffice, countDesktopTypeList[7].countDesktopCad, countDesktopTypeList[7].countDesktopDesign, countDesktopTypeList[7].countDesktopOther, countDesktopTypeList[7].countDesktopLack]
+				},
+				{
+					label: "정부사업",
+					data: [countDesktopTypeList[8].countDesktopOffice, countDesktopTypeList[8].countDesktopCad, countDesktopTypeList[8].countDesktopDesign, countDesktopTypeList[8].countDesktopOther, countDesktopTypeList[8].countDesktopLack]
+				},
+				{
+					label: "자재관리",
+					data: [countDesktopTypeList[9].countDesktopOffice, countDesktopTypeList[9].countDesktopCad, countDesktopTypeList[9].countDesktopDesign, countDesktopTypeList[9].countDesktopOther, countDesktopTypeList[9].countDesktopLack]
+				},
+				{
+					label: "회계",
+					data: [countDesktopTypeList[10].countDesktopOffice, countDesktopTypeList[10].countDesktopCad, countDesktopTypeList[10].countDesktopDesign, countDesktopTypeList[10].countDesktopOther, countDesktopTypeList[10].countDesktopLack]
+				},
+				{
+					label: "경기지사",
+					data: [countDesktopTypeList[11].countDesktopOffice, countDesktopTypeList[11].countDesktopCad, countDesktopTypeList[11].countDesktopDesign, countDesktopTypeList[11].countDesktopOther, countDesktopTypeList[11].countDesktopLack]
+				}
+			] 
+		};
+		// 차트 구성
+		const countDesktopTypeBarConfig = {
+			type: 'bar',
+			data: countDesktopTypeBarData,
+			options: {
+				indexAxis: 'x',
+				plugins: {
+					title: {
+						display: true,
+						text: '부서 별, 데스크탑 타입 수량'
+					}
+				}
+			}
+		};
+		const countDesktopTypeBarCtx = document.getElementById('countDesktopTypeBarChart').getContext('2d');
+		new Chart(countDesktopTypeBarCtx, countDesktopTypeBarConfig);
 		// --------------------------------------------------------------------------------------------------------------------
 	</script>
 

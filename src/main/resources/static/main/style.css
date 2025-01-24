@@ -29,9 +29,12 @@ ul {
     height: 100%
 }
 
-.nam {
-    width: 50%;
-    transform: translate();
+.chart1 {
+    display: flex;
+}
+
+.chart2 {
+    display: flex;
 }
 
 
