@@ -65,4 +65,17 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, Intege
 	// 제품 정보(모니터) 상태 - '고장' 총합 조회
 	@Query(value = "SELECT COUNT(*) FROM product_info p JOIN category c on p.category_id = c.id WHERE p.item_status = '고장' AND c.category = '모니터'", nativeQuery = true)
 	public Integer countProductInfoMonitorFaulty();
+	
+	// 카테고리 별, 제품정보 총합
+	@Query(value = "SELECT " + 
+				   "	SUM(CASE WHEN c.category = '모니터' THEN 1 ELSE 0 END) AS 모니터, " +
+				   "	SUM(CASE WHEN c.category = '키보드' THEN 1 ELSE 0 END) AS 키보드, " +
+				   "	SUM(CASE WHEN c.category = '마우스' THEN 1 ELSE 0 END) AS 마우스 " +
+				   "FROM product_info AS pi " +
+				   "JOIN category AS c ON pi.category_id = c.id " +
+				   "WHEN c.category IN ('모니터', '키보드', '마우스') ", nativeQuery = true
+			)
+	public Integer getCategoryCountProductInfo();
+	// 2025-02-10 퇴근
+	
 }

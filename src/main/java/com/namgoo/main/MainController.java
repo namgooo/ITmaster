@@ -80,6 +80,8 @@ public class MainController {
 		Integer countProductInfoMonitorFaulty = this.productInfoService.countProductInfoMonitorFaulty();
 		model.addAttribute("countProductInfoMonitorFaulty", countProductInfoMonitorFaulty);
 		
+		
+		
 		// 데스크탑 '사무용' 총합 조회
 		Integer countDesktopOffice = this.desktopService.countDesktopOffice();
 		model.addAttribute("countDesktopOffice", countDesktopOffice);
@@ -96,15 +98,11 @@ public class MainController {
 		Integer countDesktopLack = this.desktopService.countDesktopLack();
 		model.addAttribute("countDesktopLack", countDesktopLack);
 
+		
+		
 		// 데스크탑 ICT사업부 타입 별, 총합 조회
 		List<DesktopTypeAllDTO> countDesktopTypeList = this.desktopService.countDesktopTypeList();
 		model.addAttribute("countDesktopTypeList", countDesktopTypeList);
-		System.out.println("부서 : " + countDesktopTypeList.get(1).getDepartment());
-		System.out.println("사무용 : " + countDesktopTypeList.get(1).getCountDesktopOffice());
-		System.out.println("설계용 : " + countDesktopTypeList.get(1).getCountDesktopCad());
-		System.out.println("디자인 : " + countDesktopTypeList.get(1).getCountDesktopDesign());
-		System.out.println("기타 : " + countDesktopTypeList.get(1).getCountDesktopOther());
-		System.out.println("미달 : " + countDesktopTypeList.get(1).getCountDesktopLack());
 		return "main/admin";
 		
 	}
