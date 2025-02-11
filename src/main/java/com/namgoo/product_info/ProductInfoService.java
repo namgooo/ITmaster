@@ -240,4 +240,18 @@ public class ProductInfoService {
 		return countProductInfoMonitorFaulty;
 	}
 	
+	// ----------------------------------------------------------------------------------------------------------------------
+	// 카테고리 별 제품 정보 총합
+	public List<ProductInfoCategoryAllDTO> countCategoryProductInfoList() {
+		List<ProductInfoCategoryAllDTO> countCategoryProductInfoList = this.productInfoRepository.countCategoryProductInfoList();
+		return countCategoryProductInfoList;
+	}
+	
+	// 카테고리, 상태 별 전산 물품 총합 조회
+	public List<ProductInfoCategoryAndItemStatusAllDTO> countCategoryAndItemStatusProductInfoList() {
+		List<ProductInfoCategoryAndItemStatusAllDTO> countCategoryAndItemStatusProductInfoList = this.productInfoRepository.countCategoryAndItemStatusProductInfoList();
+		return countCategoryAndItemStatusProductInfoList;
+	}
+	
+	
 }

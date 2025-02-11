@@ -12,6 +12,8 @@ import com.namgoo.desktop.DesktopDTO;
 import com.namgoo.desktop.DesktopService;
 import com.namgoo.desktop.DesktopTypeAllDTO;
 import com.namgoo.product_info.ProductInfo;
+import com.namgoo.product_info.ProductInfoCategoryAllDTO;
+import com.namgoo.product_info.ProductInfoCategoryAndItemStatusAllDTO;
 import com.namgoo.product_info.ProductInfoService;
 
 @Controller
@@ -98,16 +100,43 @@ public class MainController {
 		Integer countDesktopLack = this.desktopService.countDesktopLack();
 		model.addAttribute("countDesktopLack", countDesktopLack);
 
+		// ---------------------------------------------------------------------------------------------------------
 		
-		
-		// 데스크탑 ICT사업부 타입 별, 총합 조회
+		// 부서별 데스크탑 타입 총합 조회
 		List<DesktopTypeAllDTO> countDesktopTypeList = this.desktopService.countDesktopTypeList();
 		model.addAttribute("countDesktopTypeList", countDesktopTypeList);
+//		System.out.println("부서 : " + countDesktopTypeList.get(0).getDepartment());
+//		System.out.println("사무용 : " + countDesktopTypeList.get(0).getCountDesktopOffice());
+//		System.out.println("설계용 : " + countDesktopTypeList.get(0).getCountDesktopCad());
+//		System.out.println("디자인용 : " + countDesktopTypeList.get(0).getCountDesktopDesign());
+//		System.out.println("기타 : " + countDesktopTypeList.get(0).getCountDesktopOther());
+//		System.out.println("미달 : " + countDesktopTypeList.get(0).getCountDesktopLack());
+		
+		// 카테고리 별 제품 정보 총합
+		List<ProductInfoCategoryAllDTO> countCategoryProductInfoList = this.productInfoService.countCategoryProductInfoList();
+		model.addAttribute("countCategoryProductInfoList", countCategoryProductInfoList);
+//		System.out.println("모니터 : " + countCategoryProductInfoList.get(0).getTotal());
+//		System.out.println("키보드 : " + countCategoryProductInfoList.get(1).getTotal());
+//		System.out.println("마우스 : " + countCategoryProductInfoList.get(2).getTotal());
+//		System.out.println(countCategoryProductInfoList.get(0).getCategory());
+		
+		// 데스크탑 총합
+		List<Desktop> desktop = this.desktopService.findDesktopList();
+		Integer desktopTotal = desktop.size();
+		model.addAttribute("destkopTotal", desktopTotal);
+		
+		// 카테고리, 상태 별 전산 물품 총합 조회
+		List<ProductInfoCategoryAndItemStatusAllDTO> countCategoryAndItemStatusProductInfoList = this.productInfoService.countCategoryAndItemStatusProductInfoList();
+		model.addAttribute("countCategoryAndItemStatusProductInfoList", countCategoryAndItemStatusProductInfoList);
+		System.out.println("카테고리 : " + countCategoryAndItemStatusProductInfoList.get(0).getCategory());
+		System.out.println("정상 : " + countCategoryAndItemStatusProductInfoList.get(0).getNormal());
+		System.out.println("결함 : " + countCategoryAndItemStatusProductInfoList.get(0).getDefective());
+		System.out.println("고장 : " + countCategoryAndItemStatusProductInfoList.get(0).getBroken());
+		
 		return "main/admin";
 		
 	}
-	
-	// 2025-01-24 퇴근
+
 	
 
 }

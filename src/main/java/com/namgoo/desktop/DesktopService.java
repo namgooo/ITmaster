@@ -170,11 +170,13 @@ public class DesktopService {
 		return countDesktopLack;
 	}
 	
-	// 데스크탑 ICT사업부 타입 별, 총합 조회
+	// 부서별 데스크탑 타입 총합 조회
 	public List<DesktopTypeAllDTO> countDesktopTypeList() {
 		List<DesktopTypeAllDTO> countDesktopTypeList = this.desktopRepository.countDesktopTypeList();
 		return countDesktopTypeList;
 	}
+	
+	
 	
 	
 	

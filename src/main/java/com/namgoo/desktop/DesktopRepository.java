@@ -52,21 +52,23 @@ public interface DesktopRepository extends JpaRepository<Desktop, Integer>{
 	@Query(value = "SELECT COUNT(*) FROM desktop d JOIN desktop_type dt on d.desktop_type_id = dt.id WHERE dt.type = '미달'", nativeQuery = true)
 	public Integer countDesktopLack();
 	
-	// 데스크탑 ICT사업부 타입 별, 총합 조회
+	//---------------------------------------------------------------------------------------------------------------------------------------------
+	// 부서별 데스크탑 타입 총합 조회
 	@Query("SELECT new com.namgoo.desktop.DesktopTypeAllDTO(" +
-			   "dm.department, " +
-		       "SUM(CASE WHEN dt.type = '사무용' THEN 1 ELSE 0 END), " +
-		       "SUM(CASE WHEN dt.type = '설계용' THEN 1 ELSE 0 END), " +
-		       "SUM(CASE WHEN dt.type = '디자인용' THEN 1 ELSE 0 END), " +
-		       "SUM(CASE WHEN dt.type = '기타' THEN 1 ELSE 0 END), " +
-		       "SUM(CASE WHEN dt.type = '미달' THEN 1 ELSE 0 END)) " +
-		       "FROM Desktop d " +
-		       "JOIN Department dm ON d.department.id = dm.id " +
-		       "JOIN DesktopType dt ON d.desktopType.id = dt.id " +
-		       "WHERE dm.department IN ('ICT사업부', '건축설계', '토목설계', '전기설계', 'PM', 'O&M', 'R&D', '업무지원', '정부사업', '자재관리', '회계', '경기지사') " +
-		       "AND (dt.type IN ('사무용', '설계용', '디자인용', '기타', '미달'))" +
-			   "GROUP BY dm.department")
+		   "dm.department, " +
+		   "SUM(CASE WHEN dt.type = '사무용' THEN 1 ELSE 0 END), " +
+		   "SUM(CASE WHEN dt.type = '설계용' THEN 1 ELSE 0 END), " +
+		   "SUM(CASE WHEN dt.type = '디자인용' THEN 1 ELSE 0 END), " +
+		   "SUM(CASE WHEN dt.type = '기타' THEN 1 ELSE 0 END), " +
+		   "SUM(CASE WHEN dt.type = '미달' THEN 1 ELSE 0 END)) " +
+		   "FROM Desktop d " +
+		   "JOIN Department dm ON d.department.id = dm.id " +
+		   "JOIN DesktopType dt ON d.desktopType.id = dt.id " +
+		   "WHERE dm.department IN ('ICT사업부', '건축설계', '토목설계', '전기설계', 'PM', 'O&M', 'R&D', '업무지원', '정부사업', '자재관리', '회계', '경기지사') " +
+		   "AND (dt.type IN ('사무용', '설계용', '디자인용', '기타', '미달'))" +
+		   "GROUP BY dm.department")
 	public List<DesktopTypeAllDTO> countDesktopTypeList();
-		
 	
+	// 2025-02-11 퇴근
+		
 }
