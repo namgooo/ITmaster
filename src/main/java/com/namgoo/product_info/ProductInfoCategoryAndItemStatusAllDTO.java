@@ -18,4 +18,5 @@ public class ProductInfoCategoryAndItemStatusAllDTO {
 		this.defective = 결함;
 		this.broken = 고장;
 	}
+	
 }

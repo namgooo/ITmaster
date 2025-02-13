@@ -58,7 +58,7 @@ public class ProductInfoController {
 		List<Employee> employeeList = this.employeeService.findEmployeeList();
 		model.addAttribute("employeeList", employeeList);
 		
-		Page<ProductInfo> productInfoList = this.productInfoService.findProductInfoPagingList(keyword, pageable, filter);
+		Page<ProductInfo> productInfoList = this.productInfoService.findProductInfoPagingList(keyword, pageable);
 		model.addAttribute("productInfoList", productInfoList);
 		
 		// 페이징

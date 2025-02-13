@@ -44,7 +44,7 @@ public class ProductInfoService {
 	private EmployeeRepository employeeRepository;
 	
 	// 제품 정보 검색
-	private Specification<ProductInfo> search(String keyword, String filter) {
+	private Specification<ProductInfo> search(String keyword) {
 		return new Specification<>() {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -78,8 +78,8 @@ public class ProductInfoService {
 	}
 	
 	// 제품 정보 검색 목록(페이징)
-	public Page<ProductInfo> findProductInfoPagingList(String keyword, Pageable pageable, String filter) {
-		Specification<ProductInfo> specification = search(keyword, filter);
+	public Page<ProductInfo> findProductInfoPagingList(String keyword, Pageable pageable) {
+		Specification<ProductInfo> specification = search(keyword);
 		Page<ProductInfo> productInfoList = this.productInfoRepository.findAll(specification, pageable);
 		return productInfoList;
 	}
