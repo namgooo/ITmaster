@@ -52,5 +52,7 @@ public class AdminController {
 		return "main/admin";
 		
 	}
+	
+	// 2025-02-13 퇴근
 
 }
