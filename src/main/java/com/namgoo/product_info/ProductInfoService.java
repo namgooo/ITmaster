@@ -171,76 +171,6 @@ public class ProductInfoService {
 		return productInfoList;
 	}
 	
-	// 제품 정보 카테고리, '키보드' 총합 조회
-	public Integer countProductInfoKeyboard() {
-		Integer countProductInfoKeyboard = this.productInfoRepository.countProductInfoKeyboard();
-		return countProductInfoKeyboard;
-	}
-	
-	// 제품 정보 카테고리, '마우스' 총합 조회
-	public Integer countProductInfoMouse() {
-		Integer countProductInfoMouse = this.productInfoRepository.countProductInfoMouse();
-		return countProductInfoMouse;
-	}
-	
-	// 제품 정보 카테고리, '모니터' 총합 조회
-	public Integer countProductInfoMonitor() {
-		Integer countProductInfoMonitor = this.productInfoRepository.countProductInfoMonitor();
-		return countProductInfoMonitor;
-	}
-	
-	
-	// 제품 정보(키보드) 상태 - '정상' 총합 조회
-	public Integer countProductInfoKeyboardNormal() {
-		Integer countProductInfoKeyboardNormal = this.productInfoRepository.countProductInfoKeyboardNormal();
-		return countProductInfoKeyboardNormal;
-	}
-	// 제품 정보(키보드) 상태 - '결함' 총합 조회
-	public Integer countProductInfoKeyboardDefective() {
-		Integer countProductInfoKeyboardDefective = this.productInfoRepository.countProductInfoKeyboardDefective();
-		return countProductInfoKeyboardDefective;
-	}
-	// 제품 정보(키보드) 상태 - '고장' 총합 조회
-	public Integer countProductInfoKeyboardFaulty() {
-		Integer countProductInfoKeyboardFaulty = this.productInfoRepository.countProductInfoKeyboardFaulty();
-		return countProductInfoKeyboardFaulty;
-	}
-	
-	
-	// 제품 정보(마우스) 상태 - '정상' 총합 조회
-	public Integer countProductInfoMouseNormal() {
-		Integer countProductInfoMouseNormal = this.productInfoRepository.countProductInfoMouseNormal();
-		return countProductInfoMouseNormal;
-	}
-	// 제품 정보(마우스) 상태 - '결함' 총합 조회
-	public Integer countProductInfoMouseDefective() {
-		Integer countProductInfoMouseDefective = this.productInfoRepository.countProductInfoMouseDefective();
-		return countProductInfoMouseDefective;
-	}
-	// 제품 정보(마우스) 상태 - '고장' 총합 조회
-	public Integer countProductInfoMouseFaulty() {
-		Integer countProductInfoMouseFaulty = this.productInfoRepository.countProductInfoMouseFaulty();
-		return countProductInfoMouseFaulty;
-	}
-	
-	
-	// 제품 정보(모니터) 상태 - '정상' 총합 조회
-	public Integer countProductInfoMonitorNormal() {
-		Integer countProductInfoMonitorNormal = this.productInfoRepository.countProductInfoMonitorNormal();
-		return countProductInfoMonitorNormal;
-	}
-	// 제품 정보(모니터) 상태 - '결함' 총합 조회
-	public Integer countProductInfoMonitorDefective() {
-		Integer countProductInfoMonitorDefective = this.productInfoRepository.countProductInfoMonitorDefective();
-		return countProductInfoMonitorDefective;
-	}
-	// 제품 정보(모니터) 상태 - '고장' 총합 조회
-	public Integer countProductInfoMonitorFaulty() {
-		Integer countProductInfoMonitorFaulty = this.productInfoRepository.countProductInfoMonitorFaulty();
-		return countProductInfoMonitorFaulty;
-	}
-	
-	// ----------------------------------------------------------------------------------------------------------------------
 	// 카테고리 별 제품 정보 총합
 	public List<ProductInfoCategoryAllDTO> countCategoryProductInfoList() {
 		List<ProductInfoCategoryAllDTO> countCategoryProductInfoList = this.productInfoRepository.countCategoryProductInfoList();
@@ -252,6 +182,5 @@ public class ProductInfoService {
 		List<ProductInfoCategoryAndItemStatusAllDTO> countCategoryAndItemStatusProductInfoList = this.productInfoRepository.countCategoryAndItemStatusProductInfoList();
 		return countCategoryAndItemStatusProductInfoList;
 	}
-	
 	
 }

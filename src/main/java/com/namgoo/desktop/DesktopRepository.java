@@ -35,27 +35,20 @@ public interface DesktopRepository extends JpaRepository<Desktop, Integer>{
 	
 	// 데스크탑 목록 조회
 	public List<Desktop> findAll();
-	
-	// 데스크탑 '사무용' 총합 조회
-	@Query(value = "SELECT COUNT(*) FROM desktop d JOIN desktop_type dt on d.desktop_type_id = dt.id WHERE dt.type = '사무용'", nativeQuery = true)
-	public Integer countDesktopOffice(); 
-	// 데스크탑 '설계용' 총합 조회
-	@Query(value = "SELECT COUNT(*) FROM desktop d JOIN desktop_type dt on d.desktop_type_id = dt.id WHERE dt.type = '설계용'", nativeQuery = true)
-	public Integer countDesktopCad();
-	// 데스크탑 '디자인용' 총합 조회
-	@Query(value = "SELECT COUNT(*) FROM desktop d JOIN desktop_type dt on d.desktop_type_id = dt.id WHERE dt.type = '디자인용'", nativeQuery = true)
-	public Integer countDesktopDesign();
-	// 데스크탑 '기타' 총합 조회
-	@Query(value = "SELECT COUNT(*) FROM desktop d JOIN desktop_type dt on d.desktop_type_id = dt.id WHERE dt.type = '기타'", nativeQuery = true)
-	public Integer countDesktopOther();
-	// 데스크탑 '미달' 총합 조회
-	@Query(value = "SELECT COUNT(*) FROM desktop d JOIN desktop_type dt on d.desktop_type_id = dt.id WHERE dt.type = '미달'", nativeQuery = true)
-	public Integer countDesktopLack();
-	
-	//---------------------------------------------------------------------------------------------------------------------------------------------
-	// 부서별 데스크탑 타입 총합 조회
+		
+	// 타입별 데스크탑 총합 조회
 	@Query("SELECT new com.namgoo.desktop.DesktopTypeAllDTO(" +
-		   "dm.department, " +
+		   "dt.type AS 타입, COUNT(dt.type)) AS 총합 " +
+		   "FROM Desktop AS d " +
+		   "JOIN DesktopType AS dt ON d.desktopType.id = dt.id " +
+		   "WHERE dt.type IN ('사무용', '설계용', '디자인용', '기타', '미달') " +
+		   "GROUP BY dt.type")
+	public List<DesktopTypeAllDTO> countDesktopTypeAllList();
+	
+	
+	// 부서별 데스크탑 타입 총합 조회
+	@Query("SELECT new com.namgoo.desktop.DesktopDepartmentAndTypeAllDTO(" +
+		   "dm.department AS 부서, " +
 		   "SUM(CASE WHEN dt.type = '사무용' THEN 1 ELSE 0 END), " +
 		   "SUM(CASE WHEN dt.type = '설계용' THEN 1 ELSE 0 END), " +
 		   "SUM(CASE WHEN dt.type = '디자인용' THEN 1 ELSE 0 END), " +
@@ -67,8 +60,6 @@ public interface DesktopRepository extends JpaRepository<Desktop, Integer>{
 		   "WHERE dm.department IN ('ICT사업부', '건축설계', '토목설계', '전기설계', 'PM', 'O&M', 'R&D', '업무지원', '정부사업', '자재관리', '회계', '경기지사') " +
 		   "AND (dt.type IN ('사무용', '설계용', '디자인용', '기타', '미달'))" +
 		   "GROUP BY dm.department")
-	public List<DesktopTypeAllDTO> countDesktopTypeList();
-	
-	// 2025-02-11 퇴근
-		
+	public List<DesktopDepartmentAndTypeAllDTO> countDesktopDepartmentAndTypeList();
+			
 }

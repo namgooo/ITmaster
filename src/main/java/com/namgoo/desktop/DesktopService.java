@@ -143,41 +143,17 @@ public class DesktopService {
 		List<Desktop> desktopList = this.desktopRepository.findAll();
 		return desktopList;
 	}
-	
-	// 데스크탑 '사무용' 총합 조회
-	public Integer countDesktopOffice() {
-		Integer countDesktopOffice = this.desktopRepository.countDesktopOffice();
-		return countDesktopOffice;
-	}
-	// 데스크탑 '설계용' 총합 조회
-	public Integer countDesktopCad() {
-		Integer countDesktopCad = this.desktopRepository.countDesktopCad();
-		return countDesktopCad;
-	}
-	// 데스크탑 '디자인용' 총합 조회
-	public Integer countDesktopDesign() {
-		Integer countDesktopDesign = this.desktopRepository.countDesktopDesign();
-		return countDesktopDesign;
-	}
-	// 데스크탑 '기타' 총합 조회
-	public Integer countDesktopOther() {
-		Integer countDesktopOther = this.desktopRepository.countDesktopOther();
-		return countDesktopOther;
-	}
-	// 데스크탑 '미달' 총합 조회
-	public Integer countDesktopLack() {
-		Integer countDesktopLack = this.desktopRepository.countDesktopLack();
-		return countDesktopLack;
-	}
-	
+		
 	// 부서별 데스크탑 타입 총합 조회
-	public List<DesktopTypeAllDTO> countDesktopTypeList() {
-		List<DesktopTypeAllDTO> countDesktopTypeList = this.desktopRepository.countDesktopTypeList();
-		return countDesktopTypeList;
+	public List<DesktopDepartmentAndTypeAllDTO> countDesktopDepartmentAndTypeList() {
+		List<DesktopDepartmentAndTypeAllDTO> countDesktopDepartmentAndTypeList = this.desktopRepository.countDesktopDepartmentAndTypeList();
+		return countDesktopDepartmentAndTypeList;
 	}
 	
-	
-	
-	
+	// 타입별 데스크탑 총합 조회
+	public List<DesktopTypeAllDTO> countDesktopTypeAllList() {
+		List<DesktopTypeAllDTO> countDesktopTypeAllList = this.desktopRepository.countDesktopTypeAllList();
+		return countDesktopTypeAllList;
+	}
 	
 }

@@ -37,61 +37,33 @@
 	</div>
 
 	<script th:inline="JavaScript">
-		// 제품 정보 '키보드' 총합
-		const countProductInfoKeyboard = "[[${countProductInfoKeyboard}]]";
-		// 제품 정보 '마우스' 총합
-		const countProductInfoMouse = "[[${countProductInfoMouse}]]";
-		// 제품 정보 '모니터' 총합
-		const countProductInfoMonitor = "[[${countProductInfoMonitor}]]";
+		// // 전산 물품 현황
+		// 카테고리 별 제품 정보 총합
+		const countCategoryProductInfoList = /*[[${countCategoryProductInfoList}]]*/ [];
 		// 데스크탑 총합
-		const countDesktop = "[[${countDesktop}]]";
+		const destkopTotal = "[[${destkopTotal}]]";
 
-		// 제품 정보(키보드) 상태 - '정상' 총합 조회
-		const countProductInfoKeyboardNormal = "[[${countProductInfoKeyboardNormal}]]";
-		// 제품 정보(키보드) 상태 - '결함' 총합 조회
-		const countProductInfoKeyboardDefective = "[[${countProductInfoKeyboardDefective}]]"
-		// 제품 정보(키보드) 상태 - '고장' 총합 조회
-		const countProductInfoKeyboardFaulty = "[[${countProductInfoKeyboardFaulty}]]";
-
-		// 제품 정보(마우스) 상태 - '정상' 총합 조회
-		const countProductInfoMouseNormal = "[[${countProductInfoMouseNormal}]]";
-		// 제품 정보(마우스) 상태 - '결함' 총합 조회
-		const countProductInfoMouseDefective = "[[${countProductInfoMouseDefective}]]";
-		// 제품 정보(마우스) 상태 - '고장' 총합 조회
-		const countProductInfoMouseFaulty = "[[${countProductInfoMouseFaulty}]]";
-
-		// 제품 정보(모니터) 상태 - '정상' 총합 조회
-		const countProductInfoMonitorNormal = "[[${countProductInfoMonitorNormal}]]";
-		// 제품 정보(모니터) 상태 - '결함' 총합 조회
-		const countProductInfoMonitorDefective = "[[${countProductInfoMonitorDefective}]]";
-		// 제품 정보(모니터) 상태 - '고장' 총합 조회
-		const countProductInfoMonitorFaulty = "[[${countProductInfoMonitorFaulty}]]";
-
-		// 데스크탑 '사무용' 총합 조회
-		const countDesktopOffice = "[[${countDesktopOffice}]]";
-		// 데스크탑 '설계용' 총합 조회
-		const countDesktopCad = "[[${countDesktopCad}]]";
-		// 데스크탑 '디자인용' 총합 조회
-		const countDesktopDesign = "[[${countDesktopDesign}]]";
-		// 데스크탑 '기타' 총합 조회
-		const countDesktopOther = "[[${countDesktopOther}]]";
-		// 데스크탑 '미달' 총합 조회
-		const countDesktopLack = "[[${countDesktopLack}]]";
-
-
-		const total = countProductInfoKeyboard + countProductInfoMouse + countProductInfoMonitor;
-
-		// --------------------------------------------------------------------------------------------------------------------
-		// 전산 물품 현황
 		// 차트 데이터
 		const itInventoryBarData = {
-			labels: ['키보드', '마우스', '모니터', 'PC'],
+			labels: [countCategoryProductInfoList[1].category, countCategoryProductInfoList[2].category, countCategoryProductInfoList[0].category, '데스크탑'],
 			datasets: [
 				{
-					label: "전산 물품 별, 수량",
-					data: [countProductInfoKeyboard, countProductInfoMouse, countProductInfoMonitor, countDesktop],
+					label: countCategoryProductInfoList[1].category,
+					data: [countCategoryProductInfoList[1].total, 0, 0, 0]
+				},
+				{
+					label: countCategoryProductInfoList[2].category,
+					data: [0, countCategoryProductInfoList[2].total, 0, 0]
+				},
+				{
+					label: countCategoryProductInfoList[0].category,
+					data: [0, 0, countCategoryProductInfoList[0].total, 0]
+				},
+				{
+					label: "데스크탑",
+					data: [0, 0, 0, destkopTotal]
 				}
-			]
+			]		
 		};
 		// 차트 구성
 		const itInventoryBarConfig = {
@@ -99,10 +71,20 @@
 			data: itInventoryBarData,
 			options: {
 				indexAxis: 'x',
+				responsive: true,
 				plugins: {
 					title: {
 						display: true,
 						text: '전산 물품 현황'
+					}
+				},
+				// 차트의 X축과 Y축을 설정하는 옵션
+				scales: {
+					x: {
+						stacked: true // X축에서 같은 카테고리에 여러 값이 하나의 막대에 쌓임(누적)
+					},
+					y: {
+						beginAtZero: true // Y축 값을 0부터 시작
 					}
 				}
 			}
@@ -110,24 +92,25 @@
 		// 차트 그리기
 		const itInventoryBarCtx = document.getElementById('itInventoryBarChart').getContext('2d');
 		new Chart(itInventoryBarCtx, itInventoryBarConfig);
-		// --------------------------------------------------------------------------------------------------------------------
-
+		// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		// 전산 물품 상태 별, 수량
+		const countCategoryAndItemStatusProductInfoList = /*[[${countCategoryAndItemStatusProductInfoList}]]*/ [];
+
 		// 차트 데이터
 		const itInventoryStatusBarData = {
-			labels: ['키보드', '마우스', '모니터'],
+			labels: [countCategoryAndItemStatusProductInfoList[1].category, countCategoryAndItemStatusProductInfoList[2].category, countCategoryAndItemStatusProductInfoList[0].category],
 			datasets: [
 				{
 					label: "정상",
-					data: [countProductInfoKeyboardNormal, countProductInfoMouseNormal, countProductInfoMonitorNormal]
+					data: [countCategoryAndItemStatusProductInfoList[1].normal, countCategoryAndItemStatusProductInfoList[2].normal, countCategoryAndItemStatusProductInfoList[0].normal]
 				},
 				{
 					label: "결함",
-					data: [countProductInfoKeyboardDefective, countProductInfoMouseDefective, countProductInfoMonitorDefective]
+					data: [countCategoryAndItemStatusProductInfoList[1].defective, countCategoryAndItemStatusProductInfoList[2].defective, countCategoryAndItemStatusProductInfoList[0].defective]
 				},
 				{
 					label: "고장",
-					data: [countProductInfoKeyboardFaulty, countProductInfoMouseFaulty, countProductInfoMonitorFaulty]
+					data: [countCategoryAndItemStatusProductInfoList[1].broken, countCategoryAndItemStatusProductInfoList[2].broken, countCategoryAndItemStatusProductInfoList[0].broken]
 				}
 			]
 		};
@@ -148,15 +131,33 @@
 		// 차트 그리기
 		const itInventoryStatusBarCtx = document.getElementById('itInventoryStatusBarChart').getContext('2d');
 		new Chart(itInventoryStatusBarCtx, itInventoryStatusBarConfig);
-		// --------------------------------------------------------------------------------------------------------------------
-		// 데스크탑 전체 수량
+		// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		// 타입별 데스크탑 총합 조회
+		const countDesktopTypeAllList = /*[[${countDesktopTypeAllList}]]*/ [];
+
 		// 차트 데이터
 		const countDesktopBarData = {
-			labels: ['사무용', '설계용', '디자인용', '기타', '미달'],
+			labels: [countDesktopTypeAllList[1].type, countDesktopTypeAllList[2].type, countDesktopTypeAllList[3].type, countDesktopTypeAllList[4].type, countDesktopTypeAllList[0].type],
 			datasets: [
 				{
-					label: "타입 별, 수량",
-					data: [countDesktopOffice, countDesktopCad, countDesktopDesign, countDesktopOther, countDesktopLack]
+					label: countDesktopTypeAllList[1].type,
+					data: [countDesktopTypeAllList[1].total, 0, 0, 0, 0]
+				},
+				{
+					label: countDesktopTypeAllList[2].type,
+					data: [0, countDesktopTypeAllList[2].total, 0, 0, 0]
+				},
+				{
+					label: countDesktopTypeAllList[3].type,
+					data: [0, 0, countDesktopTypeAllList[3].total, 0, 0]
+				},
+				{
+					label: countDesktopTypeAllList[4].type,
+					data: [0, 0, 0, countDesktopTypeAllList[4].total, 0]
+				},
+				{
+					label: countDesktopTypeAllList[0].type,
+					data: [0, 0, 0, 0, countDesktopTypeAllList[0].total]
 				}
 			]
 		};
@@ -166,10 +167,20 @@
 			data: countDesktopBarData,
 			options: {
 				indexAxis: 'y',
+				responsive: true,
 				plugins: {
 					title: {
 						display: true,
 						text: '데스크탑 현황'
+					}
+				},
+				// 차트의 X축과 Y축을 설정하는 옵션
+				scales: {
+					x: {
+						beginAtZero: true // X축 값을 0부터 시작
+					},
+					y: {
+						stacked: true // Y축에서 같은 카테고리에 여러 값이 하나의 막대에 쌓임(누적)
 					}
 				}
 			}
@@ -177,14 +188,14 @@
 		// 차트 그리기
 		const countDesktopBarCtx = document.getElementById('countDesktopBarChart').getContext('2d');
 		new Chart(countDesktopBarCtx, countDesktopBarConfig);
-		// --------------------------------------------------------------------------------------------------------------------
-		// doughnut 차트(포지션별 PC 개수)
+		// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		// doughnut 차트(타입별 PC 개수)
 		// 차트 데이터
 		const doughnutData = {
-			labels: ['사무용', '설계용', '디자인용', '기타', '미달'],
+			labels: [countDesktopTypeAllList[1].type, countDesktopTypeAllList[2].type, countDesktopTypeAllList[3].type, countDesktopTypeAllList[4].type, countDesktopTypeAllList[0].type],
 			datasets: [{
 				label: '데스크탑 비율',
-				data: [countDesktopOffice, countDesktopCad, countDesktopDesign, countDesktopOther, countDesktopLack],
+				data: [countDesktopTypeAllList[1].total, countDesktopTypeAllList[2].total, countDesktopTypeAllList[3].total, countDesktopTypeAllList[4].total, countDesktopTypeAllList[0].total],
 			}]
 		};
 		// 차트 구성
@@ -201,11 +212,11 @@
 						callbacks: {
 							label: function (tooltipItem) {
 								const value = tooltipItem.raw;
-								const sum = parseInt(countDesktopOffice, 10) +
-											parseInt(countDesktopCad, 10) +
-											parseInt(countDesktopDesign, 10) +
-											parseInt(countDesktopOther, 10) +
-											parseInt(countDesktopLack, 10);
+								const sum = parseInt(countDesktopTypeAllList[1].total, 10) +
+											parseInt(countDesktopTypeAllList[2].total, 10) +
+											parseInt(countDesktopTypeAllList[3].total, 10) +
+											parseInt(countDesktopTypeAllList[4].total, 10) +
+											parseInt(countDesktopTypeAllList[0].total, 10);
 								const percentage = ((value / sum) * 100).toFixed(0) + '%';
 								console.log(`Raw value: ${value}, Percentage: ${percentage}`);
 								return tooltipItem.label + ': ' + percentage;
@@ -218,61 +229,61 @@
 		// 차트 그리기
 		const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
 		new Chart(doughnutCtx, doughnutConfig);
-		// --------------------------------------------------------------------------------------------------------------------
-		// 데스크탑 ICT사업부 타입 별, 총합 조회
-		let countDesktopTypeList = /*[[${countDesktopTypeList}]]*/ [];
-		
+		// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		// 부서별 데스크탑 타입 총합 조회
+		const countDesktopDepartmentAndTypeList = /*[[${countDesktopDepartmentAndTypeList}]]*/ [];
+
 		// 차트 데이터
 		const countDesktopTypeBarData = {
 			labels: ['사무용', '설계용', '디자인용', '기타', '미달'],
 			datasets: [
 				{
-					label: "ICT사업부",
-					data: [countDesktopTypeList[0].countDesktopOffice, countDesktopTypeList[0].countDesktopCad, countDesktopTypeList[0].countDesktopDesign, countDesktopTypeList[0].countDesktopOther, countDesktopTypeList[0].countDesktopLack]
+					label: countDesktopDepartmentAndTypeList[0].department,
+					data: [countDesktopDepartmentAndTypeList[0].countDesktopOffice, countDesktopDepartmentAndTypeList[0].countDesktopCad, countDesktopDepartmentAndTypeList[0].countDesktopDesign, countDesktopDepartmentAndTypeList[0].countDesktopOther, countDesktopDepartmentAndTypeList[0].countDesktopLack]
 				},
 				{
-					label: "건축설계",
-					data: [countDesktopTypeList[1].countDesktopOffice, countDesktopTypeList[1].countDesktopCad, countDesktopTypeList[1].countDesktopDesign, countDesktopTypeList[1].countDesktopOther, countDesktopTypeList[1].countDesktopLack]
+					label: countDesktopDepartmentAndTypeList[1].department,
+					data: [countDesktopDepartmentAndTypeList[1].countDesktopOffice, countDesktopDepartmentAndTypeList[1].countDesktopCad, countDesktopDepartmentAndTypeList[1].countDesktopDesign, countDesktopDepartmentAndTypeList[1].countDesktopOther, countDesktopDepartmentAndTypeList[1].countDesktopLack]
 				},
 				{
-					label: "토목설계",
-					data: [countDesktopTypeList[2].countDesktopOffice, countDesktopTypeList[2].countDesktopCad, countDesktopTypeList[2].countDesktopDesign, countDesktopTypeList[2].countDesktopOther, countDesktopTypeList[2].countDesktopLack]
+					label: countDesktopDepartmentAndTypeList[2].department,
+					data: [countDesktopDepartmentAndTypeList[2].countDesktopOffice, countDesktopDepartmentAndTypeList[2].countDesktopCad, countDesktopDepartmentAndTypeList[2].countDesktopDesign, countDesktopDepartmentAndTypeList[2].countDesktopOther, countDesktopDepartmentAndTypeList[2].countDesktopLack]
 				},
 				{
-					label: "전기설계",
-					data: [countDesktopTypeList[3].countDesktopOffice, countDesktopTypeList[3].countDesktopCad, countDesktopTypeList[3].countDesktopDesign, countDesktopTypeList[3].countDesktopOther, countDesktopTypeList[3].countDesktopLack]
+					label: countDesktopDepartmentAndTypeList[3].department,
+					data: [countDesktopDepartmentAndTypeList[3].countDesktopOffice, countDesktopDepartmentAndTypeList[3].countDesktopCad, countDesktopDepartmentAndTypeList[3].countDesktopDesign, countDesktopDepartmentAndTypeList[3].countDesktopOther, countDesktopDepartmentAndTypeList[3].countDesktopLack]
 				},
 				{
-					label: "PM",
-					data: [countDesktopTypeList[4].countDesktopOffice, countDesktopTypeList[4].countDesktopCad, countDesktopTypeList[4].countDesktopDesign, countDesktopTypeList[4].countDesktopOther, countDesktopTypeList[4].countDesktopLack]
+					label: countDesktopDepartmentAndTypeList[4].department,
+					data: [countDesktopDepartmentAndTypeList[4].countDesktopOffice, countDesktopDepartmentAndTypeList[4].countDesktopCad, countDesktopDepartmentAndTypeList[4].countDesktopDesign, countDesktopDepartmentAndTypeList[4].countDesktopOther, countDesktopDepartmentAndTypeList[4].countDesktopLack]
 				},
 				{
-					label: "O&M",
-					data: [countDesktopTypeList[5].countDesktopOffice, countDesktopTypeList[5].countDesktopCad, countDesktopTypeList[5].countDesktopDesign, countDesktopTypeList[5].countDesktopOther, countDesktopTypeList[5].countDesktopLack]
+					label: countDesktopDepartmentAndTypeList[5].department,
+					data: [countDesktopDepartmentAndTypeList[5].countDesktopOffice, countDesktopDepartmentAndTypeList[5].countDesktopCad, countDesktopDepartmentAndTypeList[5].countDesktopDesign, countDesktopDepartmentAndTypeList[5].countDesktopOther, countDesktopDepartmentAndTypeList[5].countDesktopLack]
 				},
 				{
-					label: "R&D",
-					data: [countDesktopTypeList[6].countDesktopOffice, countDesktopTypeList[6].countDesktopCad, countDesktopTypeList[6].countDesktopDesign, countDesktopTypeList[6].countDesktopOther, countDesktopTypeList[6].countDesktopLack]
+					label: countDesktopDepartmentAndTypeList[6].department,
+					data: [countDesktopDepartmentAndTypeList[6].countDesktopOffice, countDesktopDepartmentAndTypeList[6].countDesktopCad, countDesktopDepartmentAndTypeList[6].countDesktopDesign, countDesktopDepartmentAndTypeList[6].countDesktopOther, countDesktopDepartmentAndTypeList[6].countDesktopLack]
 				},
 				{
-					label: "업무지원",
-					data: [countDesktopTypeList[7].countDesktopOffice, countDesktopTypeList[7].countDesktopCad, countDesktopTypeList[7].countDesktopDesign, countDesktopTypeList[7].countDesktopOther, countDesktopTypeList[7].countDesktopLack]
+					label: countDesktopDepartmentAndTypeList[7].department,
+					data: [countDesktopDepartmentAndTypeList[7].countDesktopOffice, countDesktopDepartmentAndTypeList[7].countDesktopCad, countDesktopDepartmentAndTypeList[7].countDesktopDesign, countDesktopDepartmentAndTypeList[7].countDesktopOther, countDesktopDepartmentAndTypeList[7].countDesktopLack]
 				},
 				{
-					label: "정부사업",
-					data: [countDesktopTypeList[8].countDesktopOffice, countDesktopTypeList[8].countDesktopCad, countDesktopTypeList[8].countDesktopDesign, countDesktopTypeList[8].countDesktopOther, countDesktopTypeList[8].countDesktopLack]
+					label: countDesktopDepartmentAndTypeList[8].department,
+					data: [countDesktopDepartmentAndTypeList[8].countDesktopOffice, countDesktopDepartmentAndTypeList[8].countDesktopCad, countDesktopDepartmentAndTypeList[8].countDesktopDesign, countDesktopDepartmentAndTypeList[8].countDesktopOther, countDesktopDepartmentAndTypeList[8].countDesktopLack]
 				},
 				{
-					label: "자재관리",
-					data: [countDesktopTypeList[9].countDesktopOffice, countDesktopTypeList[9].countDesktopCad, countDesktopTypeList[9].countDesktopDesign, countDesktopTypeList[9].countDesktopOther, countDesktopTypeList[9].countDesktopLack]
+					label: countDesktopDepartmentAndTypeList[9].department,
+					data: [countDesktopDepartmentAndTypeList[9].countDesktopOffice, countDesktopDepartmentAndTypeList[9].countDesktopCad, countDesktopDepartmentAndTypeList[9].countDesktopDesign, countDesktopDepartmentAndTypeList[9].countDesktopOther, countDesktopDepartmentAndTypeList[9].countDesktopLack]
 				},
 				{
-					label: "회계",
-					data: [countDesktopTypeList[10].countDesktopOffice, countDesktopTypeList[10].countDesktopCad, countDesktopTypeList[10].countDesktopDesign, countDesktopTypeList[10].countDesktopOther, countDesktopTypeList[10].countDesktopLack]
+					label: countDesktopDepartmentAndTypeList[10].department,
+					data: [countDesktopDepartmentAndTypeList[10].countDesktopOffice, countDesktopDepartmentAndTypeList[10].countDesktopCad, countDesktopDepartmentAndTypeList[10].countDesktopDesign, countDesktopDepartmentAndTypeList[10].countDesktopOther, countDesktopDepartmentAndTypeList[10].countDesktopLack]
 				},
 				{
-					label: "경기지사",
-					data: [countDesktopTypeList[11].countDesktopOffice, countDesktopTypeList[11].countDesktopCad, countDesktopTypeList[11].countDesktopDesign, countDesktopTypeList[11].countDesktopOther, countDesktopTypeList[11].countDesktopLack]
+					label: countDesktopDepartmentAndTypeList[11].department,
+					data: [countDesktopDepartmentAndTypeList[11].countDesktopOffice, countDesktopDepartmentAndTypeList[11].countDesktopCad, countDesktopDepartmentAndTypeList[11].countDesktopDesign, countDesktopDepartmentAndTypeList[11].countDesktopOther, countDesktopDepartmentAndTypeList[11].countDesktopLack]
 				}
 			] 
 		};
@@ -292,7 +303,7 @@
 		};
 		const countDesktopTypeBarCtx = document.getElementById('countDesktopTypeBarChart').getContext('2d');
 		new Chart(countDesktopTypeBarCtx, countDesktopTypeBarConfig);
-		// --------------------------------------------------------------------------------------------------------------------
+		// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	</script>
 
 </body>
