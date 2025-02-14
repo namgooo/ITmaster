@@ -24,18 +24,78 @@ ul {
 }
 
 .wrap {
-    background-color: #F5F5F5;
+    background: linear-gradient(#F8FAFC, #D9EAFD, #BCCCDC, #9AA6B2);
     width: 100%;
     height: 100%
 }
 
-.chart1 {
+.container {
+    background-color: #FBFBFB;
+    width: 1600px;
+    height: 800px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    border-radius: 20px;
+    box-shadow: 10px 10px 5px gray;
     display: flex;
 }
 
-.chart2 {
+.container .side {
+    background-color: bisque;
+    width: 100px;
+    height: 750px;
+    margin-left: 10px;
+    margin-top: 25px;
+}
+
+.container .section {
+    background-color: #D9EAFD;
+    width: 1450px;
+    height: 750px;
+    margin-left: 10px;
+    margin-top: 25px;
+}
+
+
+.container .section .content .chart_grop1 {
+    background-color: beige;
+    width: 100%;
+    height: 100%;
     display: flex;
 }
 
+.container .section .content .chart_grop2 {
+    background-color: burlywood;
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.container .section .content .charts {
+    border: solid black 1px;
+}
+
+.container .section .content .chart1 {
+
+}
+
+.container .section .content .chart2 {
+
+}
+
+.container .section .content .chart3 {
+
+}
+
+.container .section .content .chart4 {
+
+}
+
+.container .section .content .chart4 {
+
+}
 
 

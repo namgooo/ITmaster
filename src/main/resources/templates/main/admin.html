@@ -9,34 +9,53 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-	<div>
-		<h3>전산 차트</h3>
-		<div class="charts">
-			<div class="chart1">
-				<div style="position: relative; width: 700px; height: 200px">
-					<canvas id="itInventoryBarChart"></canvas>
-				</div>
-				<div style="position: relative; width: 1000px; height: 300px">
-					<canvas id="itInventoryStatusBarChart"></canvas>
-				</div>
+	<div class="wrap">
+
+		<div class="container">
+
+			<div class="side">
+				<ul>
+					<li>
+						<a href="">
+							<i class="fa-solid fa-house"></i>
+						</a>
+					</li>
+					<li>
+						<a href="">
+							<i>차트</i>
+						</a>
+					</li>
+				</ul>
 			</div>
-			<hr>
-			<div class="chart2">
-				<div style="position: relative; width: 1000px; height: 300px">
-					<canvas id="countDesktopBarChart"></canvas>
+			<div class="section">
+				<h3>전산 차트</h3>
+				<div class="content">
+					<div class="chart_grop1">
+						<div class="charts chart1">
+							<canvas id="itInventoryBarChart"></canvas>
+						</div>
+						<div class="charts chart2">
+							<canvas id="itInventoryStatusBarChart"></canvas>
+						</div>
+						<div class="charts chart3">
+							<canvas id="countDesktopBarChart"></canvas>
+						</div>
+					</div>
+					<div class="chart_grop2">
+						<div class="charts chart4">
+							<canvas id="doughnutChart"></canvas>
+						</div>
+						<div class="charts chart5">
+							<canvas id="countDesktopTypeBarChart"></canvas>
+						</div>
+					</div>
 				</div>
-				<div style="position: relative; width: 400px; height: 400px">
-					<canvas id="doughnutChart"></canvas>
-				</div>
-			</div>
-			<div style="position: relative; width: 2000px; height: 400px">
-				<canvas id="countDesktopTypeBarChart"></canvas>
-			</div>
+			</div>	
 		</div>
 	</div>
-
+	
 	<script th:inline="JavaScript">
-		// // 전산 물품 현황
+		// 전산 물품 현황
 		// 카테고리 별 제품 정보 총합
 		const countCategoryProductInfoList = /*[[${countCategoryProductInfoList}]]*/ [];
 		// 데스크탑 총합
@@ -284,7 +303,7 @@
 					label: countDesktopDepartmentAndTypeList[11].department,
 					data: [countDesktopDepartmentAndTypeList[11].countDesktopOffice, countDesktopDepartmentAndTypeList[11].countDesktopCad, countDesktopDepartmentAndTypeList[11].countDesktopDesign, countDesktopDepartmentAndTypeList[11].countDesktopOther, countDesktopDepartmentAndTypeList[11].countDesktopLack]
 				}
-			] 
+			]
 		};
 		// 차트 구성
 		const countDesktopTypeBarConfig = {
