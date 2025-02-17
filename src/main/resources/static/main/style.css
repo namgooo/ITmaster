@@ -13,6 +13,7 @@
 html, body {
 	width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 a {
@@ -30,7 +31,7 @@ ul {
 }
 
 .container {
-    background-color: #FBFBFB;
+    background-color: #D9EAFD;
     width: 1600px;
     height: 800px;
     position: relative;
@@ -44,58 +45,113 @@ ul {
 }
 
 .container .side {
-    background-color: bisque;
-    width: 100px;
-    height: 750px;
-    margin-left: 10px;
-    margin-top: 25px;
+    background-color: #F8FAFC;
+    width: 70px;
+    height: 710px;
+    margin-left: 30px;
+    margin-top: 65px;
+    border-radius: 15px;
+}
+
+.container .side i {
+    font-size: 20px;
+    margin-top: 20px;
+    margin-left: 25px;
 }
 
 .container .section {
-    background-color: #D9EAFD;
     width: 1450px;
     height: 750px;
-    margin-left: 10px;
+    margin-left: 20px;
     margin-top: 25px;
 }
 
+.container .section .header {
+    width: 100%;
+    height: 30px;
+    font-size: 20px;
+    font-weight: bold;
+}
 
-.container .section .content .chart_grop1 {
-    background-color: beige;
+.container .section .main {
+    width: 100%;
+    height: 405px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.container .section .main .content1 {
+    width: 400px;
+    height: 100%;
+}
+
+.container .section .main .content2 {
+    width: 600px;
+    height: 100%;
+}
+
+.container .section .main .content2 .time {
+    background-color: cadetblue;
     width: 100%;
     height: 100%;
-    display: flex;
+    text-align: center;
+    line-height: 200px;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 15px;
+    background-image: url('https://cdn.pixabay.com/photo/2014/02/07/10/19/winter-260817_1280.jpg');
+    background-size: cover;
 }
 
-.container .section .content .chart_grop2 {
-    background-color: burlywood;
-    width: 100%;
+.container .section .main .content3 {
+    width: 400px;
     height: 100%;
-    display: flex;
 }
 
-.container .section .content .charts {
-    border: solid black 1px;
+.container .section .chart {
+    background-color: #F8FAFC;
+    width: 100%;
+    margin-bottom: 5px;
+    border-radius: 15px;
 }
 
-.container .section .content .chart1 {
-
+#countCategoryProductInfoListBarChart {
+    height: 200px;
 }
 
-.container .section .content .chart2 {
-
+#countCategoryAndItemStatusProductInfoListBarChart {
+    height: 200px;
 }
 
-.container .section .content .chart3 {
-
+#time {
+    height: 200px;
 }
 
-.container .section .content .chart4 {
-
+#countDesktopTypeAllListBarChart {
+    height: 200px;
 }
 
-.container .section .content .chart4 {
-
+#countDesktopTypeAllListDoughnutChart {
+    height: 405px;
 }
 
+#countDesktopDepartmentAndTypeListBarChart {
+    height: 285px;
+}
 
+.container .section .footer {
+    width: 100%;
+    height: 285px;
+    margin-top: 20px;
+}
+
+.snowflake {
+    position: absolute;
+    top: -10px; /* 화면 위에서 생성 */
+    color: white;
+    font-size: 1px;
+    user-select: none; /* 텍스트 선택 방지 */
+    pointer-events: none; /* 클릭 방지 */
+    opacity: 0.1;
+}

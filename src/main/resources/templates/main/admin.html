@@ -6,6 +6,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>ITmaster-admin</title>
 	<link rel="stylesheet" type="text/css" href="/main/style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -16,44 +18,123 @@
 			<div class="side">
 				<ul>
 					<li>
-						<a href="">
+						<a class="home" th:href="@{/root}">
 							<i class="fa-solid fa-house"></i>
 						</a>
 					</li>
 					<li>
-						<a href="">
-							<i>차트</i>
-						</a>
+						<i class="fa-solid fa-chart-line"></i>
+					</li>
+					<li>
+						<i class="fa-solid fa-cart-shopping"></i>
 					</li>
 				</ul>
 			</div>
 			<div class="section">
-				<h3>전산 차트</h3>
-				<div class="content">
-					<div class="chart_grop1">
-						<div class="charts chart1">
-							<canvas id="itInventoryBarChart"></canvas>
+				<div class="header">
+					<h3>전산관리 차트</h3>
+				</div>
+				<div class="main">
+					<div class="content1">
+						<div class="chart">
+							<canvas id="countCategoryProductInfoListBarChart">전산 물품 현황</canvas>
 						</div>
-						<div class="charts chart2">
-							<canvas id="itInventoryStatusBarChart"></canvas>
-						</div>
-						<div class="charts chart3">
-							<canvas id="countDesktopBarChart"></canvas>
+						<div class="chart">
+							<canvas id="countCategoryAndItemStatusProductInfoListBarChart">전산 물품 상태 별, 수량</canvas>
 						</div>
 					</div>
-					<div class="chart_grop2">
-						<div class="charts chart4">
-							<canvas id="doughnutChart"></canvas>
+					<div class="content2">
+						<div class="chart">
+							<div class="time" id="time">실시간 시간</div>
 						</div>
-						<div class="charts chart5">
-							<canvas id="countDesktopTypeBarChart"></canvas>
+						<div class="chart">
+							<canvas id="countDesktopTypeAllListBarChart">데스크탑 현황 - 바차트</canvas>
+						</div>
+					</div>
+					<div class="content3">
+						<div class="chart">
+							<canvas id="countDesktopTypeAllListDoughnutChart">데스크탑 현황 - 도넛차트</canvas>
 						</div>
 					</div>
 				</div>
-			</div>	
+				<div class="footer">
+					<div class="chart">
+						<canvas id="countDesktopDepartmentAndTypeListBarChart">부서 및 타입 별, 데스크탑 수량</canvas>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-	
+
+	<script>
+		function createSnowflake() {
+			const snowflake = document.createElement('div');
+			snowflake.innerHTML = '❄️';
+			snowflake.classList.add('snowflake');
+
+			// 화면 가로 범위 내 랜덤한 위치
+			const startX = Math.random() * window.innerWidth;
+			snowflake.style.left = `${startX}px`;
+
+			// 크기 조정(랜덤)
+			const size = Math.random() * 20 + 10;
+			snowflake.style.fontSize = `${size}px`;
+
+			// 투명도 조정(랜덤)
+			snowflake.style.opacity = Math.random() * 0.5 + 0.5;
+
+			// 애니메이션 지속 시간(랜덤)
+			const duration = Math.random() * 5 + 3;
+
+			document.body.appendChild(snowflake);
+
+			// 애니메이션 적용
+			snowflake.animate(
+				[
+					{ transform: `translateY(0px)`, opacity:1 },
+					{ transform: `translateY(${window.innerHeight}px)`, opacity:0 }
+				],
+				{
+					duration: duration * 1000,
+					easing: 'linear'
+				}
+			);
+			
+			setTimeout(() => {
+				snowflake.remove();
+			}, duration * 1000);
+		}
+
+		// 일정 간격으로 눈꽃 생성
+		setInterval(createSnowflake, 300);
+	</script>
+
+	<script>
+		const dpTime = function() {
+			const now = new Date()
+			let hours = now.getHours()
+			let minutes = now.getMinutes()
+			let seconds = now.getSeconds()
+			let ampm = hours >= 12 ? '오후' : '오전';
+
+			// 12시간 형식 변환
+			if(hours > 12) {
+				hours -= 12;
+			} else if(hours === 0){
+				hours = 12;
+			}
+			
+			// 두 자리 수자로 변환
+			hours = hours.toString().padStart(2, '0');
+			minutes = minutes.toString().padStart(2, '0');
+			seconds = seconds.toString().padStart(2, '0');
+
+			document.querySelector('#time').innerHTML = `${ampm} ${hours}:${minutes}:${seconds}`;
+		}
+		dpTime(); // 초기 실행
+		setInterval(dpTime, 1000);  // 1초마다 함수 실행되도록 설정
+	</script>
+
 	<script th:inline="JavaScript">
 		// 전산 물품 현황
 		// 카테고리 별 제품 정보 총합
@@ -88,6 +169,7 @@
 			type: 'bar',
 			data: itInventoryBarData,
 			options: {
+				maintainAspectRatio: false,
 				indexAxis: 'x',
 				responsive: true,
 				plugins: {
@@ -108,7 +190,7 @@
 			}
 		};
 		// 차트 그리기
-		const itInventoryBarCtx = document.getElementById('itInventoryBarChart').getContext('2d');
+		const itInventoryBarCtx = document.getElementById('countCategoryProductInfoListBarChart').getContext('2d');
 		new Chart(itInventoryBarCtx, itInventoryBarConfig);
 		// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		// 전산 물품 상태 별, 수량
@@ -137,6 +219,7 @@
 			type: 'bar',
 			data: itInventoryStatusBarData,
 			options: {
+				maintainAspectRatio: false,
 				indexAxis: 'x',
 				plugins: {
 					title: {
@@ -147,7 +230,7 @@
 			}
 		};
 		// 차트 그리기
-		const itInventoryStatusBarCtx = document.getElementById('itInventoryStatusBarChart').getContext('2d');
+		const itInventoryStatusBarCtx = document.getElementById('countCategoryAndItemStatusProductInfoListBarChart').getContext('2d');
 		new Chart(itInventoryStatusBarCtx, itInventoryStatusBarConfig);
 		// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		// 타입별 데스크탑 총합 조회
@@ -184,6 +267,7 @@
 			type: 'bar',
 			data: countDesktopBarData,
 			options: {
+				maintainAspectRatio: false,
 				indexAxis: 'y',
 				responsive: true,
 				plugins: {
@@ -204,7 +288,7 @@
 			}
 		}
 		// 차트 그리기
-		const countDesktopBarCtx = document.getElementById('countDesktopBarChart').getContext('2d');
+		const countDesktopBarCtx = document.getElementById('countDesktopTypeAllListBarChart').getContext('2d');
 		new Chart(countDesktopBarCtx, countDesktopBarConfig);
 		// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		// doughnut 차트(타입별 PC 개수)
@@ -221,6 +305,7 @@
 			type: 'pie',
 			data: doughnutData,
 			options: {
+				maintainAspectRatio: false,
 				plugins: {
 					title: {
 						display: true,
@@ -245,7 +330,7 @@
 			}
 		};
 		// 차트 그리기
-		const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+		const doughnutCtx = document.getElementById('countDesktopTypeAllListDoughnutChart').getContext('2d');
 		new Chart(doughnutCtx, doughnutConfig);
 		// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		// 부서별 데스크탑 타입 총합 조회
@@ -310,6 +395,7 @@
 			type: 'bar',
 			data: countDesktopTypeBarData,
 			options: {
+				maintainAspectRatio: false,
 				indexAxis: 'x',
 				plugins: {
 					title: {
@@ -319,7 +405,7 @@
 				}
 			}
 		};
-		const countDesktopTypeBarCtx = document.getElementById('countDesktopTypeBarChart').getContext('2d');
+		const countDesktopTypeBarCtx = document.getElementById('countDesktopDepartmentAndTypeListBarChart').getContext('2d');
 		new Chart(countDesktopTypeBarCtx, countDesktopTypeBarConfig);
 		// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	</script>
