@@ -146,12 +146,9 @@ ul {
     margin-top: 20px;
 }
 
-.snowflake {
+
+.snow {
     position: absolute;
-    top: -10px; /* 화면 위에서 생성 */
-    color: white;
-    font-size: 1px;
-    user-select: none; /* 텍스트 선택 방지 */
-    pointer-events: none; /* 클릭 방지 */
-    opacity: 0.1;
+    top: -50px; /* 시작 위치 (화면 위쪽에서 떨어지도록 설정) */
+    pointer-events: none; /* 마우스 이벤트 방지 */
 }

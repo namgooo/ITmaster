@@ -17,9 +17,10 @@ public class File {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String originalName;
-	private String saveName;
-	private String savePath;
+	private String fileName;
+	private String filePath;
+	private String fileType;
+	private Long fileSize;
 	private LocalDateTime createDate;
 	
 }

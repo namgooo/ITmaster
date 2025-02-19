@@ -49,7 +49,7 @@ public class AdminController {
 		List<ProductInfoCategoryAndItemStatusAllDTO> countCategoryAndItemStatusProductInfoList = this.productInfoService.countCategoryAndItemStatusProductInfoList();
 		model.addAttribute("countCategoryAndItemStatusProductInfoList", countCategoryAndItemStatusProductInfoList);
 		
-		// 2025-02-17 전산관리 차트 페이지 디자인 작업 완료
+		// 2025-02-19 전산관리 파일 업로드 및 파일 다운로드
 		
 		return "main/admin";
 		

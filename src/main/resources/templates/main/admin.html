@@ -6,9 +6,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>ITmaster-admin</title>
 	<link rel="stylesheet" type="text/css" href="/main/style.css">
+	<!-- 폰트어썸 -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+	<!-- 구글 폰트 -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+	<!-- chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
 	<div class="wrap">
@@ -26,7 +33,9 @@
 						<i class="fa-solid fa-chart-line"></i>
 					</li>
 					<li>
-						<i class="fa-solid fa-cart-shopping"></i>
+						<a th:href="@{/file/upload}">
+							<i class="fa-solid fa-cart-shopping"></i>
+						</a>
 					</li>
 				</ul>
 			</div>
@@ -66,30 +75,31 @@
 		</div>
 	</div>
 
-	<script>
-		function createSnowflake() {
-			const snowflake = document.createElement('div');
-			snowflake.innerHTML = '❄️';
-			snowflake.classList.add('snowflake');
+	<!-- <script>
+		function createSnow() {
+			const snow = document.createElement('img');
+			// snow.innerHTML = '❄️';
+			snow.src = '/img/sonw.png'
+			snow.classList.add('snow');
 
 			// 화면 가로 범위 내 랜덤한 위치
 			const startX = Math.random() * window.innerWidth;
-			snowflake.style.left = `${startX}px`;
+			snow.style.left = `${startX}px`;
 
 			// 크기 조정(랜덤)
 			const size = Math.random() * 20 + 10;
-			snowflake.style.fontSize = `${size}px`;
+			snow.style.fontSize = `${size}px`;
 
 			// 투명도 조정(랜덤)
-			snowflake.style.opacity = Math.random() * 0.5 + 0.5;
+			snow.style.opacity = Math.random() * 0.5 + 0.5;
 
 			// 애니메이션 지속 시간(랜덤)
 			const duration = Math.random() * 5 + 3;
 
-			document.body.appendChild(snowflake);
+			document.body.appendChild(snow);
 
 			// 애니메이션 적용
-			snowflake.animate(
+			snow.animate(
 				[
 					{ transform: `translateY(0px)`, opacity:1 },
 					{ transform: `translateY(${window.innerHeight}px)`, opacity:0 }
@@ -101,13 +111,13 @@
 			);
 			
 			setTimeout(() => {
-				snowflake.remove();
+				snow.remove();
 			}, duration * 1000);
 		}
 
 		// 일정 간격으로 눈꽃 생성
-		setInterval(createSnowflake, 300);
-	</script>
+		setInterval(createSnow, 300);
+	</script> -->
 
 	<script>
 		const dpTime = function() {
