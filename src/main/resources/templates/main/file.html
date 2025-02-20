@@ -21,10 +21,11 @@
             <tbody>
                 <tr th:each="file, loop : ${fileList}">
                     <td th:text="${loop.count}"></td>
-                    <td th:text="${file.fileName}"></td>
+                    <td>
+                        <a th:text="${file.fileName}" th:href="@{/file/download(fileName = ${file.fileName})}" ></a>
+                    </td>
                     <td th:text="${file.fileSize}"></td>
                     <td th:text="${file.createDate}"></td>
-                    <td><a th:href="@{/file/download(fileId = ${file.id})}">받기</a></td>
                 </tr>
             </tbody>
         </table>
@@ -38,12 +39,6 @@
         <input type="submit" value="업로드하기">
     </form>
     <hr>
-    <h2>파일 다운로드</h2>
-    <div>
-        <ul>
-            <li><a href=""></a></li>
-        </ul>
-    </div>
     
 </body>
 </html>

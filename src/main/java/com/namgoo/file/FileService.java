@@ -63,20 +63,9 @@ public class FileService {
 	}
 	
 	// 파일 다운로드
-	public Resource downloadFile(Long fileId) throws Exception{
-		
-		// DB에서 id를 이용해서 파일명 조회
-		String fileName = this.fileRepository.findById(fileId).orElseThrow(() -> new Exception("파일을 찾을 수 없습니다.")).getFileName();
-		
-		// 업로드 경로 + 파일명으로 경로 설정
-		Path filePath = Paths.get(UPLOAD_DIR + fileName);
-		
-		// 파일이 존재하는지 확인 후 Resource 객체 반환
-		Resource resource = new UrlResource(filePath.toUri());
-		if(!resource.exists() || !resource.isReadable()) {
-			throw new Exception("파일을 찾을 수 없거나 읽을 수 없습니다.");
-		}
-		return resource;	
+	public String downloadFile(String fileName) {
+		String file = this.fileRepository.findByFileName(fileName);
+		return file;
 	}
 	
 

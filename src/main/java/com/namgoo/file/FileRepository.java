@@ -13,6 +13,9 @@ public interface FileRepository extends JpaRepository<File, Integer>{
 	public List<File> findAll();
 	
 	// 파일 단일 조회
-	public Optional<File> findById(Long fileId);
+	public Optional<File> findById(Integer id);
+	
+	// 파일 단일 조회
+	public String findByFileName(String fileName);
 	
 }

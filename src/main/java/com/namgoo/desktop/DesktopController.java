@@ -76,6 +76,8 @@ public class DesktopController {
 		List<Employee> employeeList = this.employeeService.findEmployeeList();
 		model.addAttribute("employeeList", employeeList);
 		Department department = this.departmentService.findDepartmentById(id);
+		List<DesktopType> desktopTypeList = this.desktopTypeService.findDesktopTypeList();
+		model.addAttribute("desktopTypeList", desktopTypeList);
 		Page<Desktop> desktopList = this.desktopService.findDesktopsByDepartmentPagingList(department, keyword, pageable);
 		model.addAttribute("desktopList", desktopList);
 		
