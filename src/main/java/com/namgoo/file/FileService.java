@@ -1,5 +1,6 @@
 package com.namgoo.file;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,6 +21,7 @@ public class FileService {
 	@Autowired
 	private FileRepository fileRepository;
 	
+	// 파일 저장 경로
 	private static final String UPLOAD_DIR = "C:/files/";
 	
 	// 파일 목록 조회
@@ -63,12 +65,15 @@ public class FileService {
 	}
 	
 	// 파일 다운로드
-	public String downloadFile(String fileName) {
-		String file = this.fileRepository.findByFileName(fileName);
-		return file;
-	}
-	
+	public Resource downloadFile(String fileName) throws IOException {
+		// Path 객체로 변환
+		// resolve : 파일 이름을 경로에 추가(예시 - /c/files/fileName)
+		// normalize : ../(상위 폴더)와 ./(현재 폴더) 같은 불필요한 경로를 제거해서 간결하게 만듬
+		Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
+		// URL 형식으로 변환, 이를 기반으로 파일을 로드하거나 다운로드가 가능함
+		Resource resource = new UrlResource(filePath.toUri());
 
-	
+		return resource;
+	}
 
 }

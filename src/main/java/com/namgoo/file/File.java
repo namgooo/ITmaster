@@ -20,7 +20,7 @@ public class File {
 	private String fileName;
 	private String filePath;
 	private String fileType;
-	private Long fileSize;
+	private double fileSize;
 	private LocalDateTime createDate;
 	
 }

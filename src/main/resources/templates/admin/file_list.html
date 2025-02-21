@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITmaster-file_list</title>
+    <link rel="stylesheet" type="text/css" href="/admin/file/style.css">
+    <!-- 폰트어썸 -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+	<!-- 구글 폰트 -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+    <div class="wrap">
+        <div class="container">
+
+			<div class="side">
+				<ul>
+					<li>
+						<a class="home" th:href="@{/root}">
+							<i class="fa-solid fa-house"></i>
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/admin/chart}">
+							<i class="fa-solid fa-chart-line"></i>
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/file/list}">
+							<i class="fa-regular fa-folder-open"></i>
+						</a>
+					</li>
+					<li>
+						<i class="fa-solid fa-cart-shopping"></i>
+					</li>
+				</ul>
+			</div>
+            <div class="section">
+                <div class="header">
+                    <h3>파일 목록</h3>
+                </div>
+                <div class="main">
+                    <div class="content1">
+                        <div>
+                            한글 파일
+                        </div>
+                        <div>
+                            엑셀 파일
+                        </div>
+                        <div>
+                            PDF 파일
+                        </div>
+                    </div>
+
+                    <div class="content2">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>번호</th>
+                                    <th>파일명</th>
+                                    <th>확장자명</th>
+                                    <th>파일크기</th>
+                                    <th>등록일시</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="file, loop : ${fileList}">
+                                    <td th:text="${loop.count}"></td>
+                                    <td>
+                                        <a th:text="${file.fileName}" th:href="@{/file/download}" onclick="this.href += '?fileName=' + encodeURIComponent(this.textContent);">></a>
+                                    </td>
+                                    <td></td>
+                                    <td th:text="${#numbers.formatDecimal(file.fileSize / 1024.0, 1, 1) + ' KB'}"></td>
+                                    <td th:text="${file.createDate}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="footer">
+                    <h2>파일 업로드</h2>
+                    <form th:action="@{/file/upload}" method="post" enctype="multipart/form-data">
+                        <input type="file" id="file" name="file">
+                        <input type="submit" value="업로드하기">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</body>
+</html>

@@ -1,24 +1,24 @@
 package com.namgoo.file;
 
+import java.io.IOException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -28,56 +28,39 @@ public class FileController {
 	@Autowired
 	private FileService fileService;
 	
+	// 파일 저장 경로
 	private static final String UPLOAD_DIR = "C:/files/";
 	
 	// 파일 목록 조회
-	@GetMapping("/upload")
+	@GetMapping("/list")
 	public String findFileList(Model model) {
 		List<File> fileList = this.fileService.findFileList();
 		model.addAttribute("fileList", fileList);
-		return "main/file";
+		return "admin/file_list";
 	}
-	
+
 	// 파일 업로드
 	@PostMapping("/upload")
 	public String uploadFile(@RequestParam("file") MultipartFile file) {
 		this.fileService.uploadFile(file);
-		return "redirect:/file/upload";
+		return "redirect:/file/list";
 	}
 	
 	// 파일 다운로드
-	@GetMapping("/download/{fileName}")
-	public ResponseEntity<Resource> downloadFile(@PathVariable("fileName") String fileName) {	
-		try {
-			// 파일 이름으로 DB에서 파일명을 조회
-			String file = this.fileService.downloadFile(fileName);
-			if(file == null || file.trim().isEmpty()) {
-				return ResponseEntity.notFound().build();
-			}
-			
-			Path filePath = Paths.get(UPLOAD_DIR).resolve(file).normalize();
-			Resource resource = new UrlResource(filePath.toUri());
-			
-			// 파일이 존재하고 읽을 수 있는지 확인
-			if(!resource.exists() || !resource.isReadable()) {
-				return ResponseEntity.notFound().build();
-			}
-			
-			String contentType = Files.probeContentType(filePath);
-			if(contentType == null) {
-				contentType = "";
-			}
-			
-			
-			
-		} catch(Exception e) {
-			
-		}	
-			
-		return null;
+	@GetMapping("/download")
+	public ResponseEntity<Resource> downloadFile(@RequestParam String fileName) throws IOException {
+		// 한글 이름 파일 인코딩
+		// HTTP 헤더는 기본적으로 ASCII 문자만 처리하기 때문에 파일명에 한글이 포함될 때 Base64 형식으로 인코딩해야 함
+		String encodedFileName = "=?UTF-8?B?" + Base64.getEncoder().encodeToString(fileName.getBytes(StandardCharsets.UTF_8)) + "?=";
+	
+		// 서비스 호출
+		Resource file = this.fileService.downloadFile(fileName);
+
+		return ResponseEntity.ok()
+				.contentType(MediaType.APPLICATION_OCTET_STREAM) // 응답 타입을 설정(파일 다운로드)
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodedFileName + "\"") // 브라우저는 해당 값을 보고 파일 다운로드 창을 띄움
+				.body(file); // 파일 내용을 사용자에게 전송
 	}
-	
-	// 2025-02-20 파일 다운로드
-	
-	
+
+	// 2025-02-21 파일 업로드 및 다운로드
 }

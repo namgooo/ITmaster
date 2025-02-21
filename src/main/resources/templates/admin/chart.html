@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>ITmaster-admin</title>
-	<link rel="stylesheet" type="text/css" href="/main/style.css">
+	<title>ITmaster-chart</title>
+	<link rel="stylesheet" type="text/css" href="/admin/chart/style.css">
 	<!-- 폰트어썸 -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -30,12 +30,17 @@
 						</a>
 					</li>
 					<li>
-						<i class="fa-solid fa-chart-line"></i>
+						<a th:href="@{/admin/chart}">
+							<i class="fa-solid fa-chart-line"></i>
+						</a>
 					</li>
 					<li>
-						<a th:href="@{/file/upload}">
-							<i class="fa-solid fa-cart-shopping"></i>
+						<a th:href="@{/file/list}">
+							<i class="fa-regular fa-folder-open"></i>
 						</a>
+					</li>
+					<li>
+						<i class="fa-solid fa-cart-shopping"></i>
 					</li>
 				</ul>
 			</div>
