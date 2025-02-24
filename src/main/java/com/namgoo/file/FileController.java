@@ -13,6 +13,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,11 +34,21 @@ public class FileController {
 	// 파일 저장 경로
 	private static final String UPLOAD_DIR = "C:/files/";
 	
-	// 파일 목록 조회
+	// 파일 목록 조회(페이징)
 	@GetMapping("/list")
-	public String findFileList(Model model) {
-		List<File> fileList = this.fileService.findFileList();
+	public String findFilePagingList(@PageableDefault(size = 10) Pageable pageable, Model model) {
+		Page<File> fileList = this.fileService.findFilePagingList(pageable);
 		model.addAttribute("fileList", fileList);
+
+		// 페이징
+		model.addAttribute("previous", pageable.previousOrFirst()); // 이전 페이지 번호
+		model.addAttribute("next", pageable.next().getPageNumber()); // 다음 페이지 번호
+		model.addAttribute("hasPrevious", fileList.hasPrevious()); // 이전 페이지가 있는지 여부 확인(boolean)
+		model.addAttribute("hasNext", fileList.hasNext()); // 다음 페이지가 있는지 여부 확인(boolean)
+		model.addAttribute("currentPage", fileList.getNumber()); // 현재 페이지 번호 (0부터 시작)
+		model.addAttribute("totalPages", fileList.getTotalPages()); // 총 페이지 수(마지막 페이지)
+		model.addAttribute("first", pageable.first().getPageNumber()); // 첫 페이지
+
 		return "admin/file_list";
 	}
 
@@ -45,7 +58,14 @@ public class FileController {
 		this.fileService.uploadFile(file);
 		return "redirect:/file/list";
 	}
-	
+
+	// 파일 삭제
+	@GetMapping("/delete/{id}")
+	public String deleteFile(@PathVariable("id") Integer id) {
+		this.fileService.deleteFile(id);
+		return "redirect:/file/list";
+	}
+
 	// 파일 다운로드
 	@GetMapping("/download")
 	public ResponseEntity<Resource> downloadFile(@RequestParam String fileName) throws IOException {
@@ -62,5 +82,6 @@ public class FileController {
 				.body(file); // 파일 내용을 사용자에게 전송
 	}
 
-	// 2025-02-21 파일 업로드 및 다운로드
+	// 2025-02-24 파일 관리 페이지 페이징
+	
 }

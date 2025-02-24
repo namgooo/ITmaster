@@ -21,6 +21,7 @@ public class File {
 	private String filePath;
 	private String fileType;
 	private double fileSize;
+	private Integer count;
 	private LocalDateTime createDate;
 	
 }

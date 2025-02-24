@@ -18,7 +18,6 @@
 <body>
     <div class="wrap">
         <div class="container">
-
 			<div class="side">
 				<ul>
 					<li>
@@ -43,22 +42,37 @@
 			</div>
             <div class="section">
                 <div class="header">
-                    <h3>파일 목록</h3>
+                    <h2>파일 관리</h2>
                 </div>
+
                 <div class="main">
                     <div class="content1">
-                        <div>
+                        <div class="hwp_file">
                             한글 파일
                         </div>
-                        <div>
+                        <div class="excel_file">
                             엑셀 파일
                         </div>
-                        <div>
+                        <div class="pdf_file">
                             PDF 파일
                         </div>
                     </div>
 
                     <div class="content2">
+                        <div class="file_upload">
+                            <h3>파일 업로드</h3>
+                            <form th:action="@{/file/upload}" method="post" enctype="multipart/form-data">
+                                <input type="file" id="file" name="file">
+                                <input type="submit" value="업로드하기">
+                            </form>
+                        </div>
+                        <div>
+                            <h2>검색</h2>
+                        </div>
+                    </div>
+
+                    <div class="content3">
+
                         <table>
                             <thead>
                                 <tr>
@@ -66,33 +80,61 @@
                                     <th>파일명</th>
                                     <th>확장자명</th>
                                     <th>파일크기</th>
+                                    <th>누적다운로드수</th>
                                     <th>등록일시</th>
+                                    <th>삭제</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr th:each="file, loop : ${fileList}">
                                     <td th:text="${loop.count}"></td>
                                     <td>
-                                        <a th:text="${file.fileName}" th:href="@{/file/download}" onclick="this.href += '?fileName=' + encodeURIComponent(this.textContent);">></a>
+                                        <a th:text="${file.fileName}" th:href="@{/file/download}" onclick="this.href += '?fileName=' + encodeURIComponent(this.textContent); return confirmDownload();"></a>
                                     </td>
-                                    <td></td>
+                                    <td th:text="${file.fileType}"></td>
                                     <td th:text="${#numbers.formatDecimal(file.fileSize / 1024.0, 1, 1) + ' KB'}"></td>
-                                    <td th:text="${file.createDate}"></td>
+                                    <td th:text="${file.count}"></td>
+                                    <td th:text="${#temporals.format(file.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    <td><a th:href="@{|/file/delete/${file.id}|}" onclick="return confirmDelete();">삭제하기</a></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+
                 <div class="footer">
-                    <h2>파일 업로드</h2>
-                    <form th:action="@{/file/upload}" method="post" enctype="multipart/form-data">
-                        <input type="file" id="file" name="file">
-                        <input type="submit" value="업로드하기">
-                    </form>
+                    <div class="paging">
+                        <a class="first_page" th:href="@{|?page=${first}|}" role="button">첫 페이지</a>
+                        <a class="previous" th:href="@{|?page=${previous}|}" th:if="${hasPrevious}" role="button"></a>
+                        <span class="previous" th:if="${!hasPrevious}"></span>
+
+                        <span class="paging_number" th:each="pageNumber : ${#numbers.sequence(currentPage >= 2 ? (currentPage - 2) : 0, currentPage >= 2 ? (currentPage + 2 < totalPages ? currentPage + 2 : totalPages - 1) : (totalPages > 5 ? 4 : totalPages - 1))}">
+                            <a class="paging_number" th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
+                        </span>
+
+                        <a class="next" th:href="@{|?page=${next}|}" th:if="${hasNext}" role="button"></a>
+                        <span class="next" th:if="${!hasNext}"></span>
+                        <a class="last_page" th:href="@{|?page=${totalPages -1}|}" role="button">마지막 페이지</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- 삭제 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmDelete() {
+	        return confirm("정말 삭제를 하시겠습니까?");
+	    }
+	</script>
+    <!-- //삭제 버튼 알림 -->
+    <!-- 다운로드 버튼 알림// -->
+	<script type="text/javascript">
+	    function confirmDownload() {
+	        return confirm("정말 다운로드를 하시겠습니까?");
+	    }
+	</script>
+    <!-- //다운로드 버튼 알림 -->
 
     
 </body>

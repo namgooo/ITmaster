@@ -12,6 +12,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,10 +25,11 @@ public class FileService {
 	
 	// 파일 저장 경로
 	private static final String UPLOAD_DIR = "C:/files/";
-	
-	// 파일 목록 조회
-	public List<File> findFileList() {
-		List<File> fileList = this.fileRepository.findAll();
+
+
+	// 파일 목록 조회(페이징)
+	public Page<File> findFilePagingList(Pageable pageable) {
+		Page<File> fileList = this.fileRepository.findAll(pageable);
 		return fileList;
 	}
 	
@@ -63,7 +66,12 @@ public class FileService {
 		}
 		
 	}
-	
+
+	// 파일 삭제
+	public void deleteFile(Integer id) {
+		this.fileRepository.deleteById(id);
+	}
+
 	// 파일 다운로드
 	public Resource downloadFile(String fileName) throws IOException {
 		// Path 객체로 변환

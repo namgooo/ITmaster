@@ -178,7 +178,7 @@
                                             
                     <a class="next" th:href="@{|?page=${next}&keyword=${keyword}|}" th:if="${hasNext}" role="button"></a>
                     <span class="next" th:if="${!hasNext}"></span>
-                        <a class="last_page" th:href="@{|?page=${totalPages - 1}|}" role="button">마지막 페이지</a>
+                    <a class="last_page" th:href="@{|?page=${totalPages - 1}|}" role="button">마지막 페이지</a>
                 </div>
                 <!-- //페이징 -->
             </div>

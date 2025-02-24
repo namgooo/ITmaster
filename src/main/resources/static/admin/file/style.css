@@ -68,6 +68,7 @@ ul {
 }
 
 .container .section .header {
+    background-color: aquamarine;
     width: 100%;
     height: 30px;
     font-size: 20px;
@@ -75,9 +76,75 @@ ul {
 }
 
 .container .section .main {
+    background-color: burlywood;
     width: 100%;
-    height: 405px;
+    height: 660px;
     margin-top: 10px;
+}
+
+.container .section .main .content1 {
+    background-color: cadetblue;
+    width: 100%;
+    height: 150px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.container .section .main .content1 .hwp_file {
+    background-color: #BCCCDC;
+    width: 150px;
+    height: 100px;
+}
+
+.container .section .main .content1 .excel_file {
+    background-color: #BCCCDC;
+    width: 150px;
+    height: 100px;
+}
+
+.container .section .main .content1 .pdf_file {
+    background-color: #BCCCDC;
+    width: 150px;
+    height: 100px;
+}
+
+.container .section .main .content2 {
+    background-color: chocolate;
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.container .section .main .content3 {
+    background-color: darkgray;
+    width: 100%;
+    height: 370px;
+}
+
+.container .section .main .content3 table {
+    text-align: center;
+    width: 100%;
+    margin-top: 40px;
+}
+
+.container .section .main .content3 table th, td{
+    padding: 6px 20px;
+}
+
+.container .section .footer {
+    background-color: brown;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+}
+
+.container .section .footer .paging {
+    background-color: #9AA6B2;
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    left: 50%;
+    transform: translateX(-50%, 0px);
 }
