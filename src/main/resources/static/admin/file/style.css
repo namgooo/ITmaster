@@ -117,6 +117,12 @@ ul {
     justify-content: space-around;
 }
 
+.container .section .main .content2 .file_search {
+    background-color: bisque;
+    width: 300px;
+    height: 100px;
+}
+
 .container .section .main .content3 {
     background-color: darkgray;
     width: 100%;

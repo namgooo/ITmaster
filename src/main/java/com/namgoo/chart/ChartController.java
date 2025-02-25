@@ -1,4 +1,4 @@
-package com.namgoo.main;
+package com.namgoo.chart;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import com.namgoo.product_info.ProductInfoService;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminController {
+public class ChartController {
 	
 	@Autowired
 	private ProductInfoService productInfoService;

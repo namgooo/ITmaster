@@ -36,8 +36,8 @@ public class FileController {
 	
 	// 파일 목록 조회(페이징)
 	@GetMapping("/list")
-	public String findFilePagingList(@PageableDefault(size = 10) Pageable pageable, Model model) {
-		Page<File> fileList = this.fileService.findFilePagingList(pageable);
+	public String findFilePagingList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
+		Page<File> fileList = this.fileService.findFilePagingList(keyword, pageable);
 		model.addAttribute("fileList", fileList);
 
 		// 페이징
@@ -59,20 +59,13 @@ public class FileController {
 		return "redirect:/file/list";
 	}
 
-	// 파일 삭제
-	@GetMapping("/delete/{id}")
-	public String deleteFile(@PathVariable("id") Integer id) {
-		this.fileService.deleteFile(id);
-		return "redirect:/file/list";
-	}
-
 	// 파일 다운로드
 	@GetMapping("/download")
-	public ResponseEntity<Resource> downloadFile(@RequestParam String fileName) throws IOException {
+	public ResponseEntity<Resource> downloadFile(@RequestParam("fileName") String fileName) throws IOException {
 		// 한글 이름 파일 인코딩
 		// HTTP 헤더는 기본적으로 ASCII 문자만 처리하기 때문에 파일명에 한글이 포함될 때 Base64 형식으로 인코딩해야 함
 		String encodedFileName = "=?UTF-8?B?" + Base64.getEncoder().encodeToString(fileName.getBytes(StandardCharsets.UTF_8)) + "?=";
-	
+
 		// 서비스 호출
 		Resource file = this.fileService.downloadFile(fileName);
 
@@ -82,6 +75,13 @@ public class FileController {
 				.body(file); // 파일 내용을 사용자에게 전송
 	}
 
-	// 2025-02-24 파일 관리 페이지 페이징
+	// 파일 삭제
+	@GetMapping("/delete/{id}")
+	public String deleteFile(@PathVariable("id") Integer id) {
+		this.fileService.deleteFile(id);
+		return "redirect:/file/list";
+	}
 	
+	// 2025-02-25 파일 목록 페이지 - 검색 기능
+
 }

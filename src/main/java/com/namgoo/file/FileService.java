@@ -9,11 +9,16 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,13 +31,32 @@ public class FileService {
 	// 파일 저장 경로
 	private static final String UPLOAD_DIR = "C:/files/";
 
+	// 파일 검색
+	private Specification<File> search(String keyword) {
+		return new Specification<>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Predicate toPredicate(Root<File> f, CriteriaQuery<?> query, CriteriaBuilder cb) {
 
-	// 파일 목록 조회(페이징)
-	public Page<File> findFilePagingList(Pageable pageable) {
-		Page<File> fileList = this.fileRepository.findAll(pageable);
+				Predicate filterPredicate = cb.or(
+						cb.like(f.get("fileName"), "%" + keyword + "%"),
+						cb.like(f.get("filePath"), "%" + keyword + "%"),
+						cb.like(f.get("fileType"), "%" + keyword + "%")
+				);
+				query.distinct(true);
+				query.orderBy(cb.desc(f.get("createDate")));
+				return filterPredicate;
+			}
+		};
+	}
+
+	// 파일 목록 검색 조회(페이징)
+	public Page<File> findFilePagingList(String keyword, Pageable pageable) {
+		Specification<File> specification = search(keyword);
+		Page<File> fileList = this.fileRepository.findAll(specification, pageable);
 		return fileList;
 	}
-	
+
 	// 파일 업로드
 	public String uploadFile(MultipartFile multipartFile) {
 		// 파일이 선택되었는지 확인(예외처리)
@@ -64,12 +88,6 @@ public class FileService {
 			e.printStackTrace();
 			return "파일 업로드 실패!";
 		}
-		
-	}
-
-	// 파일 삭제
-	public void deleteFile(Integer id) {
-		this.fileRepository.deleteById(id);
 	}
 
 	// 파일 다운로드
@@ -82,6 +100,11 @@ public class FileService {
 		Resource resource = new UrlResource(filePath.toUri());
 
 		return resource;
+	}
+
+	// 파일 삭제
+	public void deleteFile(Integer id) {
+		this.fileRepository.deleteById(id);
 	}
 
 }

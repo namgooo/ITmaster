@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITmaster-file_list</title>
+    <title>ITmaster-file</title>
     <link rel="stylesheet" type="text/css" href="/admin/file/style.css">
     <!-- 폰트어썸 -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
@@ -66,13 +66,16 @@
                                 <input type="submit" value="업로드하기">
                             </form>
                         </div>
-                        <div>
-                            <h2>검색</h2>
+                        <div class="file_search">
+                            <h3>검색</h3>
+                            <form th:action="@{/file/list}" method="get">
+                                <input type="text" id="keyword" name="keyword" th:value="${keyword}">
+                                <input type="submit" value="검색하기">
+                            </form>
                         </div>
                     </div>
 
                     <div class="content3">
-
                         <table>
                             <thead>
                                 <tr>
@@ -89,7 +92,7 @@
                                 <tr th:each="file, loop : ${fileList}">
                                     <td th:text="${loop.count}"></td>
                                     <td>
-                                        <a th:text="${file.fileName}" th:href="@{/file/download}" onclick="this.href += '?fileName=' + encodeURIComponent(this.textContent); return confirmDownload();"></a>
+                                        <a th:text="${file.fileName}" th:href="@{/file/download(fileName=${file.fileName})}" onclick="return confirmDownload();"></a>
                                     </td>
                                     <td th:text="${file.fileType}"></td>
                                     <td th:text="${#numbers.formatDecimal(file.fileSize / 1024.0, 1, 1) + ' KB'}"></td>
@@ -136,6 +139,5 @@
 	</script>
     <!-- //다운로드 버튼 알림 -->
 
-    
 </body>
 </html>

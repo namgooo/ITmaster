@@ -1,5 +1,4 @@
 /* ITmaster - /admin/chart */
-/* chart */
 @charset "UTF-8";
 
 * {
@@ -145,7 +144,6 @@ ul {
     height: 285px;
     margin-top: 20px;
 }
-
 
 .snow {
     position: absolute;
