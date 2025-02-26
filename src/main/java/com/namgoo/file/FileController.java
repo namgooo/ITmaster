@@ -33,7 +33,16 @@ public class FileController {
 	
 	// 파일 저장 경로
 	private static final String UPLOAD_DIR = "C:/files/";
-	
+
+	// 파일 확장자명으로 목록 조회(페이징)
+	@GetMapping("/file-type-list/{fileType}")
+	@ResponseBody
+	public Page<File> findFileTypePagingList(@PathVariable("fileType") String fileType, @PageableDefault(size = 10) Pageable pageable, Model model) {
+		Page<File> findFileTypePagingList = this.fileService.findFileTypePagingList(fileType, pageable);
+		return findFileTypePagingList;
+	}
+
+
 	// 파일 목록 조회(페이징)
 	@GetMapping("/list")
 	public String findFilePagingList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
@@ -82,6 +91,6 @@ public class FileController {
 		return "redirect:/file/list";
 	}
 	
-	// 2025-02-25 파일 목록 페이지 - 검색 기능
+	// 2025-02-26 파일 관리 페이지 디자인
 
 }

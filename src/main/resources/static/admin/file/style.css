@@ -114,7 +114,66 @@ ul {
     width: 100%;
     height: 100px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+}
+
+.container .section .main .content2 .file_upload {
+    background-color: #D9EAFD;
+    width: 500px;
+    height: 50px;
+    margin-left: 20px;
+    margin-top: 25px;
+    border-radius: 15px;
+}
+
+.container .section .main .content2 .file_upload i {
+    background-color: #9AA6B2;
+    font-size: 20px;
+    margin-left: 15px;
+}
+
+.container .section .main .content2 .file_upload .file {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.container .section .main .content2 .file_upload .file_label {
+    display: inline-block;
+    padding: 16px 25px;
+    background-color: #F8FAFC;
+    border-radius: 15px 0px 0px 15px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.container .section .main .content2 .file_upload .file_label:hover {
+    background-color: #BCCCDC
+}
+
+.container .section .main .content2 .file_upload .select_file {
+    display: inline-block;
+    width: 272px;
+    height: 30px;
+    font-size: 20px;
+    white-space: nowrap;     /* 줄 바꿈 방지 */
+    overflow: hidden;        /* 넘치는 부분 숨김 */
+    text-overflow: ellipsis; /* 초과 부분 ... 처리 */
+}
+
+.container .section .main .content2 .file_upload .upload {
+    background-color: #F8FAFC;
+    width: 100px;
+    height: 50px;
+    border: none;
+    border-radius: 0px 15px 15px 0px;
+    margin-left: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.container .section .main .content2 .file_upload .upload:hover {
+    background-color: #BCCCDC;
 }
 
 .container .section .main .content2 .file_search {
@@ -123,16 +182,53 @@ ul {
     height: 100px;
 }
 
+.container .section .main .content2 .file_search input {
+    background-color: #F8FAFC;
+    width: 250px;
+    height: 35px;
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    font-size: 20px;
+    padding-left: 40px;
+    margin-top: 40px;
+}
+
+.container .section .main .content2 .file_search i {
+    position: relative;
+    font-size: 20px;
+    top: 70px;
+    left: 10px;
+}
+
+.container .section .main .content2 .file_search input:focus {
+    background-color: #D9EAFD;
+}
+
 .container .section .main .content3 {
     background-color: darkgray;
     width: 100%;
     height: 370px;
 }
 
+.container .section .main .content3 .tabs {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 100%;
+    height: 30px;
+    background-color: aquamarine;
+}
+
+.container .section .main .content3 .tabs .tab {
+    margin-left: 10px;
+}
+
 .container .section .main .content3 table {
+    background-color: antiquewhite;
     text-align: center;
     width: 100%;
-    margin-top: 40px;
 }
 
 .container .section .main .content3 table th, td{

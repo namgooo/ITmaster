@@ -16,4 +16,8 @@ public interface FileRepository extends JpaRepository<File, Integer>, JpaSpecifi
 	// 파일 목록 조회(페이징)
 	public Page<File> findAll(Specification<File> specification, Pageable pageable);
 
+	// 파일 확장자명으로 목록 조회(페이징)
+	public Page<File> findByFileType(String fileType, Pageable pageable);
+
+
 }

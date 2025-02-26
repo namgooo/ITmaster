@@ -60,22 +60,29 @@
 
                     <div class="content2">
                         <div class="file_upload">
-                            <h3>파일 업로드</h3>
                             <form th:action="@{/file/upload}" method="post" enctype="multipart/form-data">
-                                <input type="file" id="file" name="file">
-                                <input type="submit" value="업로드하기">
+                                <!-- <i class="fa-solid fa-file-zipper"></i> -->
+                                <label for="file" class="file_label" id="fileLabel">파일 선택</label>
+                                <input type="file" class="file" id="file" name="file" onchange="updateFileName(this)">
+                                <span class="select_file" id="selectFile">선택된 파일이 없습니다.</span>
+                                <input type="submit" class="upload" value="업로드하기">
                             </form>
                         </div>
                         <div class="file_search">
-                            <h3>검색</h3>
+                            <i class="fa-solid fa-magnifying-glass"></i>
                             <form th:action="@{/file/list}" method="get">
                                 <input type="text" id="keyword" name="keyword" th:value="${keyword}">
-                                <input type="submit" value="검색하기">
+                                <input type="submit" value="검색하기" style="display: none;">
                             </form>
                         </div>
                     </div>
 
                     <div class="content3">
+                        <div class="tabs" id="tab">
+                            <button class="tab active" data-ext="hwp">한글파일</button>
+                            <button class="tab" data-ext="xlsx">엑셀파일</button>
+                            <button class="tab" data-ext="pdf">PDF파일</button>
+                        </div>
                         <table>
                             <thead>
                                 <tr>
@@ -138,6 +145,58 @@
 	    }
 	</script>
     <!-- //다운로드 버튼 알림 -->
+
+    <script>      
+        // 파일 선택 시 파일명을 업데이트하는 함수
+        function updateFileName(input) {
+          const fileName = input.files.length > 0 ? input.files[0].name : "선택된 파일이 없습니다.";
+          document.getElementById("selectFile").textContent = fileName;
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            function loadFiles(extension) {
+                $.ajax({
+                    url: "/file/file-type-list/" + extension,  // 확장자별 파일 가져오기
+                    type: "GET",
+                    success: function (data) {
+                        let fileList = $("#file-list");
+                        fileList.empty();
+                        if (data.length === 0) {
+                            fileList.append("<tr><td colspan='7'>파일 없음</td></tr>");
+                        } else {
+                            data.forEach((file, index) => {
+                                fileList.append(`
+                                    <tr>
+                                        <td>${index + 1}</td>
+                                        <td><a href="/file/download?fileName=${file.fileName}" onclick="return confirmDownload();">${file.fileName}</a></td>
+                                        <td>${file.fileType}</td>
+                                        <td>${(file.fileSize / 1024).toFixed(1)} KB</td>
+                                        <td>${file.count}</td>
+                                        <td>${new Date(file.createDate).toLocaleString()}</td>
+                                        <td><a href="/file/delete/${file.id}" onclick="return confirmDelete();">삭제하기</a></td>
+                                    </tr>
+                                `);
+                            });
+                        }
+                    }
+                });
+            }
+
+            // 기본적으로 "한글파일(hwp)" 목록 불러오기
+            loadFiles("hwp");
+
+            // 탭 클릭 이벤트
+            $(".tab").click(function () {
+                $(".tab").removeClass("active"); // 모든 탭 비활성화
+                $(this).addClass("active");      // 클릭한 탭 활성화
+                let extension = $(this).data("ext");
+                loadFiles(extension);            // 해당 확장자의 파일 목록 불러오기
+            });
+        });
+    </script>
+
 
 </body>
 </html>

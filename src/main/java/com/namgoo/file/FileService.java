@@ -50,6 +50,12 @@ public class FileService {
 		};
 	}
 
+	// 파일 확장자명으로 목록 조회(페이징)
+	public Page<File> findFileTypePagingList(String fileType, Pageable pageable) {
+		Page<File> findFileTypePagingList = this.fileRepository.findByFileType(fileType, pageable);
+		return findFileTypePagingList;
+	}
+
 	// 파일 목록 검색 조회(페이징)
 	public Page<File> findFilePagingList(String keyword, Pageable pageable) {
 		Specification<File> specification = search(keyword);
