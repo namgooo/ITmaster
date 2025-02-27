@@ -16,6 +16,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -37,9 +38,9 @@ public class FileController {
 	// 파일 확장자명으로 목록 조회(페이징)
 	@GetMapping("/file-type-list/{fileType}")
 	@ResponseBody
-	public Page<File> findFileTypePagingList(@PathVariable("fileType") String fileType, @PageableDefault(size = 10) Pageable pageable, Model model) {
+	public Page<File> findFileTypePagingList(@PathVariable("fileType") String fileType, @PageableDefault(size = 10) Pageable pageable, Model model, PagedResourcesAssembler<File> assembler) {
 		Page<File> findFileTypePagingList = this.fileService.findFileTypePagingList(fileType, pageable);
-		return findFileTypePagingList;
+		return null;
 	}
 
 
@@ -91,6 +92,6 @@ public class FileController {
 		return "redirect:/file/list";
 	}
 	
-	// 2025-02-26 파일 관리 페이지 디자인
+	// 2025-02-27 관리자 페이지 - 파일 관리 디자인
 
 }
