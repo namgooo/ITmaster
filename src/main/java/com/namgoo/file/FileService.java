@@ -84,6 +84,7 @@ public class FileService {
 			file.setFilePath(filePath);
 			file.setFileType(fileName.substring(fileName.lastIndexOf("."))); // 파일 확장자
 			file.setFileSize(multipartFile.getSize());
+			file.setCount(0);
 			file.setCreateDate(LocalDateTime.now());
 			
 			this.fileRepository.save(file);
@@ -104,6 +105,13 @@ public class FileService {
 		Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
 		// URL 형식으로 변환, 이를 기반으로 파일을 로드하거나 다운로드가 가능함
 		Resource resource = new UrlResource(filePath.toUri());
+		// 사용자가 선택한 파일이름에 해당하는 객체 호출
+		File file = this.fileRepository.findByFileName(fileName);
+		// 파일 객체의 누적다운로드수
+		Integer fileCount = file.getCount();
+		// 누적다운로드수 증가
+		file.setCount(fileCount + 1);
+		this.fileRepository.save(file);
 
 		return resource;
 	}
