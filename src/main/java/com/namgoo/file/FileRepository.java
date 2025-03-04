@@ -22,5 +22,4 @@ public interface FileRepository extends JpaRepository<File, Integer>, JpaSpecifi
 	// 파일 이름으로 단일 조회
 	public File findByFileName(String fileName);
 
-
 }

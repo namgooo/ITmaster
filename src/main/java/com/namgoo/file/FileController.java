@@ -60,8 +60,9 @@ public class FileController {
 		return "redirect:/file/list";
 	}
 
-	// 파일 다운로드
+	// 파일 다운로드 (비동기 통신)
 	@GetMapping("/download")
+	@ResponseBody
 	public ResponseEntity<Resource> downloadFile(@RequestParam("fileName") String fileName) throws IOException {
 		// 한글 이름 파일 인코딩
 		// HTTP 헤더는 기본적으로 ASCII 문자만 처리하기 때문에 파일명에 한글이 포함될 때 Base64 형식으로 인코딩해야 함
@@ -82,7 +83,7 @@ public class FileController {
 		this.fileService.deleteFile(id);
 		return "redirect:/file/list";
 	}
-	
-	// 2025-02-28 파일 관리 누적다운로드수 증가
+
+	// 2025-03-04 파일 관리 페이지 디자인
 
 }

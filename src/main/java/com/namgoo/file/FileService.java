@@ -116,6 +116,8 @@ public class FileService {
 		return resource;
 	}
 
+
+
 	// 파일 삭제
 	public void deleteFile(Integer id) {
 		this.fileRepository.deleteById(id);

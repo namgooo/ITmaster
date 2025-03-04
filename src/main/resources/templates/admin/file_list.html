@@ -63,9 +63,7 @@
                         <div class="file_upload">
                             <form th:action="@{/file/upload}" method="post" enctype="multipart/form-data">
                                 <!-- <i class="fa-solid fa-file-zipper"></i> -->
-                                <label for="file" class="file_label" id="fileLabel">파일 선택</label>
-                                <input type="file" class="file" id="file" name="file" onchange="updateFileName(this)">
-                                <span class="select_file" id="selectFile">선택된 파일이 없습니다.</span>
+                                <input type="file" class="file" id="file" name="file">
                                 <input type="submit" class="upload" value="업로드하기">
                             </form>
                         </div>
@@ -112,7 +110,7 @@
                         </table>
                     </div>
                 </div>
-
+                
                 <div class="footer">
                     <div class="paging">
                         <a class="first_page" th:href="@{|?page=${first}|}" role="button">첫 페이지</a>
@@ -120,7 +118,7 @@
                         <span class="previous" th:if="${!hasPrevious}"></span>
 
                         <span class="paging_number" th:each="pageNumber : ${#numbers.sequence(currentPage >= 2 ? (currentPage - 2) : 0, currentPage >= 2 ? (currentPage + 2 < totalPages ? currentPage + 2 : totalPages - 1) : (totalPages > 5 ? 4 : totalPages - 1))}">
-                            <a class="paging_number" th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>
+                            <a class="paging_number" th:href="@{|?page=${pageNumber}&keyword=${keyword}|}" th:text="${pageNumber + 1}" th:classappend="${pageNumber == currentPage} ? 'current-page'"></a>           
                         </span>
 
                         <a class="next" th:href="@{|?page=${next}|}" th:if="${hasNext}" role="button"></a>
@@ -147,36 +145,6 @@
 	</script>
     <!-- //다운로드 버튼 알림 -->
     
-    <script>
-        // 파일 선택 시 파일명을 업데이트하는 함수
-        function updateFileName(input) {
-          const fileName = input.files.length > 0 ? input.files[0].name : "선택된 파일이 없습니다.";
-          document.getElementById("selectFile").textContent = fileName;
-        }
-    </script>
-
-    <script>
-        function downloadFile(fileName) {
-            const downloadUrl = `/file/download?fileName=` + encodeURLComponent(fileName);
-            const link = document.createElement('a');
-
-            link.setAttribute('download', fileName);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            updateDownloadCount(fileName);
-        }
-        function updateDownloadCount(fileName) {
-            fetch(`/file/updateCount?fileName=` + encodeURIComponent(fileName), {
-                method: "GET"
-            })
-            .then(response => response.json())
-            .then(newCount => {
-                document.getElementById("downloadCount").textContent = newCount;
-            })
-            .catch(error => console.error("Error updating download count:", error));
-        }
-    </script>
 
 
 </body>
