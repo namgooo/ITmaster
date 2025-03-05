@@ -62,8 +62,9 @@
                     <div class="content2">
                         <div class="file_upload">
                             <form th:action="@{/file/upload}" method="post" enctype="multipart/form-data">
-                                <!-- <i class="fa-solid fa-file-zipper"></i> -->
-                                <input type="file" class="file" id="file" name="file">
+                                <i class="fa-solid fa-folder-plus" id="iconButton"></i>
+                                <span id="fileName">선택된 파일 없음</span>
+                                <input type="file" class="file" id="file" name="file" style="display: none;">
                                 <input type="submit" class="upload" value="업로드하기">
                             </form>
                         </div>
@@ -144,6 +145,17 @@
 	    }
 	</script>
     <!-- //다운로드 버튼 알림 -->
+    
+    <script>
+        document.getElementById("iconButton").addEventListener("click", function () {
+            document.getElementById("file").click();
+        });
+
+        document.getElementById("file").addEventListener("change", function() {
+            let fileName = this.files.length > 0 ? this.files[0].name : "선택된 파일 없음";
+            document.getElementById("fileName").textContent = fileName;
+        });
+    </script>
     
 
 

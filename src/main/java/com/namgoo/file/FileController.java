@@ -77,13 +77,14 @@ public class FileController {
 				.body(file); // 파일 내용을 사용자에게 전송
 	}
 
+
 	// 파일 삭제
 	@GetMapping("/delete/{id}")
 	public String deleteFile(@PathVariable("id") Integer id) {
 		this.fileService.deleteFile(id);
 		return "redirect:/file/list";
 	}
-
-	// 2025-03-04 파일 관리 페이지 디자인
+	
+	// 2025-03-05 파일 관리 페이지 디자인
 
 }

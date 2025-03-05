@@ -85,7 +85,7 @@ ul {
 .container .section .main .content1 {
     background-color: cadetblue;
     width: 100%;
-    height: 150px;
+    height: 200px;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -112,10 +112,49 @@ ul {
 .container .section .main .content2 {
     background-color: chocolate;
     width: 100%;
-    height: 100px;
+    height: 50px;
     display: flex;
     justify-content: space-between;
 }
+
+.container .section .main .content2 .file_upload {
+    background-color: azure;
+    width: 500px;
+    height: 50px;
+    margin-left: 20px;
+}
+
+.container .section .main .content2 .file_upload i {
+    font-size: 30px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.container .section .main .content2 .file_upload span {
+    display: inline-block;
+    background-color: aqua;
+    width: 250px;
+    height: 30px;
+    line-height: 30px;
+    white-space: nowrap; /*줄바꿈 방지*/
+    overflow: hidden; /*넘치는 부분 숨김*/
+    text-overflow: ellipsis; /*넘치는 부분 ... 처리*/
+    vertical-align: middle;
+    border-radius: 10px;
+    padding-left: 15px;
+}
+
+.container .section .main .content2 .file_upload .upload {
+    background-color: #BCCCDC;
+    width: 80px;
+    height: 30px;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 30px;
+    border: none;
+    cursor: pointer;
+}
+
 
 
 
@@ -126,7 +165,7 @@ ul {
 .container .section .main .content2 .file_search {
     background-color: bisque;
     width: 300px;
-    height: 100px;
+    height: 50px;
 }
 
 .container .section .main .content2 .file_search input {
@@ -136,15 +175,14 @@ ul {
     border: none;
     outline: none;
     border-radius: 15px;
-    font-size: 20px;
     padding-left: 40px;
-    margin-top: 40px;
+    font-size: 20px;
 }
 
 .container .section .main .content2 .file_search i {
     position: relative;
     font-size: 20px;
-    top: 70px;
+    top: 30px;
     left: 10px;
 }
 
