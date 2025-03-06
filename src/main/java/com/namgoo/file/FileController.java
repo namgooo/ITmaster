@@ -40,6 +40,11 @@ public class FileController {
 	public String findFilePagingList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
 		Page<File> fileList = this.fileService.findFilePagingList(keyword, pageable);
 		model.addAttribute("fileList", fileList);
+		Integer countAll = this.fileService.countAll();
+		model.addAttribute("countAll", countAll);
+		List<FileDownloadRankingDTO> fileDownloadRankingList = this.fileService.fileDownloadRankingList();
+		model.addAttribute("fileDownloadRankingList", fileDownloadRankingList);
+
 
 		// 페이징
 		model.addAttribute("previous", pageable.previousOrFirst()); // 이전 페이지 번호
@@ -77,7 +82,6 @@ public class FileController {
 				.body(file); // 파일 내용을 사용자에게 전송
 	}
 
-
 	// 파일 삭제
 	@GetMapping("/delete/{id}")
 	public String deleteFile(@PathVariable("id") Integer id) {
@@ -85,6 +89,7 @@ public class FileController {
 		return "redirect:/file/list";
 	}
 	
-	// 2025-03-05 파일 관리 페이지 디자인
+	// 2025-03-06 파일 관리 페이지 디자인
+
 
 }

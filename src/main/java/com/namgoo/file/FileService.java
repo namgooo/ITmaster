@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -116,11 +117,23 @@ public class FileService {
 		return resource;
 	}
 
-
-
 	// 파일 삭제
 	public void deleteFile(Integer id) {
 		this.fileRepository.deleteById(id);
 	}
+
+
+	// 전체 파일 다운로드 누적 수 조회
+	public Integer countAll() {
+		Integer countAll = this.fileRepository.countAll();
+		return countAll;
+	}
+
+	// 파일 누적다운로드 수 내림차순(3개 까지) 조회
+	public List<FileDownloadRankingDTO> fileDownloadRankingList() {
+		List<FileDownloadRankingDTO> fileDownloadRankingList = this.fileRepository.fileDownloadRankingList(PageRequest.of(0, 3));
+		return fileDownloadRankingList;
+	}
+
 
 }
