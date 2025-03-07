@@ -93,24 +93,6 @@ ul {
     align-items: center;
 }
 
-.container .section .main .content1 .hwp_file {
-    background-color: #BCCCDC;
-    width: 150px;
-    height: 100px;
-}
-
-.container .section .main .content1 .excel_file {
-    background-color: #BCCCDC;
-    width: 150px;
-    height: 100px;
-}
-
-.container .section .main .content1 .pdf_file {
-    background-color: #BCCCDC;
-    width: 150px;
-    height: 100px;
-}
-
 .container .section .main .content2 {
     background-color: chocolate;
     width: 100%;
@@ -236,7 +218,6 @@ ul {
 .container .section .main .content3 table th, td{
     padding: 6px 20px;
 }
-
 
 .container .section .footer {
     background-color: brown;

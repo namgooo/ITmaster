@@ -1,11 +1,10 @@
 package com.namgoo.file;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.namgoo.file_category.FileCategory;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,5 +22,9 @@ public class File {
 	private double fileSize;
 	private Integer count;
 	private LocalDateTime createDate;
+
+	// ManyToOne
+	@ManyToOne
+	private FileCategory fileCategory;
 	
 }

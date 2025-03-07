@@ -48,20 +48,26 @@
 
                 <div class="main">
                     <div class="content1">
-                        <div class="hwp_file">
-                            한글 파일
+                        <div>
+                            <p>파일 누적다운로드</p>
+                            <p>총합 : <span th:text="${countAll}"></span></p>
                         </div>
-                        <div class="excel_file">
-                            엑셀 파일
+                        <div>
+                            누적다운로드 랭킹
                         </div>
-                        <div class="pdf_file">
-                            PDF 파일
+                        <div>
+                            카테고리 별, 누적다운로드
                         </div>
                     </div>
 
                     <div class="content2">
                         <div class="file_upload">
                             <form th:action="@{/file/upload}" method="post" enctype="multipart/form-data">
+                                <label for=""></label>
+                                <select id="" name="fileCategory">
+                                    <option value="">선택하기</option>
+                                    <option th:each="fileCategory, loop : ${fileCategoryList}" th:text="${fileCategory.fileCategory}" th:value="${fileCategory.fileCategory}"></option>
+                                </select>
                                 <i class="fa-solid fa-folder-plus" id="iconButton"></i>
                                 <span id="fileName">선택된 파일 없음</span>
                                 <input type="file" class="file" id="file" name="file" style="display: none;">
@@ -82,6 +88,7 @@
                             <thead>
                                 <tr>
                                     <th>번호</th>
+                                    <th>카테고리</th>
                                     <th>파일명</th>
                                     <th>확장자명</th>
                                     <th>파일크기</th>
@@ -93,6 +100,7 @@
                             <tbody>
                                 <tr th:each="file, loop : ${fileList}">
                                     <td th:text="${loop.count}"></td>
+                                    <td th:text="${file.fileCategory.fileCategory}"></td>
                                     <td>
                                         <a th:text="${file.fileName}" th:href="@{/file/download(fileName=${file.fileName})}" onclick="return confirmDownload();"></a>
                                     </td>

@@ -10,6 +10,9 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 
+import com.namgoo.file_category.FileCategory;
+import com.namgoo.file_category.FileCategoryDTO;
+import com.namgoo.file_category.FileCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -31,6 +34,8 @@ public class FileController {
 	
 	@Autowired
 	private FileService fileService;
+	@Autowired
+	private FileCategoryService fileCategoryService;
 	
 	// 파일 저장 경로
 	private static final String UPLOAD_DIR = "C:/files/";
@@ -40,11 +45,15 @@ public class FileController {
 	public String findFilePagingList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
 		Page<File> fileList = this.fileService.findFilePagingList(keyword, pageable);
 		model.addAttribute("fileList", fileList);
+		// 파일카테고리 목록 조회
+		List<FileCategory> fileCategoryList = this.fileCategoryService.findFileCategoryList();
+		model.addAttribute("fileCategoryList", fileCategoryList);
+		// 파일 누적다운로드 수 총합 조회
 		Integer countAll = this.fileService.countAll();
 		model.addAttribute("countAll", countAll);
+		// 파일 누적다운로드 수 내림차순(3개 까지) 조회
 		List<FileDownloadRankingDTO> fileDownloadRankingList = this.fileService.fileDownloadRankingList();
 		model.addAttribute("fileDownloadRankingList", fileDownloadRankingList);
-
 
 		// 페이징
 		model.addAttribute("previous", pageable.previousOrFirst()); // 이전 페이지 번호
@@ -60,14 +69,13 @@ public class FileController {
 
 	// 파일 업로드
 	@PostMapping("/upload")
-	public String uploadFile(@RequestParam("file") MultipartFile file) {
-		this.fileService.uploadFile(file);
+	public String uploadFile(@RequestParam("file") MultipartFile file, FileCategoryDTO dto) {
+		this.fileService.uploadFile(file, dto);
 		return "redirect:/file/list";
 	}
 
-	// 파일 다운로드 (비동기 통신)
+	// 파일 다운로드
 	@GetMapping("/download")
-	@ResponseBody
 	public ResponseEntity<Resource> downloadFile(@RequestParam("fileName") String fileName) throws IOException {
 		// 한글 이름 파일 인코딩
 		// HTTP 헤더는 기본적으로 ASCII 문자만 처리하기 때문에 파일명에 한글이 포함될 때 Base64 형식으로 인코딩해야 함
@@ -89,7 +97,6 @@ public class FileController {
 		return "redirect:/file/list";
 	}
 	
-	// 2025-03-06 파일 관리 페이지 디자인
-
+	// 2025-03-07 파일 관리 페이지 디자인
 
 }

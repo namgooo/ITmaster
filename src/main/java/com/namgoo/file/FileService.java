@@ -9,6 +9,9 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.namgoo.file_category.FileCategory;
+import com.namgoo.file_category.FileCategoryDTO;
+import com.namgoo.file_category.FileCategoryRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -28,6 +31,8 @@ public class FileService {
 	
 	@Autowired
 	private FileRepository fileRepository;
+	@Autowired
+	private FileCategoryRepository fileCategoryRepository;
 	
 	// 파일 저장 경로
 	private static final String UPLOAD_DIR = "C:/files/";
@@ -65,7 +70,7 @@ public class FileService {
 	}
 
 	// 파일 업로드
-	public String uploadFile(MultipartFile multipartFile) {
+	public String uploadFile(MultipartFile multipartFile, FileCategoryDTO dto) {
 		// 파일이 선택되었는지 확인(예외처리)
 		if(multipartFile.isEmpty()) {
 			return "파일을 선택하세요!";
@@ -87,7 +92,11 @@ public class FileService {
 			file.setFileSize(multipartFile.getSize());
 			file.setCount(0);
 			file.setCreateDate(LocalDateTime.now());
-			
+
+			// 파일카테고리명으로 조회
+			FileCategory fileCategory = this.fileCategoryRepository.findByFileCategory(dto.getFileCategory());
+			file.setFileCategory(fileCategory);
+
 			this.fileRepository.save(file);
 			
 			return "파일 업로드 성공 : " + fileName;
@@ -122,8 +131,7 @@ public class FileService {
 		this.fileRepository.deleteById(id);
 	}
 
-
-	// 전체 파일 다운로드 누적 수 조회
+	// 파일 누적다운로드 수 총합 조회
 	public Integer countAll() {
 		Integer countAll = this.fileRepository.countAll();
 		return countAll;
