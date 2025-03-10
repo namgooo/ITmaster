@@ -1,11 +1,11 @@
 package com.namgoo.file_category;
 
-import com.namgoo.category.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FileCategoryService {
@@ -25,6 +25,12 @@ public class FileCategoryService {
         fileCategory.setFileCategory(dto.getFileCategory());
         fileCategory.setCreateDate(LocalDateTime.now());
         this.fileCategoryRepository.save(fileCategory);
+    }
+
+    // 파일카테고리 ID로 단일 조회
+    public FileCategory findById(Integer id) {
+        FileCategory fileCategory = this.fileCategoryRepository.findById(id).orElse(null);
+        return fileCategory;
     }
 
 }

@@ -48,7 +48,7 @@
 
                 <div class="main">
                     <div class="content1">
-                        <div>
+                        <div class="count_all">
                             <p>파일 누적다운로드</p>
                             <p>총합 : <span th:text="${countAll}"></span></p>
                         </div>
@@ -64,7 +64,7 @@
                         <div class="file_upload">
                             <form th:action="@{/file/upload}" method="post" enctype="multipart/form-data">
                                 <label for=""></label>
-                                <select id="" name="fileCategory">
+                                <select id="fileCategory" name="fileCategory">
                                     <option value="">선택하기</option>
                                     <option th:each="fileCategory, loop : ${fileCategoryList}" th:text="${fileCategory.fileCategory}" th:value="${fileCategory.fileCategory}"></option>
                                 </select>
@@ -77,13 +77,18 @@
                         <div class="file_search">
                             <i class="fa-solid fa-magnifying-glass"></i>
                             <form th:action="@{/file/list}" method="get">
-                                <input type="text" id="keyword" name="keyword" th:value="${keyword}">
+                                <input type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="  검색어를 입력하세요.">
                                 <input type="submit" value="검색하기" style="display: none;">
                             </form>
                         </div>
                     </div>
 
                     <div class="content3">
+                        <div class="file_category_list">
+                            <ul th:each="fileCategory, loop : ${fileCategoryList}">
+                                <li><a th:href="@{|/file/list/${fileCategory.id}|}" th:text="${fileCategory.fileCategory}"></a></li>
+                            </ul>
+                        </div>
                         <table>
                             <thead>
                                 <tr>

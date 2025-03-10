@@ -1,6 +1,5 @@
 package com.namgoo.file;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,10 +11,7 @@ import java.util.List;
 import com.namgoo.file_category.FileCategory;
 import com.namgoo.file_category.FileCategoryDTO;
 import com.namgoo.file_category.FileCategoryRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -43,11 +39,12 @@ public class FileService {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Predicate toPredicate(Root<File> f, CriteriaQuery<?> query, CriteriaBuilder cb) {
-
+				Join<FileCategory, File> ff = f.join("fileCategory", JoinType.LEFT);
 				Predicate filterPredicate = cb.or(
 						cb.like(f.get("fileName"), "%" + keyword + "%"),
 						cb.like(f.get("filePath"), "%" + keyword + "%"),
-						cb.like(f.get("fileType"), "%" + keyword + "%")
+						cb.like(f.get("fileType"), "%" + keyword + "%"),
+						cb.like(ff.get("fileCategory"), "%" + keyword + "%")
 				);
 				query.distinct(true);
 				query.orderBy(cb.desc(f.get("createDate")));
@@ -56,16 +53,16 @@ public class FileService {
 		};
 	}
 
-	// 파일 확장자명으로 목록 조회(페이징)
-	public Page<File> findFileTypePagingList(String fileType, Pageable pageable) {
-		Page<File> findFileTypePagingList = this.fileRepository.findByFileType(fileType, pageable);
-		return findFileTypePagingList;
-	}
-
 	// 파일 목록 검색 조회(페이징)
 	public Page<File> findFilePagingList(String keyword, Pageable pageable) {
 		Specification<File> specification = search(keyword);
 		Page<File> fileList = this.fileRepository.findAll(specification, pageable);
+		return fileList;
+	}
+
+	// 파일카테고리 별 파일 목록 검색 조회(페이징)
+	public Page<File> findByFileCategory(FileCategory fileCategory, String keyword, Pageable pageable) {
+		Page<File> fileList = this.fileRepository.findByFileCategoryAndFile(fileCategory, keyword, pageable);
 		return fileList;
 	}
 

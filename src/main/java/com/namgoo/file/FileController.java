@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 import com.namgoo.file_category.FileCategory;
 import com.namgoo.file_category.FileCategoryDTO;
@@ -67,6 +68,34 @@ public class FileController {
 		return "admin/file_list";
 	}
 
+	// 파일카테고리 별 파일 목록 검색 조회(페이징)
+	@GetMapping("/list/{id}")
+	public String findFilePagingList(@PathVariable("id") Integer id, @PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
+		FileCategory fileCategory = this.fileCategoryService.findById(id);
+		Page<File> fileList = this.fileService.findByFileCategory(fileCategory, keyword, pageable);
+		model.addAttribute("fileList", fileList);
+		// 파일카테고리 목록 조회
+		List<FileCategory> fileCategoryList = this.fileCategoryService.findFileCategoryList();
+		model.addAttribute("fileCategoryList", fileCategoryList);
+		// 파일 누적다운로드 수 총합 조회
+		Integer countAll = this.fileService.countAll();
+		model.addAttribute("countAll", countAll);
+		// 파일 누적다운로드 수 내림차순(3개 까지) 조회
+		List<FileDownloadRankingDTO> fileDownloadRankingList = this.fileService.fileDownloadRankingList();
+		model.addAttribute("fileDownloadRankingList", fileDownloadRankingList);
+
+		// 페이징
+		model.addAttribute("previous", pageable.previousOrFirst()); // 이전 페이지 번호
+		model.addAttribute("next", pageable.next().getPageNumber()); // 다음 페이지 번호
+		model.addAttribute("hasPrevious", fileList.hasPrevious()); // 이전 페이지가 있는지 여부 확인(boolean)
+		model.addAttribute("hasNext", fileList.hasNext()); // 다음 페이지가 있는지 여부 확인(boolean)
+		model.addAttribute("currentPage", fileList.getNumber()); // 현재 페이지 번호 (0부터 시작)
+		model.addAttribute("totalPages", fileList.getTotalPages()); // 총 페이지 수(마지막 페이지)
+		model.addAttribute("first", pageable.first().getPageNumber()); // 첫 페이지
+
+		return "admin/file_list";
+	}
+
 	// 파일 업로드
 	@PostMapping("/upload")
 	public String uploadFile(@RequestParam("file") MultipartFile file, FileCategoryDTO dto) {
@@ -97,6 +126,6 @@ public class FileController {
 		return "redirect:/file/list";
 	}
 	
-	// 2025-03-07 파일 관리 페이지 디자인
+	// 2025-03-10 파일 관리 페이지 디자인
 
 }

@@ -70,7 +70,7 @@ ul {
 }
 
 .container .section .header {
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
     width: 100%;
     height: 30px;
     font-size: 20px;
@@ -78,7 +78,7 @@ ul {
 }
 
 .container .section .main {
-    background-color: burlywood;
+    /* background-color: burlywood; */
     width: 100%;
     height: 660px;
     margin-top: 10px;
@@ -93,19 +93,36 @@ ul {
     align-items: center;
 }
 
+.container .section .main .content1 .count_all {
+    background-color: aliceblue;
+    width: 200px;
+    height: 120px;
+}
+
 .container .section .main .content2 {
-    background-color: chocolate;
+    /* background-color: chocolate; */
     width: 100%;
-    height: 70px;
+    height: 60px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
 .container .section .main .content2 .file_upload {
     background-color: azure;
-    width: 500px;
-    height: 100%;
-    margin-left: 20px;
+    width: 540px;
+    height: 50px;
+    margin-top: 5px;
+    margin-right: 150px;
+    border-radius: 10px;
+}
+
+.container .section .main .content2 .file_upload select {
+    width: 100px;
+    height: 30px;
+    margin-top: 10px;
+    margin-right: 5px;
+    margin-left: 15px;
+    border-radius: 10px;
 }
 
 .container .section .main .content2 .file_upload i {
@@ -113,6 +130,7 @@ ul {
     font-size: 30px;
     vertical-align: middle;
     cursor: pointer;
+    margin-right: 5px;
 }
 
 .container .section .main .content2 .file_upload i:hover {
@@ -143,6 +161,7 @@ ul {
     line-height: 30px;
     border: none;
     cursor: pointer;
+    margin-left: 5px;
 }
 
 .container .section .main .content2 .file_upload .upload:hover {
@@ -155,10 +174,8 @@ ul {
 
 
 
-
-
 .container .section .main .content2 .file_search {
-    background-color: bisque;
+    /* background-color: bisque; */
     width: 300px;
     height: 100%;
 }
@@ -186,13 +203,37 @@ ul {
 }
 
 .container .section .main .content3 {
-    background-color: darkgray;
+    /* background-color: darkgray; */
     width: 100%;
-    height: 370px;
+    height: 440px;
 }
 
+.container .section .main .content3 .file_category_list {
+    /* background-color: aqua; */
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.container .section .main .content3 .file_category_list a {
+    background-color: beige;
+    display: inline-block;
+    width: 70px;
+    height: 30px;
+    text-align: center;
+    border: 1px groove;
+    border-radius: 10px 0 0 0; 
+    line-height: 30px;
+}
+
+.container .section .main .content3 .file_category_list a:hover {
+    background-color: aquamarine;
+}
+
+
 .container .section .main .content3 table {
-    background-color: antiquewhite;
+    /* background-color: antiquewhite; */
     text-align: center;
     width: 100%;
     border-collapse: collapse; /* 테두리를 겹치게 설정하여 공백 제거 */
@@ -201,7 +242,7 @@ ul {
 }
 
 .container .section .main .content3 table thead {
-    background-color: #9AA6B2;
+    /* background-color: #9AA6B2; */
 }
 
 .container .section .main .content3 table td {
@@ -220,17 +261,18 @@ ul {
 }
 
 .container .section .footer {
-    background-color: brown;
+    /* background-color: brown; */
     width: 100%;
-    height: 50px;
-    line-height: 50px;
+    height: 40px;
+    line-height: 40px;
+    margin-top: 20px;
 }
 
 .container .section .footer .paging {
-    background-color: #9AA6B2;
+    /* background-color: #9AA6B2; */
     position: absolute;
     width: 100%;
-    height: 50px;
+    height: 40px;
     left: 50%;
     transform: translateX(-50%, 0px);
 }
