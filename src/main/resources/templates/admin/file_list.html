@@ -49,14 +49,13 @@
                 <div class="main">
                     <div class="content1">
                         <div class="count_all">
-                            <p>파일 누적다운로드</p>
-                            <p>총합 : <span th:text="${countAll}"></span></p>
+                            미정
                         </div>
                         <div>
-                            누적다운로드 랭킹
+                            <canvas>누적다운로드 랭킹</canvas>
                         </div>
                         <div>
-                            카테고리 별, 누적다운로드
+                            <canvas>카테고리 별, 누적다운로드</canvas>
                         </div>
                     </div>
 
@@ -111,7 +110,7 @@
                                     </td>
                                     <td th:text="${file.fileType}"></td>
                                     <td th:text="${#numbers.formatDecimal(file.fileSize / 1024.0, 1, 1) + ' KB'}"></td>
-                                    <td th:text="${file.count}"></td>
+                                    <td th:text="${fileDeownloadLogCount}"></td>
                                     <td th:text="${#temporals.format(file.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                     <td><a th:href="@{|/file/delete/${file.id}|}" onclick="return confirmDelete();">삭제하기</a></td>
                                 </tr>
@@ -139,21 +138,22 @@
         </div>
     </div>
 
-    <!-- 삭제 버튼 알림// -->
+    <!-- 삭제 버튼 알림 // -->
 	<script type="text/javascript">
 	    function confirmDelete() {
 	        return confirm("정말 삭제를 하시겠습니까?");
 	    }
 	</script>
-    <!-- //삭제 버튼 알림 -->
-    <!-- 다운로드 버튼 알림// -->
+    <!-- // 삭제 버튼 알림 -->
+    <!-- 다운로드 버튼 알림 // -->
 	<script type="text/javascript">
 	    function confirmDownload() {
 	        return confirm("정말 다운로드를 하시겠습니까?");
 	    }
 	</script>
-    <!-- //다운로드 버튼 알림 -->
+    <!-- // 다운로드 버튼 알림 -->
     
+    <!-- 파일 업로드 // -->
     <script>
         document.getElementById("iconButton").addEventListener("click", function () {
             document.getElementById("file").click();
@@ -164,8 +164,18 @@
             document.getElementById("fileName").textContent = fileName;
         });
     </script>
-    
+    <!-- // 파일 업로드 -->
 
+    <!-- 파일 차트 // -->
+     <script th:inline="Javascript">
+        // 누적다운로드 랭킹
+        const fileDownloadRankingList = /*[[${fileDownloadRankingList}]]*/ [];
+        console.log("파일이름 : " + fileDownloadRankingList[0].fileName);
+        console.log("총합 : " + fileDownloadRankingList[0].count);
+
+     </script>
+
+    <!-- // 파일 차트 -->
 
 </body>
 </html>

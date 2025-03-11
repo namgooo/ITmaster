@@ -11,6 +11,8 @@ import java.util.List;
 import com.namgoo.file_category.FileCategory;
 import com.namgoo.file_category.FileCategoryDTO;
 import com.namgoo.file_category.FileCategoryRepository;
+import com.namgoo.file_download_log.FileDownloadLog;
+import com.namgoo.file_download_log.FileDownloadLogService;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -29,6 +31,8 @@ public class FileService {
 	private FileRepository fileRepository;
 	@Autowired
 	private FileCategoryRepository fileCategoryRepository;
+	@Autowired
+	private FileDownloadLogService fileDownloadLogService;
 	
 	// 파일 저장 경로
 	private static final String UPLOAD_DIR = "C:/files/";
@@ -61,7 +65,7 @@ public class FileService {
 	}
 
 	// 파일카테고리 별 파일 목록 검색 조회(페이징)
-	public Page<File> findByFileCategory(FileCategory fileCategory, String keyword, Pageable pageable) {
+	public Page<File> findByFileCategoryAndFile(FileCategory fileCategory, String keyword, Pageable pageable) {
 		Page<File> fileList = this.fileRepository.findByFileCategoryAndFile(fileCategory, keyword, pageable);
 		return fileList;
 	}
@@ -87,7 +91,6 @@ public class FileService {
 			file.setFilePath(filePath);
 			file.setFileType(fileName.substring(fileName.lastIndexOf("."))); // 파일 확장자
 			file.setFileSize(multipartFile.getSize());
-			file.setCount(0);
 			file.setCreateDate(LocalDateTime.now());
 
 			// 파일카테고리명으로 조회
@@ -114,11 +117,7 @@ public class FileService {
 		Resource resource = new UrlResource(filePath.toUri());
 		// 사용자가 선택한 파일이름에 해당하는 객체 호출
 		File file = this.fileRepository.findByFileName(fileName);
-		// 파일 객체의 누적다운로드수
-		Integer fileCount = file.getCount();
-		// 누적다운로드수 증가
-		file.setCount(fileCount + 1);
-		this.fileRepository.save(file);
+		this.fileDownloadLogService.createFileDownloadLog(fileName);
 
 		return resource;
 	}
@@ -126,18 +125,6 @@ public class FileService {
 	// 파일 삭제
 	public void deleteFile(Integer id) {
 		this.fileRepository.deleteById(id);
-	}
-
-	// 파일 누적다운로드 수 총합 조회
-	public Integer countAll() {
-		Integer countAll = this.fileRepository.countAll();
-		return countAll;
-	}
-
-	// 파일 누적다운로드 수 내림차순(3개 까지) 조회
-	public List<FileDownloadRankingDTO> fileDownloadRankingList() {
-		List<FileDownloadRankingDTO> fileDownloadRankingList = this.fileRepository.fileDownloadRankingList(PageRequest.of(0, 3));
-		return fileDownloadRankingList;
 	}
 
 

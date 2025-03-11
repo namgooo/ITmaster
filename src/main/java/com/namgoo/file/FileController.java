@@ -1,26 +1,23 @@
 package com.namgoo.file;
 
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
+
 
 import com.namgoo.file_category.FileCategory;
+import com.namgoo.file_category.FileCategoryCountDTO;
 import com.namgoo.file_category.FileCategoryDTO;
 import com.namgoo.file_category.FileCategoryService;
+import com.namgoo.file_download_log.FileDownloadLog;
+import com.namgoo.file_download_log.FileDownloadLogCountDTO;
+import com.namgoo.file_download_log.FileDownloadLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +34,8 @@ public class FileController {
 	private FileService fileService;
 	@Autowired
 	private FileCategoryService fileCategoryService;
+	@Autowired
+	private FileDownloadLogService fileDownloadLogService;
 	
 	// 파일 저장 경로
 	private static final String UPLOAD_DIR = "C:/files/";
@@ -49,12 +48,14 @@ public class FileController {
 		// 파일카테고리 목록 조회
 		List<FileCategory> fileCategoryList = this.fileCategoryService.findFileCategoryList();
 		model.addAttribute("fileCategoryList", fileCategoryList);
-		// 파일 누적다운로드 수 총합 조회
-		Integer countAll = this.fileService.countAll();
-		model.addAttribute("countAll", countAll);
-		// 파일 누적다운로드 수 내림차순(3개 까지) 조회
-		List<FileDownloadRankingDTO> fileDownloadRankingList = this.fileService.fileDownloadRankingList();
-		model.addAttribute("fileDownloadRankingList", fileDownloadRankingList);
+		// 파일카테고리 별, 파일 총합 조회
+		List<FileCategoryCountDTO> fileCategoryCountList = this.fileCategoryService.findFileCategoryCountList();
+		model.addAttribute("fileCategoryCountList", fileCategoryCountList);
+
+		// 파일다운로드기록 조회
+		List<FileDownloadLogCountDTO> fileDownloadLogCountList = this.fileDownloadLogService.findFileDownloadLogCountList();
+		System.out.println("파일이름 : " + fileDownloadLogCountList.get(0).getFileName());
+		System.out.println("파일이름 : " + fileDownloadLogCountList.get(0).getCount());
 
 		// 페이징
 		model.addAttribute("previous", pageable.previousOrFirst()); // 이전 페이지 번호
@@ -72,17 +73,14 @@ public class FileController {
 	@GetMapping("/list/{id}")
 	public String findFilePagingList(@PathVariable("id") Integer id, @PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
 		FileCategory fileCategory = this.fileCategoryService.findById(id);
-		Page<File> fileList = this.fileService.findByFileCategory(fileCategory, keyword, pageable);
+		Page<File> fileList = this.fileService.findByFileCategoryAndFile(fileCategory, keyword, pageable);
 		model.addAttribute("fileList", fileList);
 		// 파일카테고리 목록 조회
 		List<FileCategory> fileCategoryList = this.fileCategoryService.findFileCategoryList();
 		model.addAttribute("fileCategoryList", fileCategoryList);
-		// 파일 누적다운로드 수 총합 조회
-		Integer countAll = this.fileService.countAll();
-		model.addAttribute("countAll", countAll);
-		// 파일 누적다운로드 수 내림차순(3개 까지) 조회
-		List<FileDownloadRankingDTO> fileDownloadRankingList = this.fileService.fileDownloadRankingList();
-		model.addAttribute("fileDownloadRankingList", fileDownloadRankingList);
+		// 파일카테고리 별, 파일 총합 조회
+		List<FileCategoryCountDTO> fileCategoryCountList = this.fileCategoryService.findFileCategoryCountList();
+		model.addAttribute("fileCategoryCountList", fileCategoryCountList);
 
 		// 페이징
 		model.addAttribute("previous", pageable.previousOrFirst()); // 이전 페이지 번호
@@ -92,7 +90,6 @@ public class FileController {
 		model.addAttribute("currentPage", fileList.getNumber()); // 현재 페이지 번호 (0부터 시작)
 		model.addAttribute("totalPages", fileList.getTotalPages()); // 총 페이지 수(마지막 페이지)
 		model.addAttribute("first", pageable.first().getPageNumber()); // 첫 페이지
-
 		return "admin/file_list";
 	}
 
@@ -126,6 +123,6 @@ public class FileController {
 		return "redirect:/file/list";
 	}
 	
-	// 2025-03-10 파일 관리 페이지 디자인
+	// 2025-03-11 파일 관리 페이지 누적다운로드수
 
 }

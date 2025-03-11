@@ -33,4 +33,10 @@ public class FileCategoryService {
         return fileCategory;
     }
 
+    // 파일카테고리 별, 파일 총합 조회
+    public List<FileCategoryCountDTO> findFileCategoryCountList() {
+        List<FileCategoryCountDTO> fileCategoryCountList = this.fileCategoryRepository.findFileCategoryCount();
+        return fileCategoryCountList;
+    }
+
 }

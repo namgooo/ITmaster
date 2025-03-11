@@ -1,8 +1,5 @@
 package com.namgoo.file;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.namgoo.file_category.FileCategory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,15 +24,6 @@ public interface FileRepository extends JpaRepository<File, Integer>, JpaSpecifi
 	// 파일 이름으로 단일 조회
 	public File findByFileName(String fileName);
 
-	// 파일 누적다운로드 수 총합 조회
-	@Query("SELECT SUM(f.count) FROM File f")
-	public Integer countAll();
 
-	// 파일 누적다운로드 수 내림차순(3개 까지) 조회
-	@Query("SELECT new com.namgoo.file.FileDownloadRankingDTO(" +
-			"f.fileName AS 파일이름," +
-			"f.count AS 누적다운로드수)" +
-			"FROM File f ORDER BY f.count DESC")
-	public List<FileDownloadRankingDTO> fileDownloadRankingList(Pageable pageable);
 
 }

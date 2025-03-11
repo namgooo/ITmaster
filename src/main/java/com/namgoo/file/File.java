@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.namgoo.file_category.FileCategory;
+import com.namgoo.file_download_log.FileDownloadLog;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,8 +21,11 @@ public class File {
 	private String filePath;
 	private String fileType;
 	private double fileSize;
-	private Integer count;
 	private LocalDateTime createDate;
+
+	// OneToMany
+	@OneToMany(mappedBy = "file", cascade = CascadeType.REMOVE)
+	private List<FileDownloadLog> fileDownloadLogList;
 
 	// ManyToOne
 	@ManyToOne
