@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FileRepository extends JpaRepository<File, Integer>, JpaSpecificationExecutor<File> {
 	
-	// 파일 목록 조회(페이징)
+	// 파일 목록 검색 조회(페이징)
 	public Page<File> findAll(Specification<File> specification, Pageable pageable);
 
 	// 파일카테고리 별 파일 목록 검색 조회(페이징)
@@ -23,7 +23,5 @@ public interface FileRepository extends JpaRepository<File, Integer>, JpaSpecifi
 
 	// 파일 이름으로 단일 조회
 	public File findByFileName(String fileName);
-
-
 
 }

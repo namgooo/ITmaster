@@ -104,13 +104,13 @@
                             <tbody>
                                 <tr th:each="file, loop : ${fileList}">
                                     <td th:text="${loop.count}"></td>
-                                    <td th:text="${file.fileCategory.fileCategory}"></td>
+                                    <td th:text="${file.fileCategory}"></td>
                                     <td>
                                         <a th:text="${file.fileName}" th:href="@{/file/download(fileName=${file.fileName})}" onclick="return confirmDownload();"></a>
                                     </td>
                                     <td th:text="${file.fileType}"></td>
                                     <td th:text="${#numbers.formatDecimal(file.fileSize / 1024.0, 1, 1) + ' KB'}"></td>
-                                    <td th:text="${fileDeownloadLogCount}"></td>
+                                    <td th:text="${file.count}"></td>
                                     <td th:text="${#temporals.format(file.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                     <td><a th:href="@{|/file/delete/${file.id}|}" onclick="return confirmDelete();">삭제하기</a></td>
                                 </tr>

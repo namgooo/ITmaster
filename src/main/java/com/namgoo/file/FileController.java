@@ -5,13 +5,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 
-
 import com.namgoo.file_category.FileCategory;
 import com.namgoo.file_category.FileCategoryCountDTO;
 import com.namgoo.file_category.FileCategoryDTO;
 import com.namgoo.file_category.FileCategoryService;
-import com.namgoo.file_download_log.FileDownloadLog;
-import com.namgoo.file_download_log.FileDownloadLogCountDTO;
 import com.namgoo.file_download_log.FileDownloadLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -43,7 +40,7 @@ public class FileController {
 	// 파일 목록 조회(페이징)
 	@GetMapping("/list")
 	public String findFilePagingList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
-		Page<File> fileList = this.fileService.findFilePagingList(keyword, pageable);
+		Page<FileDTO> fileList = this.fileService.findFilePagingList(keyword, pageable);
 		model.addAttribute("fileList", fileList);
 		// 파일카테고리 목록 조회
 		List<FileCategory> fileCategoryList = this.fileCategoryService.findFileCategoryList();
@@ -51,11 +48,6 @@ public class FileController {
 		// 파일카테고리 별, 파일 총합 조회
 		List<FileCategoryCountDTO> fileCategoryCountList = this.fileCategoryService.findFileCategoryCountList();
 		model.addAttribute("fileCategoryCountList", fileCategoryCountList);
-
-		// 파일다운로드기록 조회
-		List<FileDownloadLogCountDTO> fileDownloadLogCountList = this.fileDownloadLogService.findFileDownloadLogCountList();
-		System.out.println("파일이름 : " + fileDownloadLogCountList.get(0).getFileName());
-		System.out.println("파일이름 : " + fileDownloadLogCountList.get(0).getCount());
 
 		// 페이징
 		model.addAttribute("previous", pageable.previousOrFirst()); // 이전 페이지 번호
@@ -73,7 +65,7 @@ public class FileController {
 	@GetMapping("/list/{id}")
 	public String findFilePagingList(@PathVariable("id") Integer id, @PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
 		FileCategory fileCategory = this.fileCategoryService.findById(id);
-		Page<File> fileList = this.fileService.findByFileCategoryAndFile(fileCategory, keyword, pageable);
+		Page<FileDTO> fileList = this.fileService.findFilePagingList(fileCategory, keyword, pageable);
 		model.addAttribute("fileList", fileList);
 		// 파일카테고리 목록 조회
 		List<FileCategory> fileCategoryList = this.fileCategoryService.findFileCategoryList();
@@ -123,6 +115,6 @@ public class FileController {
 		return "redirect:/file/list";
 	}
 	
-	// 2025-03-11 파일 관리 페이지 누적다운로드수
+	// 2025-03-12 파일 관리 페이지 누적 다운로드 수 코드 수정
 
 }

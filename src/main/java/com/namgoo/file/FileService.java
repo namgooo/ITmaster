@@ -6,18 +6,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.namgoo.file_category.FileCategory;
 import com.namgoo.file_category.FileCategoryDTO;
 import com.namgoo.file_category.FileCategoryRepository;
-import com.namgoo.file_download_log.FileDownloadLog;
+import com.namgoo.file_download_log.FileDownloadLogRepository;
 import com.namgoo.file_download_log.FileDownloadLogService;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -33,6 +35,8 @@ public class FileService {
 	private FileCategoryRepository fileCategoryRepository;
 	@Autowired
 	private FileDownloadLogService fileDownloadLogService;
+	@Autowired
+	private FileDownloadLogRepository fileDownloadLogRepository;
 	
 	// 파일 저장 경로
 	private static final String UPLOAD_DIR = "C:/files/";
@@ -57,17 +61,50 @@ public class FileService {
 		};
 	}
 
-	// 파일 목록 검색 조회(페이징)
-	public Page<File> findFilePagingList(String keyword, Pageable pageable) {
+	// 파일 목록 검색 조회(페이징) - DTO 변환
+	public Page<FileDTO> findFilePagingList(String keyword, Pageable pageable) {
 		Specification<File> specification = search(keyword);
-		Page<File> fileList = this.fileRepository.findAll(specification, pageable);
-		return fileList;
+		Page<File> filePagingList = this.fileRepository.findAll(specification, pageable);
+		List<FileDTO> dtoList = new ArrayList<>();
+
+		// 파일 목록에서 다운로드 수를 추가해서 DTO로 변환
+		for(File file : filePagingList.getContent()) {
+			Integer fileDownloadCount = this.fileDownloadLogRepository.countDownloadsByFileId(file.getId());
+			dtoList.add(new FileDTO(
+					file.getId(),
+					file.getFileName(),
+					file.getFilePath(),
+					file.getFileType(),
+					file.getFileSize(),
+					file.getCreateDate(),
+					fileDownloadCount,
+					file.getFileCategory().getFileCategory()
+			));
+		}
+		return new PageImpl<>(dtoList, pageable, dtoList.size());
 	}
 
-	// 파일카테고리 별 파일 목록 검색 조회(페이징)
-	public Page<File> findByFileCategoryAndFile(FileCategory fileCategory, String keyword, Pageable pageable) {
-		Page<File> fileList = this.fileRepository.findByFileCategoryAndFile(fileCategory, keyword, pageable);
-		return fileList;
+	// 파일카테고리 별 파일 목록 검색 조회(페이징) - DTO 변환
+	public Page<FileDTO> findFilePagingList(FileCategory fileCategory, String keyword, Pageable pageable) {
+		Specification<File> specification = search(keyword);
+		Page<File> filePagingList = this.fileRepository.findByFileCategoryAndFile(fileCategory, keyword, pageable);
+		List<FileDTO> dtoList = new ArrayList<>();
+
+		// 파일 목록에서 다운로드 수를 추가해서 DTO로 변환
+		for(File file : filePagingList.getContent()) {
+			Integer fileDownloadCount = this.fileDownloadLogRepository.countDownloadsByFileId(file.getId());
+			dtoList.add(new FileDTO(
+					file.getId(),
+					file.getFileName(),
+					file.getFilePath(),
+					file.getFileType(),
+					file.getFileSize(),
+					file.getCreateDate(),
+					fileDownloadCount,
+					file.getFileCategory().getFileCategory()
+			));
+		}
+		return new PageImpl<>(dtoList, pageable, dtoList.size());
 	}
 
 	// 파일 업로드
@@ -126,6 +163,5 @@ public class FileService {
 	public void deleteFile(Integer id) {
 		this.fileRepository.deleteById(id);
 	}
-
 
 }

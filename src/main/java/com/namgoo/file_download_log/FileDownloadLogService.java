@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FileDownloadLogService {
@@ -15,12 +17,6 @@ public class FileDownloadLogService {
     private FileDownloadLogRepository fileDownloadLogRepository;
     @Autowired
     private FileRepository fileRepository;
-
-    // 파일다운로드기록 조회
-    public List<FileDownloadLogCountDTO> findFileDownloadLogCountList() {
-        List<FileDownloadLogCountDTO> fileDownloadLogCountList = this.fileDownloadLogRepository.fileDownloadLogCount();
-        return fileDownloadLogCountList;
-    }
 
     // 파일다운로드기록 등록
     public void createFileDownloadLog(String fileName) {
