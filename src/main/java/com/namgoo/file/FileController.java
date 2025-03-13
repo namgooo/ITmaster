@@ -45,9 +45,14 @@ public class FileController {
 		// 파일카테고리 목록 조회
 		List<FileCategory> fileCategoryList = this.fileCategoryService.findFileCategoryList();
 		model.addAttribute("fileCategoryList", fileCategoryList);
+
+		// 누적 다운로드 랭킹
+		
 		// 파일카테고리 별, 파일 총합 조회
 		List<FileCategoryCountDTO> fileCategoryCountList = this.fileCategoryService.findFileCategoryCountList();
 		model.addAttribute("fileCategoryCountList", fileCategoryCountList);
+		
+		// 실시간 다운로드 수
 
 		// 페이징
 		model.addAttribute("previous", pageable.previousOrFirst()); // 이전 페이지 번호
@@ -115,6 +120,6 @@ public class FileController {
 		return "redirect:/file/list";
 	}
 	
-	// 2025-03-12 파일 관리 페이지 누적 다운로드 수 코드 수정
+	// 2025-03-13 파일 관리 페이지 디자인
 
 }

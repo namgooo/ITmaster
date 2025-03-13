@@ -49,13 +49,13 @@
                 <div class="main">
                     <div class="content1">
                         <div class="count_all">
-                            미정
-                        </div>
-                        <div>
                             <canvas>누적다운로드 랭킹</canvas>
                         </div>
                         <div>
-                            <canvas>카테고리 별, 누적다운로드</canvas>
+                            <canvas>카테고리 별, 누적 다운로드</canvas>
+                        </div>
+                        <div>
+                            <canvas>실시간 다운로드</canvas>
                         </div>
                     </div>
 
@@ -168,13 +168,10 @@
 
     <!-- 파일 차트 // -->
      <script th:inline="Javascript">
-        // 누적다운로드 랭킹
-        const fileDownloadRankingList = /*[[${fileDownloadRankingList}]]*/ [];
-        console.log("파일이름 : " + fileDownloadRankingList[0].fileName);
-        console.log("총합 : " + fileDownloadRankingList[0].count);
+    
+
 
      </script>
-
     <!-- // 파일 차트 -->
 
 </body>
