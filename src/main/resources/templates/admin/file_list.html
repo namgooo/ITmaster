@@ -166,13 +166,26 @@
     </script>
     <!-- // 파일 업로드 -->
 
-    <!-- 파일 차트 // -->
-     <script th:inline="Javascript">
-    
+    <!-- 파일 관리 차트 // -->
+    <script th:inline="Javascript">
+        // 누적 다운로드 많은 순 정렬 조회
+        const countFileDownloadLogList = /*[[${countFileDownloadLogList}]]*/ [];
+        // 차트 데이터
+        const countFileDownloadLogData = {
+            labeels: ['누적 다운로드 랭킹'],
+            datasets: [
+                {
+                    
+                },
+
+
+            ]
+        }
+
 
 
      </script>
-    <!-- // 파일 차트 -->
+    <!-- // 파일 관리 차트 -->
 
 </body>
 </html>

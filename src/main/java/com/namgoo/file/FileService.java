@@ -81,7 +81,7 @@ public class FileService {
 					file.getFileCategory().getFileCategory()
 			));
 		}
-		return new PageImpl<>(dtoList, pageable, dtoList.size());
+		return new PageImpl<>(dtoList, pageable, filePagingList.getTotalElements());
 	}
 
 	// 파일카테고리 별 파일 목록 검색 조회(페이징) - DTO 변환

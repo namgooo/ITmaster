@@ -3,6 +3,9 @@ package com.namgoo.file_download_log;
 import com.namgoo.file.File;
 import com.namgoo.file.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,13 +21,20 @@ public class FileDownloadLogService {
     @Autowired
     private FileRepository fileRepository;
 
-    // 파일다운로드기록 등록
+    // 파일다운로드기록 저장
     public void createFileDownloadLog(String fileName) {
         File file = this.fileRepository.findByFileName(fileName);
         FileDownloadLog fileDownloadLog = new FileDownloadLog();
         fileDownloadLog.setFile(file);
         fileDownloadLog.setCreateDate(LocalDateTime.now());
         this.fileDownloadLogRepository.save(fileDownloadLog);
+    }
+
+    // 누적 다운로드 많은 순 정렬 조회
+    public List<FileDownloadCountDTO> countFileDownloadLog() {
+        Pageable top5 = PageRequest.of(0, 5, Sort.by(Sort.Order.desc("fileName")));
+        List<FileDownloadCountDTO> countFileDownloadLogList = this.fileDownloadLogRepository.countFileDownloadLog(top5);
+        return countFileDownloadLogList;
     }
 
 }

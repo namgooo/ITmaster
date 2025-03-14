@@ -9,6 +9,7 @@ import com.namgoo.file_category.FileCategory;
 import com.namgoo.file_category.FileCategoryCountDTO;
 import com.namgoo.file_category.FileCategoryDTO;
 import com.namgoo.file_category.FileCategoryService;
+import com.namgoo.file_download_log.FileDownloadCountDTO;
 import com.namgoo.file_download_log.FileDownloadLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -46,8 +47,12 @@ public class FileController {
 		List<FileCategory> fileCategoryList = this.fileCategoryService.findFileCategoryList();
 		model.addAttribute("fileCategoryList", fileCategoryList);
 
-		// 누적 다운로드 랭킹
-		
+		// 누적 다운로드 많은 순 정렬 조회
+		List<FileDownloadCountDTO> countFileDownloadLogList = this.fileDownloadLogService.countFileDownloadLog();
+		model.addAttribute("countFileDownloadLogList", countFileDownloadLogList);
+		System.out.println("파일명 : " + countFileDownloadLogList.get(2).getFileName());
+		System.out.println("총합 : " + countFileDownloadLogList.get(2).getDownloadCount());
+
 		// 파일카테고리 별, 파일 총합 조회
 		List<FileCategoryCountDTO> fileCategoryCountList = this.fileCategoryService.findFileCategoryCountList();
 		model.addAttribute("fileCategoryCountList", fileCategoryCountList);
@@ -119,7 +124,7 @@ public class FileController {
 		this.fileService.deleteFile(id);
 		return "redirect:/file/list";
 	}
-	
-	// 2025-03-13 파일 관리 페이지 디자인
+
+	// 2025-03-14 파일 관리 누적 다운로드 많은 순 정렬 조회
 
 }
