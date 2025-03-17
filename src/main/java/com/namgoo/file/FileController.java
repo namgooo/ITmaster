@@ -59,6 +59,7 @@ public class FileController {
 		
 		// 실시간 다운로드 수
 
+
 		// 페이징
 		model.addAttribute("previous", pageable.previousOrFirst()); // 이전 페이지 번호
 		model.addAttribute("next", pageable.next().getPageNumber()); // 다음 페이지 번호
@@ -124,7 +125,7 @@ public class FileController {
 		this.fileService.deleteFile(id);
 		return "redirect:/file/list";
 	}
-
-	// 2025-03-14 파일 관리 누적 다운로드 많은 순 정렬 조회
+	
+	// 2025-03-17 파일 관리 페이지 누적 다운로드 랭킹 차트 구현
 
 }

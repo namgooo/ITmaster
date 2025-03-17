@@ -48,8 +48,8 @@
 
                 <div class="main">
                     <div class="content1">
-                        <div class="count_all">
-                            <canvas>누적다운로드 랭킹</canvas>
+                        <div class="chart">
+                            <canvas id="countFileDownloadLogBarChart">누적다운로드 랭킹</canvas>
                         </div>
                         <div>
                             <canvas>카테고리 별, 누적 다운로드</canvas>
@@ -170,20 +170,61 @@
     <script th:inline="Javascript">
         // 누적 다운로드 많은 순 정렬 조회
         const countFileDownloadLogList = /*[[${countFileDownloadLogList}]]*/ [];
+        console.log("값 확인 : " + countFileDownloadLogList[0].downloadCount);
         // 차트 데이터
         const countFileDownloadLogData = {
-            labeels: ['누적 다운로드 랭킹'],
+            labeels: [countFileDownloadLogList[0].fileName, countFileDownloadLogList[1].fileName, countFileDownloadLogList[2].fileName, countFileDownloadLogList[3].fileName, countFileDownloadLogList[4].fileName],
             datasets: [
                 {
-                    
+                    label: countFileDownloadLogList[0].fileName,
+                    data: [countFileDownloadLogList[0].downloadCount, 0, 0, 0, 0]
                 },
-
-
+                {
+                    label: countFileDownloadLogList[1].fileName,
+                    data: [0, countFileDownloadLogList[1].downloadCount, 0, 0, 0]
+                },
+                {
+                    label: countFileDownloadLogList[2].fileName,
+                    data: [0, 0, countFileDownloadLogList[2].downloadCount, 0, 0]
+                },
+                {
+                    label: countFileDownloadLogList[3].fileName,
+                    data: [0, 0, 0, countFileDownloadLogList[3].downloadCount, 0]
+                },
+                {
+                    label: countFileDownloadLogList[4].fileName,
+                    data: [0, 0, 0, 0, countFileDownloadLogList[4].downloadCount]
+                }
             ]
-        }
-
-
-
+        };
+        // 차트 구성
+        const countFileDownloadLogConfig = {
+            type: 'bar',
+            data: countFileDownloadLogData,
+            options: {
+                maintainAspectRatio: false,
+				indexAxis: 'x',
+				responsive: true,
+				plugins: {
+					title: {
+						display: true,
+						text: '누적 다운로드 랭킹'
+					}
+				},
+                // 차트의 X축과 Y축을 설정하는 옵션
+                scales: {
+                    x: {
+						stacked: true // X축에서 같은 카테고리에 여러 값이 하나의 막대에 쌓임(누적)
+					},
+					y: {
+						beginAtZero: true // Y축 값을 0부터 시작
+					}
+                }
+            }
+        };
+        // 차트 그리기
+        const countFileDownloadLogCtx = document.getElementById('countFileDownloadLogBarChart').getContext('2d');
+		new Chart(countFileDownloadLogCtx, countFileDownloadLogConfig);
      </script>
     <!-- // 파일 관리 차트 -->
 

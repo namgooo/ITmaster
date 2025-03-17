@@ -30,7 +30,7 @@ public class FileDownloadLogService {
         this.fileDownloadLogRepository.save(fileDownloadLog);
     }
 
-    // 누적 다운로드 많은 순 정렬 조회
+    // 누적 다운로드 많은 순(상위 5개) 정렬 조회
     public List<FileDownloadCountDTO> countFileDownloadLog() {
         Pageable top5 = PageRequest.of(0, 5, Sort.by(Sort.Order.desc("fileName")));
         List<FileDownloadCountDTO> countFileDownloadLogList = this.fileDownloadLogRepository.countFileDownloadLog(top5);
