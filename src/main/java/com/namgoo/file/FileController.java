@@ -126,6 +126,6 @@ public class FileController {
 		return "redirect:/file/list";
 	}
 	
-	// 2025-03-18 파일 관리 페이지 디자인 수정
+	// 2025-03-19 파일 관리 페이지 카테고리 별, 누적 다운로드 수 차트 구현
 
 }
