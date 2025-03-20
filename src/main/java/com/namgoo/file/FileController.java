@@ -50,14 +50,13 @@ public class FileController {
 		// 누적 다운로드 많은 순 정렬 조회
 		List<FileDownloadCountDTO> countFileDownloadLogList = this.fileDownloadLogService.countFileDownloadLog();
 		model.addAttribute("countFileDownloadLogList", countFileDownloadLogList);
-		System.out.println("파일명 : " + countFileDownloadLogList.get(2).getFileName());
-		System.out.println("총합 : " + countFileDownloadLogList.get(2).getDownloadCount());
 
 		// 파일카테고리 별, 파일 총합 조회
 		List<FileCategoryCountDTO> fileCategoryCountList = this.fileCategoryService.findFileCategoryCountList();
 		model.addAttribute("fileCategoryCountList", fileCategoryCountList);
 		
 		// 실시간 다운로드 수
+
 
 
 		// 페이징
@@ -126,6 +125,6 @@ public class FileController {
 		return "redirect:/file/list";
 	}
 	
-	// 2025-03-19 파일 관리 페이지 카테고리 별, 누적 다운로드 수 차트 구현
+	// 2025-03-20 파일 관리 페이지 카테고리 별 누적 다운로드 수 차트
 
 }

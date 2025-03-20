@@ -49,13 +49,13 @@
                 <div class="main">
                     <div class="content1">
                         <div class="chart1">
-                            <canvas id="countFileDownloadLogBarChart">누적다운로드 랭킹</canvas>
+                            <canvas id="countFileDownloadLogListBarChart">누적다운로드 랭킹</canvas>
                         </div>
                         <div class="chart2">
-                            <canvas>카테고리 별, 누적 다운로드</canvas>
+                            <canvas id="fileCategoryCountListBarChart">카테고리 별, 누적 다운로드</canvas>
                         </div>
-                        <div>
-                            <canvas>실시간 다운로드</canvas>
+                        <div class="chart3">
+                            <canvas id="">실시간 다운로드</canvas>
                         </div>
                     </div>
 
@@ -172,7 +172,7 @@
         const countFileDownloadLogList = /*[[${countFileDownloadLogList}]]*/ [];
         console.log("값 확인 : " + countFileDownloadLogList[0].downloadCount);
         // 차트 데이터
-        const countFileDownloadLogData = {
+        const countFileDownloadLogListData = {
             labels: [countFileDownloadLogList[0].fileName, countFileDownloadLogList[1].fileName, countFileDownloadLogList[2].fileName, countFileDownloadLogList[3].fileName, countFileDownloadLogList[4].fileName],
             datasets: [
                 {
@@ -198,9 +198,9 @@
             ]
         };
         // 차트 구성
-        const countFileDownloadLogConfig = {
+        const countFileDownloadLogListConfig = {
             type: 'bar',
-			data: countFileDownloadLogData,
+			data: countFileDownloadLogListData,
 			options: {
 				maintainAspectRatio: false,
 				indexAxis: 'x',
@@ -213,12 +213,52 @@
 			}
         };
         // 차트 그리기
-        const countFileDownloadLogCtx = document.getElementById('countFileDownloadLogBarChart').getContext('2d');
-		new Chart(countFileDownloadLogCtx, countFileDownloadLogConfig);
+        const countFileDownloadLogListCtx = document.getElementById('countFileDownloadLogListBarChart').getContext('2d');
+		new Chart(countFileDownloadLogListCtx, countFileDownloadLogListConfig);
 
         // 카테고리 별, 누적 다운로드 수
         const fileCategoryCountList = /*[[${fileCategoryCountList}]]*/ [];
         console.log("값 확인 : " + fileCategoryCountList[0].total);
+        // 차트 데이터
+        const fileCategoryCountListData = {
+            labels: [fileCategoryCountList[0].fileCategory, fileCategoryCountList[1].fileCategory, fileCategoryCountList[2].fileCategory, fileCategoryCountList[3].fileCategory],
+            datasets: [
+                {
+                    label: fileCategoryCountList[0].fileCategory,
+                    data: [fileCategoryCountList[0].total, 0, 0, 0]
+                },
+                {
+                    label: fileCategoryCountList[1].fileCategory,
+                    data: [0, fileCategoryCountList[1].total, 0, 0, 0]
+                },
+                {
+                    label: fileCategoryCountList[2].fileCategory,
+                    data: [0, 0, fileCategoryCountList[2].total, 0, 0]
+                },
+                {
+                    label: fileCategoryCountList[3].fileCategory,
+                    data: [0, 0, 0, fileCategoryCountList[3].total]
+                }
+            ]
+        };
+        // 차트 구성
+        const fileCategoryCountListConfig = {
+            type: 'bar',
+			data: fileCategoryCountListData,
+			options: {
+				maintainAspectRatio: false,
+				indexAxis: 'x',
+				plugins: {
+					title: {
+						display: true,
+						text: '카테고리 별, 누적 다운로드 수'
+					}
+				}
+			}
+        };
+        // 차트 그리기
+        const fileCategoryCountListCtx = document.getElementById('fileCategoryCountListBarChart').getContext('2d');
+		new Chart(fileCategoryCountListCtx, fileCategoryCountListConfig);
 
      </script>
     <!-- // 파일 관리 차트 -->

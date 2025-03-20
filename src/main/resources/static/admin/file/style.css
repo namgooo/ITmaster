@@ -99,6 +99,16 @@ ul {
     height: 250px;
 }
 
+.container .section .main .content1 .chart2 {
+    width: 400px;
+    height: 250px;
+}
+
+.container .section .main .content1 .chart3 {
+    width: 400px;
+    height: 250px;
+}
+
 .container .section .main .content2 {
     background-color: chocolate;
     width: 100%;
