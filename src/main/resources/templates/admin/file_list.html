@@ -55,7 +55,7 @@
                             <canvas id="fileCategoryCountListBarChart">카테고리 별, 누적 다운로드</canvas>
                         </div>
                         <div class="chart3">
-                            <canvas id="">실시간 다운로드</canvas>
+                            <canvas id="realTimeDownloadChart">실시간 다운로드</canvas>
                         </div>
                     </div>
 
@@ -170,7 +170,7 @@
     <script th:inline="Javascript">
         // 누적 다운로드 많은 순 정렬 조회
         const countFileDownloadLogList = /*[[${countFileDownloadLogList}]]*/ [];
-        console.log("값 확인 : " + countFileDownloadLogList[0].downloadCount);
+
         // 차트 데이터
         const countFileDownloadLogListData = {
             labels: [countFileDownloadLogList[0].fileName, countFileDownloadLogList[1].fileName, countFileDownloadLogList[2].fileName, countFileDownloadLogList[3].fileName, countFileDownloadLogList[4].fileName],
@@ -218,7 +218,7 @@
 
         // 카테고리 별, 누적 다운로드 수
         const fileCategoryCountList = /*[[${fileCategoryCountList}]]*/ [];
-        console.log("값 확인 : " + fileCategoryCountList[0].total);
+
         // 차트 데이터
         const fileCategoryCountListData = {
             labels: [fileCategoryCountList[0].fileCategory, fileCategoryCountList[1].fileCategory, fileCategoryCountList[2].fileCategory, fileCategoryCountList[3].fileCategory],
@@ -260,10 +260,53 @@
         const fileCategoryCountListCtx = document.getElementById('fileCategoryCountListBarChart').getContext('2d');
 		new Chart(fileCategoryCountListCtx, fileCategoryCountListConfig);
 
+        // 실시간 누적 다운로드 수(최근 24시간)
+        // 차트 데이터
+        const realTimeDownloadData = /*[[${realTimeDownloadCountList}]]*/ [];
+
+        console.log("시간 : " + realTimeDownloadData[0].hour);
+        console.log("다운로드 수 : " + realTimeDownloadData[0].downloadCount);
+        console.log("파일명 : " + realTimeDownloadData[0].fileName);
+        
+        // X축: 시간 (hour), Y축: 다운로드 수 (downloadCount)
+        const labels = realTimeDownloadData.map(item => item.hour);
+        const downloadCounts = realTimeDownloadData.map(item => item.downloadCount);
+
+        // Chart.js 설정
+        const ctx = document.getElementById('realTimeDownloadChart').getContext('2d');
+        const realTimeDownloadChart = new Chart(ctx, {
+            type: 'line', // 선 그래프
+            data: {
+                labels: labels, // X축에 시간 표시
+                datasets: [{
+                    label: '다운로드 수',
+                    data: downloadCounts, // Y축에 다운로드 수
+                    borderColor: 'rgba(75, 192, 192, 1)', // 선 색상
+                    fill: false, // 선 아래 채우지 않음
+                    tension: 0.1 // 선의 곡선 정도
+                }]
+            },
+            options: {
+                responsive: true, // 반응형
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '시간'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: '다운로드 수'
+                        }
+                    }
+                }
+            }
+        });
+        
      </script>
     <!-- // 파일 관리 차트 -->
-
-    
 
 </body>
 </html>

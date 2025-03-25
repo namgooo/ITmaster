@@ -37,4 +37,10 @@ public class FileDownloadLogService {
         return countFileDownloadLogList;
     }
 
+    // 실시간 다운로드 수(최근 24시간)
+    public List<RealTimeDownloadCountDTO> findRealTimeDownloadCount(LocalDateTime startDate, LocalDateTime endDate) {
+        List<RealTimeDownloadCountDTO> findRealTimeDownloadCountList = this.fileDownloadLogRepository.findRealTimeDownloadCount(startDate, endDate);
+        return findRealTimeDownloadCountList;
+    }
+
 }

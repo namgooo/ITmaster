@@ -2,6 +2,7 @@ package com.namgoo.file;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import com.namgoo.file_category.FileCategoryDTO;
 import com.namgoo.file_category.FileCategoryService;
 import com.namgoo.file_download_log.FileDownloadCountDTO;
 import com.namgoo.file_download_log.FileDownloadLogService;
+import com.namgoo.file_download_log.RealTimeDownloadCountDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -54,10 +56,12 @@ public class FileController {
 		// 파일카테고리 별, 파일 총합 조회
 		List<FileCategoryCountDTO> fileCategoryCountList = this.fileCategoryService.findFileCategoryCountList();
 		model.addAttribute("fileCategoryCountList", fileCategoryCountList);
-		
-		// 실시간 다운로드 수
 
-
+		// 실시간 다운로드 수(최근 24시간)
+		LocalDateTime startDate = LocalDateTime.now().minusDays(1); // 예시로 하루 전부터
+		LocalDateTime endDate = LocalDateTime.now();
+		List<RealTimeDownloadCountDTO> realTimeDownloadCountList = this.fileDownloadLogService.findRealTimeDownloadCount(startDate, endDate);
+		model.addAttribute("realTimeDownloadCountList", realTimeDownloadCountList);
 
 		// 페이징
 		model.addAttribute("previous", pageable.previousOrFirst()); // 이전 페이지 번호
@@ -124,7 +128,7 @@ public class FileController {
 		this.fileService.deleteFile(id);
 		return "redirect:/file/list";
 	}
-	
-	// 2025-03-24 파일 관리 페이지 디자인 수정
-	
+
+	// 2025-03-25 파일 관리 페이지 실시간 다운로드 수 차트
+
 }
