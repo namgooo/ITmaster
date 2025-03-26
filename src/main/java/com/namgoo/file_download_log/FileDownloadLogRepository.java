@@ -25,13 +25,20 @@ public interface FileDownloadLogRepository extends JpaRepository<FileDownloadLog
     List<FileDownloadCountDTO> countFileDownloadLog(Pageable pageable);
 
     // 실시간 다운로드 수(최근 24시간)
-    @Query("SELECT new com.namgoo.file_download_log.RealTimeDownloadCountDTO(HOUR(fdl.createDate), COUNT(fdl.id), f.fileName) " +
-           "FROM FileDownloadLog fdl " +
-           "JOIN fdl.file f " +
-           "WHERE fdl.createDate >= :startDate " +
-           "AND fdl.createDate <= :endDate " +
-           "GROUP BY HOUR(fdl.createDate), f.fileName " +
-           "ORDER BY HOUR(fdl.createDate), f.fileName")
+//    @Query("SELECT new com.namgoo.file_download_log.RealTimeDownloadCountDTO(HOUR(fdl.createDate), COUNT(fdl.id), f.fileName) " +
+//           "FROM FileDownloadLog fdl " +
+//           "JOIN fdl.file f " +
+//           "WHERE fdl.createDate >= :startDate " +
+//           "AND fdl.createDate <= :endDate " +
+//           "GROUP BY HOUR(fdl.createDate), f.fileName " +
+//           "ORDER BY HOUR(fdl.createDate), f.fileName")
+//    List<RealTimeDownloadCountDTO> findRealTimeDownloadCount(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+    @Query(value = "SELECT f.file_name, DATE_FORMAT(fdl.create_date, '%Y-%m-%d %H:%i:%s') AS downloadDate, COUNT(fdl.file_id) AS downloadCount " +
+           "FROM file_download_log fdl " +
+           "JOIN file f on fdl.file_id = f.id " +
+           "WHERE fdl.create_date BETWEEN :startDate AND :endDate " +
+           "GROUP BY f.file_name, DATE_FORMAT(fdl.create_date, '%Y-%m-%d %H:%i:%s') " , nativeQuery = true)
     List<RealTimeDownloadCountDTO> findRealTimeDownloadCount(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
 }

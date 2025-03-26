@@ -57,12 +57,6 @@ public class FileController {
 		List<FileCategoryCountDTO> fileCategoryCountList = this.fileCategoryService.findFileCategoryCountList();
 		model.addAttribute("fileCategoryCountList", fileCategoryCountList);
 
-		// 실시간 다운로드 수(최근 24시간)
-		LocalDateTime startDate = LocalDateTime.now().minusDays(1); // 예시로 하루 전부터
-		LocalDateTime endDate = LocalDateTime.now();
-		List<RealTimeDownloadCountDTO> realTimeDownloadCountList = this.fileDownloadLogService.findRealTimeDownloadCount(startDate, endDate);
-		model.addAttribute("realTimeDownloadCountList", realTimeDownloadCountList);
-
 		// 페이징
 		model.addAttribute("previous", pageable.previousOrFirst()); // 이전 페이지 번호
 		model.addAttribute("next", pageable.next().getPageNumber()); // 다음 페이지 번호
@@ -129,6 +123,6 @@ public class FileController {
 		return "redirect:/file/list";
 	}
 
-	// 2025-03-25 파일 관리 페이지 실시간 다운로드 수 차트
+	// 2025-03-26 파일 관리 페이지 실시간 다운로드 수 차트
 
 }
