@@ -7,13 +7,13 @@ import lombok.Setter;
 @Setter
 public class RealTimeDownloadCountDTO {
 
-    private Integer hour;
-    private Long downloadCount;
     private String fileName;
+    private String downloadDate;
+    private Long downloadCount;
 
-    public RealTimeDownloadCountDTO(Integer hour, Long downloadCount, String fileName) {
-        this.hour = hour;
-        this.downloadCount = downloadCount;
+    public RealTimeDownloadCountDTO(String fileName, String downloadDate, Long downloadCount) {
         this.fileName = fileName;
+        this.downloadDate = downloadDate;
+        this.downloadCount = downloadCount;
     }
 }

@@ -33,12 +33,17 @@ public interface FileDownloadLogRepository extends JpaRepository<FileDownloadLog
 //           "GROUP BY HOUR(fdl.createDate), f.fileName " +
 //           "ORDER BY HOUR(fdl.createDate), f.fileName")
 //    List<RealTimeDownloadCountDTO> findRealTimeDownloadCount(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
-
-    @Query(value = "SELECT f.file_name, DATE_FORMAT(fdl.create_date, '%Y-%m-%d %H:%i:%s') AS downloadDate, COUNT(fdl.file_id) AS downloadCount " +
-           "FROM file_download_log fdl " +
-           "JOIN file f on fdl.file_id = f.id " +
-           "WHERE fdl.create_date BETWEEN :startDate AND :endDate " +
-           "GROUP BY f.file_name, DATE_FORMAT(fdl.create_date, '%Y-%m-%d %H:%i:%s') " , nativeQuery = true)
-    List<RealTimeDownloadCountDTO> findRealTimeDownloadCount(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+    
+    // 실시간 다운로드 수 조회
+//    @Query(value = """
+//        SELECT new com.example.dto.DownloadStatsDto(f.fileName,
+//               DATE_FORMAT(fdl.createDate, '%Y-%m-%d %H:%i:%s'),
+//               COUNT(fdl.fileId))
+//        FROM FileDownloadLog fdl
+//        JOIN fdl.file f
+//        WHERE fdl.createDate BETWEEN :startDate AND :endDate
+//        GROUP BY f.fileName, DATE_FORMAT(fdl.createDate, '%Y-%m-%d %H:%i:%s')
+//    """)
+//    List<RealTimeDownloadCountDTO> findRealTimeDownloadCount(@Param("startDate") String startDate, @Param("endDate") String endDate);
 
 }

@@ -2,6 +2,7 @@ package com.namgoo.file;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
@@ -42,7 +43,12 @@ public class FileController {
 
 	// 파일 목록 조회(페이징)
 	@GetMapping("/list")
-	public String findFilePagingList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
+	public String findFilePagingList(@PageableDefault(size = 10) Pageable pageable,
+									 @RequestParam(value = "keyword", defaultValue = "") String keyword,
+									 @RequestParam(value = "startDate", required = false) String startDate,
+									 @RequestParam(value = "endDate", required = false) String endDate,
+									 Model model) {
+
 		Page<FileDTO> fileList = this.fileService.findFilePagingList(keyword, pageable);
 		model.addAttribute("fileList", fileList);
 		// 파일카테고리 목록 조회
@@ -56,6 +62,15 @@ public class FileController {
 		// 파일카테고리 별, 파일 총합 조회
 		List<FileCategoryCountDTO> fileCategoryCountList = this.fileCategoryService.findFileCategoryCountList();
 		model.addAttribute("fileCategoryCountList", fileCategoryCountList);
+
+		// 실시간 다운로드 수 조회
+		if(startDate == null || endDate == null) {
+			LocalDate today = LocalDate.now();
+			startDate = today.toString() + " 00:00:00";
+			endDate = today.toString() + " 23:59:59";
+		}
+//		this.fileDownloadLogService.findRealTimeDownloadCount(startDate, endDate);
+
 
 		// 페이징
 		model.addAttribute("previous", pageable.previousOrFirst()); // 이전 페이지 번호
@@ -122,7 +137,7 @@ public class FileController {
 		this.fileService.deleteFile(id);
 		return "redirect:/file/list";
 	}
-
-	// 2025-03-26 파일 관리 페이지 실시간 다운로드 수 차트
+	
+	// 2025-03-27 파일 관리 페이지 실시간 다운로드 수 차트 구현
 
 }

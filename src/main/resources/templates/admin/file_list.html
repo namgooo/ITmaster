@@ -55,6 +55,9 @@
                             <canvas id="fileCategoryCountListBarChart">카테고리 별, 누적 다운로드</canvas>
                         </div>
                         <div class="chart3">
+                            <input type="date" id="startDate">
+                            <input type="date" id="endDate">
+                            <button onclick="fetchDownloadStats()">조회</button>
                             <canvas id="realTimeDownloadChart">실시간 다운로드</canvas>
                         </div>
                     </div>
@@ -264,46 +267,50 @@
         // 차트 데이터
         const realTimeDownloadData = /*[[${realTimeDownloadCountList}]]*/ [];
 
-        console.log("시간 : " + realTimeDownloadData[0].hour);
-        console.log("다운로드 수 : " + realTimeDownloadData[0].downloadCount);
-        console.log("파일명 : " + realTimeDownloadData[0].fileName);
+        let chart;
         
-        // X축: 시간 (hour), Y축: 다운로드 수 (downloadCount)
-        const labels = realTimeDownloadData.map(item => item.hour);
-        const downloadCounts = realTimeDownloadData.map(item => item.downloadCount);
+        function fetchDownloadStats() {
+            const startDate = $('#startDate').val();
+            const endDate = $('#endDate').val();
 
-        // Chart.js 설정
-        const ctx = document.getElementById('realTimeDownloadChart').getContext('2d');
-        const realTimeDownloadChart = new Chart(ctx, {
-            type: 'line', // 선 그래프
-            data: {
-                labels: labels, // X축에 시간 표시
-                datasets: [{
-                    label: '다운로드 수',
-                    data: downloadCounts, // Y축에 다운로드 수
-                    borderColor: 'rgba(75, 192, 192, 1)', // 선 색상
-                    fill: false, // 선 아래 채우지 않음
-                    tension: 0.1 // 선의 곡선 정도
-                }]
-            },
-            options: {
-                responsive: true, // 반응형
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: '시간'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: '다운로드 수'
-                        }
+            $.ajax({
+                url: `/downloads/stats?startDate=${startDate} 00:00:00&endDate=${endDate} 23:59:59`,
+                method: 'GET',
+                success: function(data) {
+                    updateChart(data);
+                }
+            });
+        }
+
+        function updateChart(data) {
+            const labels = data.map(d => d.downloadDate);
+            const counts = data.map(d => d.downloadCount);
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            const ctx = document.getElementById('downloadChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '다운로드 수',
+                        data: counts,
+                        borderColor: 'blue',
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { title: { display: true, text: '시간' } },
+                        y: { title: { display: true, text: '다운로드 횟수' } }
                     }
                 }
-            }
-        });
+            });
+        }
      </script>
     <!-- // 파일 관리 차트 -->
 
