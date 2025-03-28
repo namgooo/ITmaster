@@ -38,9 +38,9 @@ public class FileDownloadLogService {
     }
 
     // 실시간 다운로드 수 조회
-//    public List<RealTimeDownloadCountDTO> findRealTimeDownloadCount(String startDate, String endDate) {
-//        List<RealTimeDownloadCountDTO> findRealTimeDownloadCountList = this.fileDownloadLogRepository.findRealTimeDownloadCount(startDate, endDate);
-//        return findRealTimeDownloadCountList;
-//    }
+    public List<RealTimeDownloadCountDTO> findRealTimeDownloadCount(String startDate, String endDate) {
+        List<RealTimeDownloadCountDTO> findRealTimeDownloadCountList = this.fileDownloadLogRepository.findRealTimeDownloadCount(startDate, endDate);
+        return findRealTimeDownloadCountList;
+    }
 
 }

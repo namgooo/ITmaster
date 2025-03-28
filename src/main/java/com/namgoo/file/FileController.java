@@ -69,7 +69,7 @@ public class FileController {
 			startDate = today.toString() + " 00:00:00";
 			endDate = today.toString() + " 23:59:59";
 		}
-//		this.fileDownloadLogService.findRealTimeDownloadCount(startDate, endDate);
+		this.fileDownloadLogService.findRealTimeDownloadCount(startDate, endDate);
 
 
 		// 페이징
@@ -137,7 +137,7 @@ public class FileController {
 		this.fileService.deleteFile(id);
 		return "redirect:/file/list";
 	}
-	
-	// 2025-03-27 파일 관리 페이지 실시간 다운로드 수 차트 구현
 
+	// 2025-03-28 파일 관리 페이지 실시간 다운로드 차트 구현
+		
 }
